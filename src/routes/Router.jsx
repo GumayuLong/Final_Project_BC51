@@ -6,6 +6,8 @@ import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import AdminLayout from "../layouts/AdminLayout/AdminLayout";
 import UserManagement from "../pages/UserManagement/UserManagement";
+import CreateUser from "../pages/UserManagement/CreateUser/CreateUser";
+import EditUser from "../pages/UserManagement/EditUser/EditUser";
 
 export default function Router() {
   const routing = useRoutes([
@@ -35,6 +37,14 @@ export default function Router() {
         {
           path: "/admin/user",
           element: <UserManagement />,
+        },
+        {
+          path: "/admin/user/create",
+          element: <CreateUser />,
+        },
+        {
+          path: "/admin/user/edit/:userId",
+          element: <EditUser />,
         },
       ],
     },
