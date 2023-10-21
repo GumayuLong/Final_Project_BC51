@@ -8,6 +8,7 @@ import { notification } from "antd";
 // import "../Login/login.scss";
 import { faLock, faRightToBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { userService } from "../../services/userService";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -21,14 +22,34 @@ export default function Register() {
   const phoneNumberInputRef = createRef();
 
    const [state, setState] = useState({
+		id: 0,
 		name: "",
 		email: "",
 		password: "",
 		phone: "",
 		birthday: "",
 		gender: true,
-		role: "",
    });
+   const [confirmPassword, setConfirmPassword] = useState("");
+
+   const handleChange = (event) => {
+		setState({
+			...state,
+			[event.target.name]: event.target.value,
+		});
+   };
+
+   const handleChangeConfirmPassword = (event) => {
+		setConfirmPassword({
+			...confirmPassword,
+			[event.target.name]: event.target.value,
+		});
+   };
+
+   const handleSubmit = async (event) => {
+		event.preventDefault();
+		const result = await userService.registerApi(state);
+   }
 
   return (
 		<div className="bgcustom">
@@ -42,10 +63,11 @@ export default function Register() {
 							/>
 						</div>
 						<h1 className="title">Đăng ký</h1>
-						<form>
+						<form onSubmit={handleSubmit}>
 							<div className="form-group">
 								<input
-									placeholder="Tên tài khoản*"
+									placeholder="Họ tên*"
+									onChange={handleChange}
 									name="name"
 									type="text"
 									className="form-control"
@@ -58,6 +80,7 @@ export default function Register() {
 							<div className="form-group">
 								<input
 									placeholder="Mật khẩu*"
+									onChange={handleChange}
 									name="password"
 									type="password"
 									className="form-control"
@@ -70,6 +93,7 @@ export default function Register() {
 							<div className="form-group">
 								<input
 									placeholder="Nhập lại mật khẩu*"
+									onChange={handleChangeConfirmPassword}
 									id="confirmPassword"
 									type="password"
 									className="form-control"
@@ -82,19 +106,8 @@ export default function Register() {
 							</div>
 							<div className="form-group">
 								<input
-									placeholder="Họ và tên*"
-									name="hoTen"
-									type="text"
-									className="form-control"
-								/>
-								<p
-									ref={fullNameInputRef}
-									className="text-danger"
-								></p>
-							</div>
-							<div className="form-group">
-								<input
 									placeholder="Email*"
+									onChange={handleChange}
 									name="email"
 									type="text"
 									className="form-control"
@@ -107,6 +120,7 @@ export default function Register() {
 							<div className="form-group">
 								<input
 									placeholder="Số điện thoại*"
+									onChange={handleChange}
 									name="phone"
 									type="text"
 									className="form-control"
@@ -114,12 +128,12 @@ export default function Register() {
 								<p
 									ref={phoneNumberInputRef}
 									className="text-danger"
-								>
-								</p>
+								></p>
 							</div>
 							<div className="form-group">
 								<input
 									placeholder="Ngày sinh*"
+									onChange={handleChange}
 									name="birthday"
 									type="date"
 									className="form-control"
@@ -127,12 +141,12 @@ export default function Register() {
 								<p
 									ref={phoneNumberInputRef}
 									className="text-danger"
-								>
-								</p>
+								></p>
 							</div>
-							<div className="form-group">
+							{/* <div className="form-group">
 								<input
 									placeholder="Giới tính*"
+									onChange={handleChange}
 									name="gender"
 									type="text"
 									className="form-control"
@@ -140,9 +154,8 @@ export default function Register() {
 								<p
 									ref={phoneNumberInputRef}
 									className="text-danger"
-								>
-								</p>
-							</div>
+								></p>
+							</div> */}
 							<button className="btn btn-success btncustom">
 								Đăng ký
 							</button>

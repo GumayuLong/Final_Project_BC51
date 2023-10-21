@@ -1,26 +1,40 @@
 import React, { createRef, useState } from "react";
-// import { userService } from "../../services/user";
 import { useDispatch } from "react-redux";
-// import { setUserInfoAction } from "../../store/actions/userAction";
 import { useNavigate } from "react-router-dom";
+import { setUserInfoAction } from "../../store/actions/userAction";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 
 import { Form, Input } from "antd";
+import { userService } from "../../services/userService";
 
 
 export default function Login() {
   const accountInputRef = createRef();
   const passwordInputRef = createRef();
+  const navigate = useNavigate();
 
    const [state, setState] = useState({
 		email: "",
 		password: "",
    });
 
+   const handleChange = (event) => {
+		setState({
+			...state,
+			[event.target.name]: event.target.value,
+		});
+   };
+
+   const handleSubmit = async (event) => {
+    event.preventDefault();
+    const result = await userService.loginApi(state);
+    console.log(result.data.content);
+   }
+
   return (
 		<div>
-			<div className="bgcustom">
+			<div>
 				<main className="main">
 					<div className="form">
 						<div className="w-75 mx-auto py-5">
@@ -31,11 +45,12 @@ export default function Login() {
 								/>
 							</div>
 							<h1 className="title">Đăng nhập</h1>
-							<form>
+							<form onSubmit={handleSubmit}>
 								<Form.Item>
 									<Input
-										placeholder="Tài khoản*"
-										name="taiKhoan"
+										placeholder="Email*"
+										onChange={handleChange}
+										name="email"
 										type="text"
 										size="large"
 									/>
@@ -48,7 +63,8 @@ export default function Login() {
 								<Form.Item>
 									<Input.Password
 										placeholder="Mật khẩu*"
-										name="matKhau"
+										onChange={handleChange}
+										name="password"
 										size="large"
 									/>
 								</Form.Item>
@@ -56,14 +72,13 @@ export default function Login() {
 									ref={passwordInputRef}
 									className="text-danger"
 									style={{ marginTop: "-20px" }}
-								>
-								</p>
-								<button className="btn btn-primary btncustom">
+								></p>
+								<button className="btn btn-primary">
 									Đăng nhập
 								</button>
 								<div>
 									<a href="/register">
-										<h3 className="connectlink">
+										<h3>
 											Bạn chưa có tài khoản? Đăng ký
 										</h3>
 									</a>
