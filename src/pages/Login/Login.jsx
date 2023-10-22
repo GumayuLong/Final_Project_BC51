@@ -13,6 +13,7 @@ export default function Login() {
   const accountInputRef = createRef();
   const passwordInputRef = createRef();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
    const [state, setState] = useState({
 		email: "",
@@ -28,8 +29,14 @@ export default function Login() {
 
    const handleSubmit = async (event) => {
     event.preventDefault();
-    const result = await userService.loginApi(state);
-    console.log(result.data.content);
+    await userService.loginApi(state).then((result) => {
+      localStorage.setItem("USER_INFO", JSON.stringify(result.data.content));
+      dispatch(setUserInfoAction(result.data.content));
+      navigate("/")
+    }).catch((error) =>{
+      console.log(error.response.data.content);
+    });
+    // console.log(result.data.content);
    }
 
   return (

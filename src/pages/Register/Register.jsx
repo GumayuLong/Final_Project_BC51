@@ -1,14 +1,13 @@
 import React, { createRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-// import { userService } from "../../services/user";
-// import { setUserInfoAction } from "../../store/actions/userAction";
 import { notification } from "antd";
 // import { validation } from "../../validations/validation";
 // import "../Login/login.scss";
 import { faLock, faRightToBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { userService } from "../../services/userService";
+import { setUserInfoAction } from "../../store/actions/userAction";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -48,7 +47,16 @@ export default function Register() {
 
    const handleSubmit = async (event) => {
 		event.preventDefault();
-		const result = await userService.registerApi(state);
+		await userService.registerApi(state).then((result) => {
+			dispatch(setUserInfoAction(result.data.content));
+			notification.success({
+				message: "Đăng ký thành công",
+				placement: "topLeft",
+			});
+			navigate("/login");
+		}).catch((error) => {
+			console.log(error.response.data.content)
+		});
    }
 
   return (
