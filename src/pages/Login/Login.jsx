@@ -7,10 +7,11 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 
 import { Form, Input } from "antd";
 import { userService } from "../../services/userService";
+import { validation } from "../../validations/validation";
 
 
 export default function Login() {
-  const accountInputRef = createRef();
+  const emailInputRef = createRef();
   const passwordInputRef = createRef();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ export default function Login() {
 		email: "",
 		password: "",
    });
+   const [errMessage, setErrMessage] = useState("");
 
    const handleChange = (event) => {
 		setState({
@@ -28,15 +30,42 @@ export default function Login() {
    };
 
    const handleSubmit = async (event) => {
-    event.preventDefault();
-    await userService.loginApi(state).then((result) => {
-      localStorage.setItem("USER_INFO", JSON.stringify(result.data.content));
-      dispatch(setUserInfoAction(result.data.content));
-      navigate("/")
-    }).catch((error) =>{
-      console.log(error.response.data.content);
-    });
-    // console.log(result.data.content);
+		event.preventDefault();
+
+		let isValid = true;
+
+		// CHECK VALIDATION ACCOUNT LOGIN
+		isValid &= validation.validateRequired(
+			state.email,
+			emailInputRef.current,
+			"Vui lòng nhập email!"
+		);
+
+		// CHECK VALIDATION PASSWORD ACCOUNT LOGIN
+		isValid &= validation.validateRequired(
+			state.password,
+			passwordInputRef.current,
+			"Vui lòng nhập mật khẩu!"
+		);
+
+    if(isValid){
+      await userService
+			.loginApi(state)
+			.then((result) => {
+				localStorage.setItem(
+					"USER_INFO",
+					JSON.stringify(result.data.content)
+				);
+				dispatch(setUserInfoAction(result.data.content));
+        setErrMessage("");
+				navigate("/");
+			})
+			.catch((error) => {
+        // setPosts(error.data);
+        setErrMessage(error.response.data.content);
+				passwordInputRef.current.innerHTML = errMessage;
+			});
+    }
    }
 
   return (
@@ -63,10 +92,11 @@ export default function Login() {
 									/>
 								</Form.Item>
 								<p
-									ref={accountInputRef}
+									ref={emailInputRef}
 									className="text-danger"
 									style={{ marginTop: "-20px" }}
-								></p>
+								>
+								</p>
 								<Form.Item>
 									<Input.Password
 										placeholder="Mật khẩu*"
@@ -79,15 +109,15 @@ export default function Login() {
 									ref={passwordInputRef}
 									className="text-danger"
 									style={{ marginTop: "-20px" }}
-								></p>
+								>
+									{errMessage}
+								</p>
 								<button className="btn btn-primary">
 									Đăng nhập
 								</button>
 								<div>
 									<a href="/register">
-										<h3>
-											Bạn chưa có tài khoản? Đăng ký
-										</h3>
+										<h3>Bạn chưa có tài khoản? Đăng ký</h3>
 									</a>
 								</div>
 							</form>
