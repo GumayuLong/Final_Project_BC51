@@ -8,6 +8,7 @@ import AdminLayout from "../layouts/AdminLayout/AdminLayout";
 import UserManagement from "../pages/UserManagement/UserManagement";
 import CreateUser from "../pages/UserManagement/CreateUser/CreateUser";
 import EditUser from "../pages/UserManagement/EditUser/EditUser";
+import DepartmentManagement from "../pages/DepartmentManagement/DepartmentManagement";
 
 export default function Router() {
   const routing = useRoutes([
@@ -46,6 +47,14 @@ export default function Router() {
           path: "/admin/user/edit/:userId",
           element: <EditUser />,
         },
+        {
+          path: "/admin/department",
+          element: <DepartmentManagement />,
+        },
+        // {
+        //   path: "/admin/department/create",
+        //   element: <CreateDepartment />,
+        // },
       ],
     },
   ]);

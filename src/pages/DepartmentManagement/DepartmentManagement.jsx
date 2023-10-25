@@ -1,52 +1,46 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Button, Table, notification } from "antd";
 import Search from "antd/es/input/Search";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 
-import { userService } from "../../services/userService";
+import { departmentService } from "../../services/departmentServices";
 
 import "../../styles/styling.scss";
 
-export default function UserManagement() {
-  const [userList, setUserList] = useState();
+export default function DepartmentManagement() {
+  const [departmentList, setDepartmentList] = useState();
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchUserList();
+    fetchDepartmentList();
   }, []);
 
-  const fetchUserList = async (name = "") => {
-    if (name.trim() !== "") {
-      const result = await userService.fetchSearchUserApi(name);
+  const fetchDepartmentList = async () => {
+    const result = await departmentService.fetchDepartmentListApi();
 
-      setUserList(result.data.content);
-    } else {
-      const result = await userService.fetchUserListApi();
-
-      setUserList(result.data.content);
-    }
+    setDepartmentList(result.data.content);
   };
 
   const columns = [
     {
       title: "ID",
-      dataIndex: "ID",
+      dataIndex: "id",
       render: (text, object) => <>{object.id}</>,
     },
     {
-      title: "Avatar",
-      dataIndex: "avatar",
-      render: (text, object) => <img src={object.avatar} width={60} />,
+      title: "Hình ảnh",
+      dataIndex: "hinhAnh",
+      render: (text, object) => <img src={object.hinhAnh} height={120} />,
     },
     {
-      title: "Họ và tên",
-      dataIndex: "name",
+      title: "Tên phòng",
+      dataIndex: "tenPhong",
       sorter: (a, b) => {
-        let name1 = a.name.toLowerCase().trim();
-        let name2 = b.name.toLowerCase().trim();
-        if (name1 > name2) {
+        let tenPhong1 = a.tenPhong.toLowerCase().trim();
+        let tenPhong2 = b.tenPhong.toLowerCase().trim();
+        if (tenPhong1 > tenPhong2) {
           return 1;
         }
         return -1;
@@ -54,37 +48,17 @@ export default function UserManagement() {
       sortDirections: ["descend", "ascend"],
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      render: (text, object) => <>{object.email}</>,
-    },
-    {
-      title: "Giới tính",
-      dataIndex: "gender",
-      render: (text, object) => <>{object.gender ? "Nữ" : "Nam"}</>,
-    },
-    {
-      title: "Ngày sinh",
-      dataIndex: "birthday",
-      render: (text, object) => <>{object.birthday}</>,
-    },
-    {
-      title: "Nhóm quyền",
-      dataIndex: "role",
+      title: "Mô tả",
+      dataIndex: "moTa",
       render: (text, object) => (
-        <>{object.role === "ADMIN" ? "Quản trị" : "Khách hàng"}</>
+        <Fragment>
+          {object.moTa.length > 200
+            ? object.moTa.substr(0, 200) + "..."
+            : object.moTa}
+        </Fragment>
       ),
-      sorter: (a, b) => {
-        let role1 = a.role.toLowerCase().trim();
-        let role2 = b.role.toLowerCase().trim();
-        if (role1 > role2) {
-          return 1;
-        }
-        return -1;
-      },
-      sortDirections: ["descend", "ascend"],
+      width: 550,
     },
-
     {
       title: "Thao tác",
       dataIndex: "id",
@@ -122,56 +96,44 @@ export default function UserManagement() {
 
   const handleDeleteUser = async (object) => {
     const confirm = window.confirm(
-      "Bạn có chắc muốn xóa người dùng " + object.id + "?"
+      "Bạn có chắc muốn xóa phòng thuê số " + object.id + "?"
     );
 
     if (!confirm) return;
     try {
-      await userService.fetchDeleteUserApi(object.id);
+      await departmentService.fetchDeleteDepartmentApi(object.id);
       notification.success({
-        message: "Xóa người dùng thành công",
+        message: "Xóa phòng thuê thành công",
         placement: "bottomRight",
       });
 
-      const result = await userService.fetchUserListApi();
-      setUserList(result.data.content);
+      const result = await departmentService.fetchDepartmentListApi();
+      setDepartmentList(result.data.content);
     } catch (error) {
       notification.error({
-        message: "Xóa người dùng thất bại",
+        message: "Xóa phòng thuê thất bại",
         placement: "bottomRight",
       });
     }
   };
 
-  const onSearch = (value) => {
-    fetchUserList(value);
-  };
-
   return (
     <React.Fragment>
       <div className="d-flex align-items-center justify-content-between">
-        <h3>Danh sách người dùng</h3>
+        <h3>Danh sách phòng thuê</h3>
         <Button
           onClick={handleAdd}
           className="d-flex align-items-center justify-content-center"
         >
           <FontAwesomeIcon icon={faPlus} className="mr-2" />
-          <span style={{ fontSize: 16 }}>Thêm người dùng</span>
+          <span style={{ fontSize: 16 }}>Thêm phòng thuê</span>
         </Button>
       </div>
-
-      <Search
-        placeholder="Nhập tên người dùng..."
-        onSearch={onSearch}
-        enterButton
-        size="large"
-        className="my-2"
-      />
 
       <Table
         rowKey={"id"}
         columns={columns}
-        dataSource={userList}
+        dataSource={departmentList}
         onChange={onChange}
       />
     </React.Fragment>

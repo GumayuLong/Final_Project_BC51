@@ -15,32 +15,10 @@ class UserService {
     });
   }
 
-  fetchCreateUserApi(data) {
-    return request({
-      url: "/users",
-      method: "POST",
-      data,
-    });
-  }
-
   fetchDeleteUserApi(id) {
     return request({
-      url: `/users?id=${id}`,
-      method: "DELETE",
-    });
-  }
-
-  fetchUpdateUserApi(id) {
-    return request({
-      url: `/users?id=${id}`,
-      method: "PUT",
-    });
-  }
-
-  fetchUserDetailApi(id) {
-    return request({
       url: `/users/${id}`,
-      method: "GET",
+      method: "DELETE",
     });
   }
 }
