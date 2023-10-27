@@ -4,6 +4,7 @@ import HomeLayout from "../layouts/HomeLayout/HomeLayout";
 import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
+import RoomDetail from "../pages/RoomDetail/RoomDetail";
 
 export default function Router() {
   const routing = useRoutes([
@@ -14,6 +15,10 @@ export default function Router() {
         {
           path: "/",
           element: <Home />,
+        },
+        {
+          path: "detail/:id",
+          element: <RoomDetail />,
         },
         {
           path: "/login",

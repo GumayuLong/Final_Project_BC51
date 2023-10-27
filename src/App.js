@@ -2,14 +2,17 @@ import { BrowserRouter } from "react-router-dom";
 import "./App.css";
 import Router from "./routes/Router";
 import { createBrowserHistory } from "@remix-run/router";
+import { LoadingProvider } from "./contexts/LoadingContext/LoadingContext";
 
-export const history = createBrowserHistory();
+
 
 function App() {
   return (
-    <BrowserRouter>
+    <LoadingProvider>
+      <BrowserRouter>
         <Router />
-    </BrowserRouter>
+      </BrowserRouter>
+    </LoadingProvider>
   );
 }
 
