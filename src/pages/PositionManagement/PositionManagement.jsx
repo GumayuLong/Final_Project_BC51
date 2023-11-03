@@ -1,52 +1,46 @@
 import React, { useEffect, useState } from "react";
 import { Button, Table, notification } from "antd";
-import Search from "antd/es/input/Search";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 
-import { userService } from "../../services/userService";
+import { positionService } from "../../services/positionService";
 
 import "../../styles/styling.scss";
 
-export default function UserManagement() {
-  const [userList, setUserList] = useState();
+export default function PositionManagement() {
+  const [positionList, setPositionList] = useState();
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchUserList();
+    fetchPositionList();
   }, []);
 
-  const fetchUserList = async (name = "") => {
-    if (name.trim() !== "") {
-      const result = await userService.fetchSearchUserApi(name);
+  const fetchPositionList = async () => {
+    const result = await positionService.fetchPositionListApi();
 
-      setUserList(result.data.content);
-    } else {
-      const result = await userService.fetchUserListApi();
-
-      setUserList(result.data.content);
-    }
+    setPositionList(result.data.content);
   };
 
   const columns = [
     {
       title: "ID",
-      dataIndex: "ID",
+      dataIndex: "id",
       render: (text, object) => <>{object.id}</>,
+      width: 50,
     },
     {
-      title: "Avatar",
-      dataIndex: "avatar",
-      render: (text, object) => <img src={object.avatar} width={60} />,
+      title: "Hình ảnh",
+      dataIndex: "hinhAnh",
+      render: (text, object) => <img src={object.hinhAnh} width={100} />,
     },
     {
-      title: "Họ và tên",
-      dataIndex: "name",
+      title: "Vị trí",
+      dataIndex: "tenViTri",
       sorter: (a, b) => {
-        let name1 = a.name.toLowerCase().trim();
-        let name2 = b.name.toLowerCase().trim();
-        if (name1 > name2) {
+        let tenViTri1 = a.tenViTri.toLowerCase().trim();
+        let tenViTri2 = b.tenViTri.toLowerCase().trim();
+        if (tenViTri1 > tenViTri2) {
           return 1;
         }
         return -1;
@@ -54,37 +48,31 @@ export default function UserManagement() {
       sortDirections: ["descend", "ascend"],
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      render: (text, object) => <>{object.email}</>,
-    },
-    {
-      title: "Giới tính",
-      dataIndex: "gender",
-      render: (text, object) => <>{object.gender ? "Nữ" : "Nam"}</>,
-    },
-    {
-      title: "Ngày sinh",
-      dataIndex: "birthday",
-      render: (text, object) => <>{object.birthday}</>,
-    },
-    {
-      title: "Nhóm quyền",
-      dataIndex: "role",
-      render: (text, object) => (
-        <>{object.role === "ADMIN" ? "Quản trị" : "Khách hàng"}</>
-      ),
+      title: "Tỉnh thành",
+      dataIndex: "tinhThanh",
       sorter: (a, b) => {
-        let role1 = a.role.toLowerCase().trim();
-        let role2 = b.role.toLowerCase().trim();
-        if (role1 > role2) {
+        let tinhThanh1 = a.tinhThanh.toLowerCase().trim();
+        let tinhThanh2 = b.tinhThanh.toLowerCase().trim();
+        if (tinhThanh1 > tinhThanh2) {
           return 1;
         }
         return -1;
       },
       sortDirections: ["descend", "ascend"],
     },
-
+    {
+      title: "Quốc gia",
+      dataIndex: "quocGia",
+      sorter: (a, b) => {
+        let tenViTri1 = a.tenViTri.toLowerCase().trim();
+        let tenViTri2 = b.tenViTri.toLowerCase().trim();
+        if (tenViTri1 > tenViTri2) {
+          return 1;
+        }
+        return -1;
+      },
+      sortDirections: ["descend", "ascend"],
+    },
     {
       title: "Thao tác",
       dataIndex: "id",
@@ -103,7 +91,7 @@ export default function UserManagement() {
 
           <button
             className="btn-icon text-danger"
-            onClick={() => handleDeleteUser(object)}
+            onClick={() => handleDeletePosition(object)}
           >
             <FontAwesomeIcon className="icon-size" icon={faTrash} />
           </button>
@@ -120,58 +108,46 @@ export default function UserManagement() {
     navigate("create");
   };
 
-  const handleDeleteUser = async (object) => {
+  const handleDeletePosition = async (object) => {
     const confirm = window.confirm(
-      "Bạn có chắc muốn xóa người dùng " + object.id + "?"
+      "Bạn có chắc muốn xóa vị trí số " + object.id + "?"
     );
 
     if (!confirm) return;
     try {
-      await userService.fetchDeleteUserApi(object.id);
+      await positionService.fetchDeletePositionApi(object.id);
       notification.success({
-        message: "Xóa người dùng thành công",
+        message: "Xóa vị trí thành công",
         placement: "bottomRight",
       });
 
-      const result = await userService.fetchUserListApi();
-      setUserList(result.data.content);
+      const result = await positionService.fetchPositionListApi();
+      setPositionList(result.data.content);
     } catch (error) {
       notification.error({
-        message: "Xóa người dùng thất bại",
+        message: "Xóa vị trí thất bại",
         placement: "bottomRight",
       });
     }
   };
 
-  const onSearch = (value) => {
-    fetchUserList(value);
-  };
-
   return (
     <React.Fragment>
       <div className="d-flex align-items-center justify-content-between">
-        <h3>Danh sách người dùng</h3>
+        <h3>Danh sách vị trí</h3>
         <Button
           onClick={handleAdd}
           className="d-flex align-items-center justify-content-center"
         >
           <FontAwesomeIcon icon={faPlus} className="mr-2" />
-          <span style={{ fontSize: 16 }}>Thêm người dùng</span>
+          <span style={{ fontSize: 16 }}>Thêm vị trí</span>
         </Button>
       </div>
-
-      <Search
-        placeholder="Nhập tên người dùng..."
-        onSearch={onSearch}
-        enterButton
-        size="large"
-        className="my-2"
-      />
 
       <Table
         rowKey={"id"}
         columns={columns}
-        dataSource={userList}
+        dataSource={positionList}
         onChange={onChange}
       />
     </React.Fragment>

@@ -15,10 +15,39 @@ class UserService {
     });
   }
 
+  fetchCreateUserApi(data) {
+    return request({
+      url: "/users",
+      method: "POST",
+      data,
+    });
+  }
+
+  // fetchUploadAvatarApi() {
+  //   return request({
+  //     url: "/users/upload-avatar",
+  //     method: "POST",
+  //   });
+  // }
+
   fetchDeleteUserApi(id) {
     return request({
-      url: `/users/${id}`,
+      url: `/users?id=${id}`,
       method: "DELETE",
+    });
+  }
+
+  fetchUpdateUserApi(id) {
+    return request({
+      url: `/users?id=${id}`,
+      method: "PUT",
+    });
+  }
+
+  fetchUserDetailApi(id) {
+    return request({
+      url: `/users/${id}`,
+      method: "GET",
     });
   }
 }

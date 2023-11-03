@@ -1,22 +1,36 @@
 import { Col, DatePicker, Form, Input, Radio, Row, Select } from "antd";
 import { useFormik } from "formik";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { userService } from "../../../services/userService";
+import dayjs from "dayjs";
 
 export default function EditUser() {
   const [gender, setGender] = useState("");
+  const [userDetail, setUserDetail] = useState({});
   const navigate = useNavigate();
+  const params = useParams();
 
+  useEffect(() => {
+    fetchUserDetail();
+  }, []);
+
+  const fetchUserDetail = async () => {
+    const result = await userService.fetchUserDetailApi(params.userId);
+    setUserDetail(result.data.content);
+  };
+  console.log(userDetail);
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      id: 0,
-      name: "",
-      email: "",
-      password: "",
-      phone: "",
-      birthday: "",
-      gender: true,
-      role: "",
+      id: params.userId,
+      name: userDetail.name,
+      email: userDetail.email,
+      password: userDetail.password,
+      phone: userDetail.phone,
+      birthday: userDetail.birthday,
+      gender: userDetail.gender,
+      role: userDetail.role,
     },
     onSubmit: async (values) => {
       console.log({ values });
@@ -26,17 +40,23 @@ export default function EditUser() {
   const options = [
     {
       label: "Nam",
-      value: "false",
+      value: false,
     },
     {
       label: "Nữ",
-      value: "true",
+      value: true,
     },
   ];
 
   const onChangeRadio = ({ target: { value } }) => {
     setGender(value);
   };
+
+  const handleChangeDatePicker = (value) => {
+    const birthday = dayjs(value).format("YYYY-MM-DD");
+    formik.setFieldValue("birthday", birthday);
+  };
+
   return (
     <Form
       onSubmitCapture={formik.handleSubmit}
@@ -57,6 +77,8 @@ export default function EditUser() {
             <Input
               size="large"
               name="id"
+              value={formik.values.id}
+              disabled
               onChange={formik.handleChange}
               placeholder="Mã người dùng"
             />
@@ -67,6 +89,7 @@ export default function EditUser() {
             <Input
               size="large"
               name="name"
+              value={formik.values.name}
               onChange={formik.handleChange}
               placeholder="Họ và tên"
             />
@@ -77,6 +100,7 @@ export default function EditUser() {
             <Input
               size="large"
               name="email"
+              value={formik.values.email}
               onChange={formik.handleChange}
               placeholder="Email"
             />
@@ -87,6 +111,7 @@ export default function EditUser() {
             <Input
               size="large"
               name="phone"
+              value={formik.values.phone}
               onChange={formik.handleChange}
               placeholder="Số điện thoại"
             />
@@ -96,8 +121,12 @@ export default function EditUser() {
           <Form.Item label="Ngày sinh">
             <DatePicker
               size="large"
+              format="DD/MM/YYYY"
               name="birthday"
-              onChange={formik.handleChange}
+              value={dayjs(formik.values.birthday, "DD/MM/YYYY")}
+              onChange={(_, dateString) => {
+                formik.setFieldValue("birthday", dateString);
+              }}
               placeholder="Ngày sinh"
               style={{ width: "100%" }}
             />
@@ -106,17 +135,19 @@ export default function EditUser() {
         <Col className="gutter-row" span={12}>
           <Form.Item label="Giới tính">
             <Radio.Group
+              name="gender"
+              value={formik.values.gender}
               options={options}
               onChange={onChangeRadio}
-              value={gender}
             />
           </Form.Item>
         </Col>
         <Col className="gutter-row" span={12}>
           <Form.Item label="Mật khẩu">
             <Input.Password
+              name="password"
               size="large"
-              name="matKhau"
+              value={formik.values.password}
               onChange={formik.handleChange}
               placeholder="Mật khẩu"
             />
@@ -125,16 +156,17 @@ export default function EditUser() {
 
         <Col className="gutter-row" span={12}>
           <Form.Item label="Loại người dùng">
-            <Select
+            <Input
+              name="role"
               size="large"
+              value={formik.values.role}
               placeholder="Chọn loại người dùng"
-              name="maLoaiNguoiDung"
             />
           </Form.Item>
         </Col>
       </Row>
       <div className="d-flex justify-content-end">
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-primary mr-2">
           Cập nhật
         </button>
         <button
