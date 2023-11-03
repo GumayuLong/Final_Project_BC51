@@ -9,6 +9,9 @@ import UserManagement from "../pages/UserManagement/UserManagement";
 import CreateUser from "../pages/UserManagement/CreateUser/CreateUser";
 import EditUser from "../pages/UserManagement/EditUser/EditUser";
 import DepartmentManagement from "../pages/DepartmentManagement/DepartmentManagement";
+import PositionManagement from "../pages/PositionManagement/PositionManagement";
+import CreatePosition from "../pages/PositionManagement/CreatePosition/CreatePosition";
+import CreateDepartment from "../pages/DepartmentManagement/CreateDepartment/CreateDepartment";
 
 export default function Router() {
   const routing = useRoutes([
@@ -51,10 +54,18 @@ export default function Router() {
           path: "/admin/department",
           element: <DepartmentManagement />,
         },
-        // {
-        //   path: "/admin/department/create",
-        //   element: <CreateDepartment />,
-        // },
+        {
+          path: "/admin/department/create",
+          element: <CreateDepartment />,
+        },
+        {
+          path: "/admin/position",
+          element: <PositionManagement />,
+        },
+        {
+          path: "/admin/position/create",
+          element: <CreatePosition />,
+        },
       ],
     },
   ]);

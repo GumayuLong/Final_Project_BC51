@@ -23,6 +23,13 @@ class UserService {
     });
   }
 
+  // fetchUploadAvatarApi() {
+  //   return request({
+  //     url: "/users/upload-avatar",
+  //     method: "POST",
+  //   });
+  // }
+
   fetchDeleteUserApi(id) {
     return request({
       url: `/users?id=${id}`,

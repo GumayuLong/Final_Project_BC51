@@ -64,8 +64,8 @@ export default function AdminLayout() {
           <Menu.Item key="1" icon={<UserOutlined />}>
             <Link to="/admin/user">Người dùng</Link>
           </Menu.Item>
-          <Menu.Item disabled key="2" icon={<PieChartOutlined />}>
-            <Link to="#">Thông tin vị trí</Link>
+          <Menu.Item key="2" icon={<PieChartOutlined />}>
+            <Link to="/admin/position">Thông tin vị trí</Link>
           </Menu.Item>
           <Menu.Item key="3" icon={<DesktopOutlined />}>
             <Link to="/admin/department">Thông tin phòng</Link>

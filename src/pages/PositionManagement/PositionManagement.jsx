@@ -1,25 +1,25 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Table, notification } from "antd";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 
-import { departmentService } from "../../services/departmentServices";
+import { positionService } from "../../services/positionService";
 
 import "../../styles/styling.scss";
 
-export default function DepartmentManagement() {
-  const [departmentList, setDepartmentList] = useState();
+export default function PositionManagement() {
+  const [positionList, setPositionList] = useState();
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchDepartmentList();
+    fetchPositionList();
   }, []);
 
-  const fetchDepartmentList = async () => {
-    const result = await departmentService.fetchDepartmentListApi();
+  const fetchPositionList = async () => {
+    const result = await positionService.fetchPositionListApi();
 
-    setDepartmentList(result.data.content);
+    setPositionList(result.data.content);
   };
 
   const columns = [
@@ -27,19 +27,20 @@ export default function DepartmentManagement() {
       title: "ID",
       dataIndex: "id",
       render: (text, object) => <>{object.id}</>,
+      width: 50,
     },
     {
       title: "Hình ảnh",
       dataIndex: "hinhAnh",
-      render: (text, object) => <img src={object.hinhAnh} height={120} />,
+      render: (text, object) => <img src={object.hinhAnh} width={100} />,
     },
     {
-      title: "Tên phòng",
-      dataIndex: "tenPhong",
+      title: "Vị trí",
+      dataIndex: "tenViTri",
       sorter: (a, b) => {
-        let tenPhong1 = a.tenPhong.toLowerCase().trim();
-        let tenPhong2 = b.tenPhong.toLowerCase().trim();
-        if (tenPhong1 > tenPhong2) {
+        let tenViTri1 = a.tenViTri.toLowerCase().trim();
+        let tenViTri2 = b.tenViTri.toLowerCase().trim();
+        if (tenViTri1 > tenViTri2) {
           return 1;
         }
         return -1;
@@ -47,16 +48,30 @@ export default function DepartmentManagement() {
       sortDirections: ["descend", "ascend"],
     },
     {
-      title: "Mô tả",
-      dataIndex: "moTa",
-      render: (text, object) => (
-        <Fragment>
-          {object.moTa.length > 200
-            ? object.moTa.substr(0, 200) + "..."
-            : object.moTa}
-        </Fragment>
-      ),
-      width: 550,
+      title: "Tỉnh thành",
+      dataIndex: "tinhThanh",
+      sorter: (a, b) => {
+        let tinhThanh1 = a.tinhThanh.toLowerCase().trim();
+        let tinhThanh2 = b.tinhThanh.toLowerCase().trim();
+        if (tinhThanh1 > tinhThanh2) {
+          return 1;
+        }
+        return -1;
+      },
+      sortDirections: ["descend", "ascend"],
+    },
+    {
+      title: "Quốc gia",
+      dataIndex: "quocGia",
+      sorter: (a, b) => {
+        let tenViTri1 = a.tenViTri.toLowerCase().trim();
+        let tenViTri2 = b.tenViTri.toLowerCase().trim();
+        if (tenViTri1 > tenViTri2) {
+          return 1;
+        }
+        return -1;
+      },
+      sortDirections: ["descend", "ascend"],
     },
     {
       title: "Thao tác",
@@ -76,7 +91,7 @@ export default function DepartmentManagement() {
 
           <button
             className="btn-icon text-danger"
-            onClick={() => handleDeleteUser(object)}
+            onClick={() => handleDeletePosition(object)}
           >
             <FontAwesomeIcon className="icon-size" icon={faTrash} />
           </button>
@@ -93,24 +108,24 @@ export default function DepartmentManagement() {
     navigate("create");
   };
 
-  const handleDeleteUser = async (object) => {
+  const handleDeletePosition = async (object) => {
     const confirm = window.confirm(
-      "Bạn có chắc muốn xóa phòng thuê số " + object.id + "?"
+      "Bạn có chắc muốn xóa vị trí số " + object.id + "?"
     );
 
     if (!confirm) return;
     try {
-      await departmentService.fetchDeleteDepartmentApi(object.id);
+      await positionService.fetchDeletePositionApi(object.id);
       notification.success({
-        message: "Xóa phòng thuê thành công",
+        message: "Xóa vị trí thành công",
         placement: "bottomRight",
       });
 
-      const result = await departmentService.fetchDepartmentListApi();
-      setDepartmentList(result.data.content);
+      const result = await positionService.fetchPositionListApi();
+      setPositionList(result.data.content);
     } catch (error) {
       notification.error({
-        message: "Xóa phòng thuê thất bại",
+        message: "Xóa vị trí thất bại",
         placement: "bottomRight",
       });
     }
@@ -119,20 +134,20 @@ export default function DepartmentManagement() {
   return (
     <React.Fragment>
       <div className="d-flex align-items-center justify-content-between">
-        <h3>Danh sách phòng thuê</h3>
+        <h3>Danh sách vị trí</h3>
         <Button
           onClick={handleAdd}
           className="d-flex align-items-center justify-content-center"
         >
           <FontAwesomeIcon icon={faPlus} className="mr-2" />
-          <span style={{ fontSize: 16 }}>Thêm phòng thuê</span>
+          <span style={{ fontSize: 16 }}>Thêm vị trí</span>
         </Button>
       </div>
 
       <Table
         rowKey={"id"}
         columns={columns}
-        dataSource={departmentList}
+        dataSource={positionList}
         onChange={onChange}
       />
     </React.Fragment>

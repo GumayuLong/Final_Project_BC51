@@ -18,9 +18,8 @@ export default function EditUser() {
   const fetchUserDetail = async () => {
     const result = await userService.fetchUserDetailApi(params.userId);
     setUserDetail(result.data.content);
-    console.log(userDetail);
   };
-
+  console.log(userDetail);
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -124,8 +123,10 @@ export default function EditUser() {
               size="large"
               format="DD/MM/YYYY"
               name="birthday"
-              value={dayjs(formik.values.birthday)}
-              onChange={handleChangeDatePicker}
+              value={dayjs(formik.values.birthday, "DD/MM/YYYY")}
+              onChange={(_, dateString) => {
+                formik.setFieldValue("birthday", dateString);
+              }}
               placeholder="Ngày sinh"
               style={{ width: "100%" }}
             />
