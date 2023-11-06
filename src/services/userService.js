@@ -23,6 +23,13 @@ class UserService {
 			data,
 		});
 	}
+
+	userInfoApi(userId) {
+		return request({
+			url: `/users/${userId}`,
+			method: "GET",
+		});
+	} 
 }
 
 export const userService = new UserService();

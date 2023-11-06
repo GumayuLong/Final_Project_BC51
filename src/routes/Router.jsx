@@ -8,6 +8,7 @@ import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import AdminLayout from "../layouts/AdminLayout/AdminLayout";
 import UserManagement from "../pages/UserManagement/UserManagement";
+import PersonalInfo from "../pages/Personalinfo/PersonalInfo";
 
 export default function Router() {
 	const routing = useRoutes([
@@ -27,6 +28,10 @@ export default function Router() {
 					path: "/register",
 					element: <Register />,
 				},
+				{
+					path: "/personal-info/:userId",
+					element: <PersonalInfo/>
+				}
 			],
 		},
 
