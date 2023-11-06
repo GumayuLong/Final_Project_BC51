@@ -32,16 +32,8 @@ class UserService {
 
 	fetchDeleteUserApi(id) {
 		return request({
-			url: `/users/${id}`,
+			url: `/users?id=${id}`,
 			method: "DELETE",
-		});
-	}
-
-	loginApi(data) {
-		return request({
-			url: "/auth/signin",
-			method: "POST",
-			data,
 		});
 	}
 
@@ -55,21 +47,6 @@ class UserService {
 	fetchUserDetailApi(id) {
 		return request({
 			url: `/users/${id}`,
-			method: "GET",
-		});
-	}
-
-	registerApi(data) {
-		return request({
-			url: `/auth/signup`,
-			method: "POST",
-			data,
-		});
-	}
-
-	userInfoApi(userId) {
-		return request({
-			url: `/users/${userId}`,
 			method: "GET",
 		});
 	}
