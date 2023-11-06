@@ -72,25 +72,7 @@ class UserService {
 			url: `/users/${userId}`,
 			method: "GET",
 		});
-<<<<<<< HEAD
 	}
-=======
-	} 
-
-  fetchSearchUserApi(name) {
-    return request({
-      url: `users/search/${name}`,
-      method: "GET",
-    });
-  }
-
-  fetchDeleteUserApi(id) {
-    return request({
-      url: `/users/${id}`,
-      method: "DELETE",
-    });
-  }
->>>>>>> main
 }
 
 export const userService = new UserService();
