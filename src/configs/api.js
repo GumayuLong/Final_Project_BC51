@@ -3,6 +3,7 @@ import { BASE_URL, TOKEN_CYBERSOFT } from "../constants/api";
 import { store } from "../store/config";
 
 const request = axios.create({
+<<<<<<< HEAD
 	baseURL: BASE_URL,
 	headers: {
 		TokenCybersoft: TOKEN_CYBERSOFT,
@@ -18,6 +19,23 @@ request.interceptors.request.use((config) => {
 		// config.headers.Authorization = `Bearer ${accessToken}`;
 	}
 	return config;
+=======
+  baseURL: BASE_URL,
+  headers: {
+    TokenCybersoft: TOKEN_CYBERSOFT,
+  },
+});
+
+request.interceptors.request.use((config) => {
+  let accessToken = null;
+  const state = store.getState();
+
+  if (state.userReducer.userInfo) {
+    accessToken = state.userReducer.userInfo.accessToken;
+    // config.headers.Authorization = `Bearer ${accessToken}`;
+  }
+  return config;
+>>>>>>> main
 });
 
 export { request };

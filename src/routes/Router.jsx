@@ -8,6 +8,8 @@ import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import AdminLayout from "../layouts/AdminLayout/AdminLayout";
 import UserManagement from "../pages/UserManagement/UserManagement";
+import CreateUser from "../pages/UserManagement/CreateUser/CreateUser";
+import EditUser from "../pages/UserManagement/EditUser/EditUser";
 import PersonalInfo from "../pages/Personalinfo/PersonalInfo";
 
 export default function Router() {
@@ -30,18 +32,25 @@ export default function Router() {
 				},
 				{
 					path: "/personal-info/:userId",
-					element: <PersonalInfo/>
-				}
-			],
-		},
-
-		{
-			path: "/admin",
-			element: <AdminLayout />,
-			children: [
+					element: <PersonalInfo />,
+				},
 				{
-					path: "/admin/user",
-					element: <UserManagement />,
+					path: "/admin",
+					element: <AdminLayout />,
+					children: [
+						{
+							path: "/admin/user",
+							element: <UserManagement />,
+						},
+						{
+							path: "/admin/user/create",
+							element: <CreateUser />,
+						},
+						{
+							path: "/admin/user/edit/:userId",
+							element: <EditUser />,
+						},
+					],
 				},
 			],
 		},
