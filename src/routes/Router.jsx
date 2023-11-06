@@ -12,6 +12,7 @@ import DepartmentManagement from "../pages/DepartmentManagement/DepartmentManage
 import PositionManagement from "../pages/PositionManagement/PositionManagement";
 import CreatePosition from "../pages/PositionManagement/CreatePosition/CreatePosition";
 import CreateDepartment from "../pages/DepartmentManagement/CreateDepartment/CreateDepartment";
+import PersonalInfo from "../pages/Personalinfo/PersonalInfo";
 
 export default function Router() {
 	const routing = useRoutes([
@@ -31,6 +32,10 @@ export default function Router() {
 					path: "/register",
 					element: <Register />,
 				},
+				{
+					path: "/personal-info",
+					element: <PersonalInfo />
+				}
 			],
 		},
 
