@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { setUserInfoAction } from "../../store/actions/userAction";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
+import "./login.scss";
 
 import { Form, Input } from "antd";
 import { userService } from "../../services/userService";
@@ -70,7 +71,7 @@ export default function Login() {
 
   return (
 		<div>
-			<div>
+			<div className="bgcustom">
 				<main className="main">
 					<div className="form">
 						<div className="w-75 mx-auto py-5">
@@ -82,7 +83,7 @@ export default function Login() {
 							</div>
 							<h1 className="title">Đăng nhập</h1>
 							<form onSubmit={handleSubmit}>
-								<Form.Item>
+								<Form.Item style={{ marginBottom: "35px" }}>
 									<Input
 										placeholder="Email*"
 										onChange={handleChange}
@@ -95,9 +96,8 @@ export default function Login() {
 									ref={emailInputRef}
 									className="text-danger"
 									style={{ marginTop: "-20px" }}
-								>
-								</p>
-								<Form.Item>
+								></p>
+								<Form.Item style={{ marginBottom: "35px" }}>
 									<Input.Password
 										placeholder="Mật khẩu*"
 										onChange={handleChange}
@@ -112,13 +112,14 @@ export default function Login() {
 								>
 									{errMessage}
 								</p>
-								<button className="btn btn-primary">
+								<button className="btn btn-primary btncustom">
 									Đăng nhập
 								</button>
 								<div>
-									<a href="/register">
-										<h3>Bạn chưa có tài khoản? Đăng ký</h3>
-									</a>
+									<h3 className="connectlink">
+										Bạn chưa có tài khoản?{" "}
+										<a href="/register">Đăng ký ngay</a>
+									</h3>
 								</div>
 							</form>
 						</div>

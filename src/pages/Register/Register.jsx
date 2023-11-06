@@ -1,5 +1,3 @@
-/** @format */
-
 import React, { createRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { userService } from "../../services/userService";
 import { setUserInfoAction } from "../../store/actions/userAction";
 import { validation } from "../../validations/validation";
+import "../Login/login.scss";
 
 export default function Register() {
 	const navigate = useNavigate();
@@ -30,6 +29,7 @@ export default function Register() {
 		phone: "",
 		birthday: "",
 		gender: "",
+		role: "USER"
 	});
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [errMessage, setErrMessage] = useState("");
@@ -156,9 +156,9 @@ export default function Register() {
 
 	return (
 		<div className="bgcustom">
-			<main className="main">
+			<main className="mainRegister">
 				<div className="form" style={{ top: "45%" }}>
-					<div className="w-75 mx-auto py-5">
+					<div className="w-90 mx-auto py-5">
 						<div style={{ textAlign: "center" }}>
 							<FontAwesomeIcon
 								className="icon"
@@ -167,112 +167,169 @@ export default function Register() {
 						</div>
 						<h1 className="title">Đăng ký</h1>
 						<form onSubmit={handleSubmit}>
-							<div className="form-group">
-								<input
-									placeholder="Họ tên*"
-									onChange={handleChange}
-									name="name"
-									type="text"
-									className="form-control"
-								/>
-								<p
-									ref={fullNameInputRef}
-									className="text-danger"
-								></p>
-							</div>
-							<div className="form-group">
-								<input
-									placeholder="Mật khẩu*"
-									onChange={handleChange}
-									name="password"
-									type="password"
-									className="form-control"
-								/>
-								<p
-									ref={passwordInputRef}
-									className="text-danger"
-								></p>
-							</div>
-							<div className="form-group">
-								<input
-									placeholder="Nhập lại mật khẩu*"
-									onChange={handleChangeConfirmPassword}
-									id="confirmPassword"
-									type="password"
-									className="form-control"
-									name="confirmPassword"
-								/>
-								<p
-									ref={confirmPasswordInputRef}
-									className="text-danger"
-								></p>
-							</div>
-							<div className="form-group">
-								<input
-									placeholder="Email*"
-									onChange={handleChange}
-									name="email"
-									type="text"
-									className="form-control"
-								/>
-								<p
-									ref={emailInputRef}
-									className="text-danger"
-								></p>
-							</div>
-							<div className="form-group">
-								<input
-									placeholder="Số điện thoại*"
-									onChange={handleChange}
-									name="phone"
-									type="text"
-									className="form-control"
-								/>
-								<p
-									ref={phoneNumberInputRef}
-									className="text-danger"
-								></p>
-							</div>
-							<div className="form-group">
-								<input
-									placeholder="Ngày sinh*"
-									onChange={handleChange}
-									name="birthday"
-									type="date"
-									className="form-control"
-								/>
-								<p
-									ref={birthdayInputRef}
-									className="text-danger"
-								></p>
-							</div>
-							<div className="form-group">
-								<div className="input-group">
-									<select
-										className="form-control"
-										name="gender"
-										id="cars"
-										onChange={handleChange}
-									>
-										<option value="">Giới tính*</option>
-										<option value="true">Nam</option>
-										<option value="false">Nữ</option>
-									</select>
+							<div className="registerlayout">
+								<div style={{ marginRight: "10px" }}>
+									<div className="form-group">
+										<label
+											className="labelRegister"
+											htmlFor=""
+										>
+											Tên người dùng*
+										</label>
+										<input
+											placeholder="Điền vào đây ..."
+											onChange={handleChange}
+											name="name"
+											type="text"
+											className="form-control"
+										/>
+										<p
+											ref={fullNameInputRef}
+											className="text-danger"
+										></p>
+									</div>
+									<div className="form-group">
+										<label
+											className="labelRegister"
+											htmlFor=""
+										>
+											Mật khẩu*
+										</label>
+										<input
+											placeholder="********"
+											onChange={handleChange}
+											name="password"
+											type="password"
+											className="form-control"
+										/>
+										<p
+											ref={passwordInputRef}
+											className="text-danger"
+										></p>
+									</div>
+									<div className="form-group">
+										<label
+											className="labelRegister"
+											htmlFor=""
+										>
+											Xác nhận mật khẩu*
+										</label>
+										<input
+											placeholder="********"
+											onChange={
+												handleChangeConfirmPassword
+											}
+											id="confirmPassword"
+											type="password"
+											className="form-control"
+											name="confirmPassword"
+										/>
+										<p
+											ref={confirmPasswordInputRef}
+											className="text-danger"
+										></p>
+									</div>
+									<div className="form-group">
+										<label
+											className="labelRegister"
+											htmlFor=""
+										>
+											Email*
+										</label>
+										<input
+											placeholder="Example@gmail.com"
+											onChange={handleChange}
+											name="email"
+											type="text"
+											className="form-control"
+										/>
+										<p
+											ref={emailInputRef}
+											className="text-danger"
+										></p>
+									</div>
 								</div>
-								<p
-									ref={genderInputRef}
-									className="text-danger"
-								>
-									{errMessage}
-								</p>
+								<div style={{ marginLeft: "10px" }}>
+									<div className="form-group">
+										<label
+											className="labelRegister"
+											htmlFor=""
+										>
+											Số điện thoại*
+										</label>
+										<input
+											placeholder="090 1821 109"
+											onChange={handleChange}
+											name="phone"
+											type="text"
+											className="form-control"
+										/>
+										<p
+											ref={phoneNumberInputRef}
+											className="text-danger"
+										></p>
+									</div>
+									<div className="form-group">
+										<label
+											className="labelRegister"
+											htmlFor=""
+										>
+											Ngày sinh*
+										</label>
+										<input
+											onChange={handleChange}
+											name="birthday"
+											type="date"
+											className="form-control"
+										/>
+										<p
+											ref={birthdayInputRef}
+											className="text-danger"
+										></p>
+									</div>
+									<div className="form-group">
+										<div className="input-group">
+											<div className="form-group">
+												<label
+													className="labelRegister"
+													htmlFor=""
+												>
+													Giới tính*
+												</label>
+												<select
+													className="form-control"
+													name="gender"
+													id="cars"
+													onChange={handleChange}
+												>
+													<option value="true">
+														Nam
+													</option>
+													<option value="false">
+														Nữ
+													</option>
+												</select>
+											</div>
+										</div>
+										<p
+											ref={genderInputRef}
+											className="text-danger"
+										>
+											{errMessage}
+										</p>
+									</div>
+								</div>
 							</div>
 							<button className="btn btn-success btncustom">
 								Đăng ký
 							</button>
 							<div>
 								<a href="/login">
-									<h3 className="connectlink">
-										Quay lại đăng nhập?
+									<h3
+										className="connectlink"
+										style={{ textAlign: "center" }}
+									>
+										Đăng nhập ngay
 									</h3>
 								</a>
 							</div>
