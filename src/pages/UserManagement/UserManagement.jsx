@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Button, Table, notification } from "antd";
+import Search from "antd/es/input/Search";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 import { userService } from "../../services/userService";
-import "./userManagement.scss";
-import Search from "antd/es/input/Search";
+
+import "../../styles/styling.scss";
 
 export default function UserManagement() {
   const [userList, setUserList] = useState();
@@ -62,13 +63,26 @@ export default function UserManagement() {
       dataIndex: "gender",
       render: (text, object) => <>{object.gender ? "Nữ" : "Nam"}</>,
     },
-
+    {
+      title: "Ngày sinh",
+      dataIndex: "birthday",
+      render: (text, object) => <>{object.birthday}</>,
+    },
     {
       title: "Nhóm quyền",
       dataIndex: "role",
       render: (text, object) => (
         <>{object.role === "ADMIN" ? "Quản trị" : "Khách hàng"}</>
       ),
+      sorter: (a, b) => {
+        let role1 = a.role.toLowerCase().trim();
+        let role2 = b.role.toLowerCase().trim();
+        if (role1 > role2) {
+          return 1;
+        }
+        return -1;
+      },
+      sortDirections: ["descend", "ascend"],
     },
 
     {

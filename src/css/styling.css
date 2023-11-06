@@ -1,0 +1,32 @@
+.table td,
+.table th {
+  vertical-align: middle;
+}
+
+.check {
+  width: 40px;
+  height: 40px;
+  color: green;
+}
+
+.ant-table-wrapper .ant-table-thead > tr > th {
+  text-align: center;
+}
+
+.btn-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-action .btn-icon {
+  border: none;
+  border-radius: 3px;
+  background-color: transparent;
+}
+.btn-action .btn-icon:focus {
+  outline: none;
+}
+.btn-action .btn-icon .icon-size {
+  width: 18px;
+  height: 18px;
+}/*# sourceMappingURL=styling.css.map */
