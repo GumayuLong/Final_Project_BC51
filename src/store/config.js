@@ -1,15 +1,8 @@
 import { combineReducers, legacy_createStore } from "redux";
-<<<<<<< HEAD
-import { userReducer } from "./reducers/userReducer";
-
-const rootReducer = combineReducers({
-	userReducer: userReducer,
-=======
 import { userReducer } from "./reducer/userReducer";
 
 const rootReducer = combineReducers({
   userReducer: userReducer,
->>>>>>> main
 });
 
 export const store = legacy_createStore(

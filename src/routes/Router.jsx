@@ -54,6 +54,24 @@ export default function Router() {
 				},
 			],
 		},
+		{
+			path: "/admin",
+			element: <AdminLayout />,
+			children: [
+				{
+					path: "/admin/user",
+					element: <UserManagement />,
+				},
+				{
+					path: "/admin/user/create",
+					element: <CreateUser />,
+				},
+				{
+					path: "/admin/user/edit/:userId",
+					element: <EditUser />,
+				},
+			],
+		},
 	]);
 
 	return routing;
