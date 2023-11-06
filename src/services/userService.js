@@ -15,41 +15,64 @@ class UserService {
 		});
 	}
 
-  fetchCreateUserApi(data) {
-    return request({
-      url: "/users",
-      method: "POST",
-      data,
-    });
-  }
+	fetchCreateUserApi(data) {
+		return request({
+			url: "/users",
+			method: "POST",
+			data,
+		});
+	}
 
-  // fetchUploadAvatarApi() {
-  //   return request({
-  //     url: "/users/upload-avatar",
-  //     method: "POST",
-  //   });
-  // }
+	// fetchUploadAvatarApi() {
+	//   return request({
+	//     url: "/users/upload-avatar",
+	//     method: "POST",
+	//   });
+	// }
 
-  fetchDeleteUserApi(id) {
-    return request({
-      url: `/users?id=${id}`,
-      method: "DELETE",
-    });
-  }
+	fetchDeleteUserApi(id) {
+		return request({
+			url: `/users?id=${id}`,
+			method: "DELETE",
+		});
+	}
 
-  fetchUpdateUserApi(id) {
-    return request({
-      url: `/users?id=${id}`,
-      method: "PUT",
-    });
-  }
+	fetchUpdateUserApi(id) {
+		return request({
+			url: `/users?id=${id}`,
+			method: "PUT",
+		});
+	}
 
-  fetchUserDetailApi(id) {
-    return request({
-      url: `/users/${id}`,
+	fetchUserDetailApi(id) {
+		return request({
+			url: `/users/${id}`,
+			method: "GET",
+		});
+	}
+
+	loginApi(data) {
+		return request({
+			url: `/auth/signin`,
+			method: "POST",
+			data,
+		});
+	}
+
+	registerApi(data) {
+		return request({
+			url: `/auth/signup`,
+			method: "POST",
+			data,
+		});
+	}
+
+	userInfoApi(userId) {
+    return request ({
+      url: `/users/${userId}`,
       method: "GET",
-    });
-  }
+    })
+  };
 }
 
 export const userService = new UserService();

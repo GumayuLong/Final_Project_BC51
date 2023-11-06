@@ -33,7 +33,7 @@ export default function Router() {
 					element: <Register />,
 				},
 				{
-					path: "/personal-info",
+					path: "/personal-info/:userId",
 					element: <PersonalInfo />
 				}
 			],

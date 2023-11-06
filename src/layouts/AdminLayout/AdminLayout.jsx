@@ -53,7 +53,6 @@ export default function AdminLayout() {
 		token: { colorBgContainer },
 	} = theme.useToken();
 
-<<<<<<< HEAD
 	return (
 		<Layout
 			style={{
@@ -115,67 +114,4 @@ export default function AdminLayout() {
 			</Layout>
 		</Layout>
 	);
-=======
-  return (
-    <Layout
-      style={{
-        minHeight: "100vh",
-      }}
-    >
-      <Sider
-        collapsible
-        collapsed={collapsed}
-        onCollapse={(value) => setCollapsed(value)}
-      >
-        <div className="demo-logo-vertical" />
-        <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
-          <Menu.Item key="1" icon={<UserOutlined />}>
-            <Link to="/admin/user">Người dùng</Link>
-          </Menu.Item>
-          <Menu.Item key="2" icon={<PieChartOutlined />}>
-            <Link to="/admin/position">Thông tin vị trí</Link>
-          </Menu.Item>
-          <Menu.Item key="3" icon={<DesktopOutlined />}>
-            <Link to="/admin/department">Thông tin phòng</Link>
-          </Menu.Item>
-          <Menu.Item disabled key="4" icon={<FileOutlined />}>
-            <Link to="#">Quản lý đặt phòng</Link>
-          </Menu.Item>
-        </Menu>
-      </Sider>
-      <Layout>
-        <Header
-          style={{
-            padding: 0,
-            background: colorBgContainer,
-          }}
-        >
-          {renderContent()}
-        </Header>
-        <Content
-          style={{
-            margin: "0 16px",
-          }}
-        >
-          <div
-            style={{
-              padding: 24,
-              minHeight: 360,
-              background: colorBgContainer,
-            }}
-          >
-            <Outlet />
-          </div>
-        </Content>
-        <Footer
-          style={{
-            textAlign: "center",
-          }}
-        >
-          Ant Design ©2023 Created by Ant UED
-        </Footer>
-      </Layout>
-    </Layout>
-  );
->>>>>>> 4539e0882f86f65d70ca9dc9b0f02cb0ccb643c9
 }
