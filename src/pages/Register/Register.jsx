@@ -302,6 +302,9 @@ export default function Register() {
 													id="cars"
 													onChange={handleChange}
 												>
+													<option value="">
+														Chọn giới tính
+													</option>
 													<option value="true">
 														Nam
 													</option>
