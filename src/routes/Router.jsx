@@ -15,29 +15,29 @@ import CreateDepartment from "../pages/DepartmentManagement/CreateDepartment/Cre
 import PersonalInfo from "../pages/Personalinfo/PersonalInfo";
 
 export default function Router() {
-	const routing = useRoutes([
-		{
-			path: "/",
-			element: <HomeLayout />,
-			children: [
-				{
-					path: "/",
-					element: <Home />,
-				},
-				{
-					path: "/login",
-					element: <Login />,
-				},
-				{
-					path: "/register",
-					element: <Register />,
-				},
-				{
-					path: "/personal-info/:userId",
-					element: <PersonalInfo />
-				}
-			],
-		},
+  const routing = useRoutes([
+    {
+      path: "/",
+      element: <HomeLayout />,
+      children: [
+        {
+          path: "/",
+          element: <Home />,
+        },
+        {
+          path: "/login",
+          element: <Login />,
+        },
+        {
+          path: "/register",
+          element: <Register />,
+        },
+        {
+          path: "/personal-info/:userId",
+          element: <PersonalInfo />,
+        },
+      ],
+    },
 
     {
       path: "/admin",
@@ -75,5 +75,5 @@ export default function Router() {
     },
   ]);
 
-	return routing;
+  return routing;
 }
