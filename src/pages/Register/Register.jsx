@@ -305,10 +305,10 @@ export default function Register() {
 													<option value="">
 														Chọn giới tính
 													</option>
-													<option value="true">
+													<option value={true}>
 														Nam
 													</option>
-													<option value="false">
+													<option value={false}>
 														Nữ
 													</option>
 												</select>
