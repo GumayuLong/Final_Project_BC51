@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { notification } from "antd";
 import { userService } from "../../services/userService";
 import { bookRoomService } from "../../services/bookRoomService";
 
@@ -9,18 +10,15 @@ export default function PersonalInfo() {
 	const params = useParams();
 	const [userInfo, setUserInfo] = useState([]);
 	const [bookingInfo, setBookingInfo] = useState([]);
-	const [infoRoom, setInfoRoom] = useState([]);
-	const [test, setTest] = useState([]);
 	const [avatar, setAvatar] = useState(
 		"http://dergipark.org.tr/assets/app/images/buddy_sample.png"
 	);
-
-	const navigate = useNavigate();
+	const [file, setFile] = useState(null);
 
 	useEffect(() => {
 		fetchPersonalInfo();
 		fetchBookedRoomFromUser();
-	}, []);	
+	}, []);
 
 	const fetchPersonalInfo = async () => {
 		const result = await userService.userInfoApi(params.userId);
@@ -30,85 +28,82 @@ export default function PersonalInfo() {
 		}
 	};
 
-	// Lấy danh sách phòng đã đặt theo userId
-	// -> tìm đc id dat phòng (id)
 	const fetchBookedRoomFromUser = async () => {
 		const result = await bookRoomService.fetchBookedRoomFromUserApi(
 			params.userId
 		);
 		setBookingInfo(result.data.content);
-		// console.log(result.data.content);
-		// result.data.content.map(async (element) => {
-		// 	await bookRoomService
-		// 		.bookInfoApi(element.maPhong)
-		// 		.then((result) => {
-		// 			return setInfoRoom((prev) => [
-		// 				...prev,
-		// 				result.data.content,
-		// 			]);
-		// 		})
-		// 		.catch((err) => console.log(err));
-		// });
 	};
-
-	// const roomInfomation = async () => {
-	// 	await bookRoomService.fetchRoomBooked().then((result) => {
-	// 		// console.log(result.data.content)
-	// 		setInfoRoom(result.data.content)
-	// 	}).catch((err) => console.log(err));
-	// };
-
-	// Tìm đc id phòng (maPhong) -> sử dụng API dat-phong/:maPhong
-	// Để get thông tin của phòng và render ra giao diện
-	// const roomBookedFromUser = () => {
-	// 	// const userBooked = [...bookingInfo];
-	// 	// const roomBooked = [...infoRoom];
-	// 	// // console.log(roomBooked)
-	// 	// userBooked.map((element) => {
-	// 	// 	// console.log(element.maPhong)
-	// 	// 	let maPhong = element.maPhong
-	// 	// 	let data = roomBooked.filter((element) => element.id == maPhong)
-	// 	// 	const listBookedRoom  = [...data]
-	// 	// 	console.log(data)
-	// 	// })
-
-	// 	const data = infoRoom.map((element) => element);
-	// 	console.log(data);
-	// 	return data.map((element) => {
-	// 		return (
-	// 			<p>
-	// 				{element.tenPhong}, {element.khach}, {element.phongNgu},{" "}
-	// 				{element.phongTam}, {element.hinhAnh}, {element.giaTien}
-	// 			</p>
-	// 		);
-	// 	});
-	// };
-
-	// const openPopup = () => {
-	// 	setIsOpen(true);
-	// };
-
-	// const closePopup = () => {
-	// 	setIsOpen(false);
-	// };
 
 	const handleOnchange = (event) => {
 		setUserInfo({
 			...userInfo,
 			[event.target.name]: event.target.value,
-		})
+		});
 	};
 
 	const updateUserInfo = async () => {
-		await userService.updateUserInfoApi(userInfo.id, userInfo).then((result) => {
-			alert(`update thành công: ${result.data.content.id}`)
-			document.getElementById("btnDong").click();
-		}).catch((err) => console.log(err))
-	}
+		await userService
+			.updateUserInfoApi(userInfo.id, userInfo)
+			.then((result) => {
+				notification.success({
+					message: "Cập nhật thông tin thành công",
+					placement: "topRight",
+				});
+				document.getElementById("btnDong").click();
+			})
+			.catch((err) => {
+				notification.danger({
+					message: err.response.data.content,
+					placement: "topRight",
+				});
+			});
+	};
+
+	const handleUploadAvatar = (e) => {
+		setFile(e.target.files[0]);
+	};
+
+	const uploadAvatar = async () => {
+		const data = new FormData();
+		data.append("formFile", file);
+		if (data && file !== "") {
+			await userService
+				.postAvatarApi(data)
+				.then((result) => {
+					notification.success({
+						message: "Cập nhật avatar thành công",
+						placement: "topRight",
+					});
+					setAvatar(result.data.content.avatar);
+				})
+				.catch((err) => {
+					notification.warning({
+						message: err.response.data.content,
+						placement: "topRight",
+					});
+				});
+		} else {
+		}
+	};
+
+	const renderBookingInfo = () => {
+		return bookingInfo.map((element) => {
+			return (
+				<tr key={element.id}>
+					<td>{element.maPhong}</td>
+					<td>{element.ngayDen}</td>
+					<td>{element.ngayDi}</td>
+					<td>{element.soLuongKhach}</td>
+				</tr>
+			);
+		});
+	};
 
 	const renderUserInfo = () => {
+		let id = new Date();
 		return (
-			<div className=" col-5">
+			<div className="col-5" key={id}>
 				<div className="form">
 					<div className="w-90 ml-5 py-5 col-9">
 						<h1 className="title">Thông tin cá nhân</h1>
@@ -123,16 +118,6 @@ export default function PersonalInfo() {
 											>
 												Họ và tên
 											</label>
-											{/* <button
-												type="button"
-												// onClick={() => {handleChange(userInfo.name)}}
-												onClick={() =>
-													handleChange(userInfo.name)
-												}
-												className="btn text-primary"
-											>
-												Thay đổi
-											</button> */}
 										</div>
 										<input
 											value={userInfo.name}
@@ -151,12 +136,9 @@ export default function PersonalInfo() {
 											>
 												Giới tính
 											</label>
-											{/* <button type="button" className="btn text-primary">
-												Thay đổi
-											</button> */}
 										</div>
 										<select
-											disabled = {true}
+											disabled={true}
 											value={userInfo.gender}
 											onChange={handleOnchange}
 											className="form-control"
@@ -174,9 +156,6 @@ export default function PersonalInfo() {
 											>
 												Ngày sinh
 											</label>
-											{/* <button type="button" className="btn text-primary">
-												Thay đổi
-											</button> */}
 										</div>
 										<input
 											value={userInfo.birthday}
@@ -195,9 +174,6 @@ export default function PersonalInfo() {
 											>
 												Địa chỉ email
 											</label>
-											{/* <button type="button" className="btn text-primary">
-												Thay đổi
-											</button> */}
 										</div>
 										<input
 											value={userInfo.email}
@@ -216,9 +192,6 @@ export default function PersonalInfo() {
 											>
 												Số điện thoại
 											</label>
-											{/* <button type="button" className="btn text-primary">
-												Thay đổi
-											</button> */}
 										</div>
 										<input
 											value={userInfo.phone}
@@ -282,10 +255,17 @@ export default function PersonalInfo() {
 								height="200px"
 							/>
 							<input
-								className="form-control my-2"
+								onChange={handleUploadAvatar}
+								className="my-3 form-control"
 								type="file"
-								id="formFile"
 							/>
+							<button
+								type="button"
+								className="btn btn-info"
+								onClick={uploadAvatar}
+							>
+								Upload avatar
+							</button>
 						</div>
 						{renderUserInfo()}
 						<div className="modal" id="myModal">
@@ -334,9 +314,7 @@ export default function PersonalInfo() {
 													className="form-control"
 													name="gender"
 												>
-													<option
-														value={true}
-													>
+													<option value={true}>
 														Nam
 													</option>
 													<option value={false}>
@@ -411,38 +389,22 @@ export default function PersonalInfo() {
 								</div>
 							</div>
 						</div>
-						<div>
-							<p>???</p>
-						</div>
-						{/* <!-- The Modal --> */}
-						<div className="modal" id="myModal">
-							<div className="modal-dialog">
-								<div className="modal-content">
-									<div className="modal-header">
-										<h4 className="modal-title">
-											Modal Heading
-										</h4>
-										<button
-											type="button"
-											className="close"
-											data-dismiss="modal"
-										>
-											×
-										</button>
-									</div>
-									<div className="modal-body">
-										Modal body..
-									</div>
-									<div className="modal-footer">
-										<button
-											type="button"
-											className="btn btn-danger"
-											data-dismiss="modal"
-										>
-											Close
-										</button>
-									</div>
-								</div>
+						<div className="col-5 text-center">
+							<div className="w-90 ml-5 py-5 col-9">
+								<h1>Lịch sử đặt phòng</h1>
+								<table className="table table-dark table-striped">
+									<thead>
+										<tr>
+											<th style={{ borderTop: "none" }}>
+												Mã phòng
+											</th>
+											<th>Ngày đến</th>
+											<th>Ngày đi</th>
+											<th>Số khách</th>
+										</tr>
+									</thead>
+									<tbody>{renderBookingInfo()}</tbody>
+								</table>
 							</div>
 						</div>
 					</div>

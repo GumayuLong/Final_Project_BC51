@@ -7,20 +7,6 @@ class BookRoomService {
 			method: "GET",
 		});
     }
-
-    bookInfoApi(id){
-        return request({
-			url: `/phong-thue/${id}`,
-			method: "GET",
-		});
-    }
-
-    fetchRoomBooked() {
-      return request({
-			url: `/phong-thue`,
-			method: "GET",
-		});
-    }
 }
 
 export const bookRoomService = new BookRoomService();

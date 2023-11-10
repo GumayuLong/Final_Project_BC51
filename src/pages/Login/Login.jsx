@@ -1,3 +1,5 @@
+/** @format */
+
 import React, { createRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -10,27 +12,26 @@ import { Form, Input } from "antd";
 import { userService } from "../../services/userService";
 import { validation } from "../../validations/validation";
 
-
 export default function Login() {
-  const emailInputRef = createRef();
-  const passwordInputRef = createRef();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+	const emailInputRef = createRef();
+	const passwordInputRef = createRef();
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
-   const [state, setState] = useState({
+	const [state, setState] = useState({
 		email: "",
 		password: "",
-   });
-   const [errMessage, setErrMessage] = useState("");
+	});
+	const [errMessage, setErrMessage] = useState("");
 
-   const handleChange = (event) => {
+	const handleChange = (event) => {
 		setState({
 			...state,
 			[event.target.name]: event.target.value,
 		});
-   };
+	};
 
-   const handleSubmit = async (event) => {
+	const handleSubmit = async (event) => {
 		event.preventDefault();
 
 		let isValid = true;
@@ -49,27 +50,27 @@ export default function Login() {
 			"Vui lòng nhập mật khẩu!"
 		);
 
-    if(isValid){
-      await userService
-			.loginApi(state)
-			.then((result) => {
-				localStorage.setItem(
-					"USER_INFO",
-					JSON.stringify(result.data.content)
-				);
-				dispatch(setUserInfoAction(result.data.content));
-        setErrMessage("");
-				navigate("/");
-			})
-			.catch((error) => {
-        // setPosts(error.data);
-        setErrMessage(error.response.data.content);
-				passwordInputRef.current.innerHTML = errMessage;
-			});
-    }
-   }
+		if (isValid) {
+			await userService
+				.loginApi(state)
+				.then((result) => {
+					localStorage.setItem(
+						"USER_INFO",
+						JSON.stringify(result.data.content)
+					);
+					dispatch(setUserInfoAction(result.data.content));
+					setErrMessage("");
+					navigate("/");
+				})
+				.catch((error) => {
+					// setPosts(error.data);
+					setErrMessage(error.response.data.content);
+					passwordInputRef.current.innerHTML = errMessage;
+				});
+		}
+	};
 
-  return (
+	return (
 		<div>
 			<div className="bgcustom">
 				<main className="main">
@@ -127,5 +128,5 @@ export default function Login() {
 				</main>
 			</div>
 		</div>
-  );
+	);
 }
