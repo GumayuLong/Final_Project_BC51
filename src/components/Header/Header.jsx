@@ -5,16 +5,18 @@ import { Link, useNavigate } from "react-router-dom";
 import "../../styles/styling.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserInfoAction } from "../../store/actions/userAction";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 
 const { Header } = Layout;
 
 export default function HeaderHome() {
   const dispatch = useDispatch();
-  const userState = useSelector((state) => state.userReducer);
+  const userState = useSelector((state) => state.userReducer.userInfo);
   const navigate = useNavigate();
 
   const renderContent = () => {
-    if (!userState.userInfo) {
+    if (!userState) {
       return (
         <>
           <button
@@ -32,18 +34,31 @@ export default function HeaderHome() {
           </button>
         </>
       );
-    } else if (useState.userInfo) {
-      <>
-        <span className="state">Hello {userState.userInfo.hoTen}</span>
-        <button onClick={handleLogout} className=" ml-2 btn btn-login">
-          LOGOUT
-        </button>
-      </>;
+    } else if (userState) {
+      return (
+        <>
+          <span className="state">Hello {userState.user.name}</span>
+          <button onClick={handleLogout} className="ml-2 btn-custom-1">
+            LOGOUT
+          </button>
 
-      if (useState.userInfo.role === "ADMIN") {
-        <button className="btn-icon mr-2" onClick={() => navigate("/login")}>
-          SIGN IN
-        </button>;
+          {renderAdmin()}
+        </>
+      );
+    }
+  };
+
+  const renderAdmin = () => {
+    if (userState) {
+      if (userState.user.role === "ADMIN") {
+        return (
+          <button
+            className="btn-icon ml-2"
+            onClick={() => navigate("/admin/user")}
+          >
+            <FontAwesomeIcon icon={faArrowRightFromBracket} />
+          </button>
+        );
       }
     }
   };
