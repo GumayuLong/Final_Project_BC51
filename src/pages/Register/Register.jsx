@@ -35,7 +35,6 @@ export default function Register() {
 	const [errMessage, setErrMessage] = useState("");
 
 	const handleChange = (event) => {
-		console.log(`${event.target.name}: ${event.target.value}`);
 		setState({
 			...state,
 			[event.target.name]: event.target.value,
@@ -305,10 +304,10 @@ export default function Register() {
 													<option value="">
 														Chọn giới tính
 													</option>
-													<option value={true}>
+													<option value="true">
 														Nam
 													</option>
-													<option value={false}>
+													<option value="false">
 														Nữ
 													</option>
 												</select>

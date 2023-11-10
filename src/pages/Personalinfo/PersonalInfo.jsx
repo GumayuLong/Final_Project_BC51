@@ -1,10 +1,11 @@
-/** @format */
-
-import React, { useEffect, useState } from "react";
+import React, { createRef, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { setUserInfoAction } from "../../store/actions/userAction";
 import { notification } from "antd";
 import { userService } from "../../services/userService";
 import { bookRoomService } from "../../services/bookRoomService";
+import { validation } from "../../validations/validation";
+import { useDispatch } from "react-redux";
 
 export default function PersonalInfo() {
 	const params = useParams();
@@ -14,6 +15,11 @@ export default function PersonalInfo() {
 		"http://dergipark.org.tr/assets/app/images/buddy_sample.png"
 	);
 	const [file, setFile] = useState(null);
+	const dispatch = useDispatch();
+
+	const fullNameInputRef = createRef();
+	const phoneNumberInputRef = createRef();
+	const birthdayInputRef = createRef();
 
 	useEffect(() => {
 		fetchPersonalInfo();
@@ -35,29 +41,76 @@ export default function PersonalInfo() {
 		setBookingInfo(result.data.content);
 	};
 
-	const handleOnchange = (event) => {
+	const handleChange = (event) => {
 		setUserInfo({
 			...userInfo,
 			[event.target.name]: event.target.value,
 		});
-	};
+	}
 
-	const updateUserInfo = async () => {
-		await userService
-			.updateUserInfoApi(userInfo.id, userInfo)
-			.then((result) => {
-				notification.success({
-					message: "Cập nhật thông tin thành công",
-					placement: "topRight",
+	const handleSubmitUpdate = async (event) => {
+		event.preventDefault();
+		let isValid = true;
+
+		// CHECK VALIDATION NAME
+		isValid &=
+			validation.validateRequired(
+				userInfo.name,
+				fullNameInputRef.current,
+				"Vui lòng nhập tên!"
+			) &&
+			validation.validateFullName(
+				userInfo.name,
+				fullNameInputRef.current,
+				"Vui lòng nhập tên là ký tự chữ!"
+			);
+
+		// CHECK VALIDATION PHONE NUMBER
+		isValid &=
+			validation.validateRequired(
+				userInfo.phone,
+				phoneNumberInputRef.current,
+				"Vui lòng nhập số điện thoại!"
+			) &&
+			validation.validateWithRegex(
+				userInfo.phone,
+				phoneNumberInputRef.current,
+				"Vui lòng nhập số điện thoại là ký tự chữ số!",
+				/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/
+			);
+
+		// CHECK VALIDATION BIRTHDAY
+		isValid &=
+			validation.validateRequired(
+				userInfo.birthday,
+				birthdayInputRef.current,
+				"Vui lòng nhập ngày sinh!"
+			) &&
+			validation.validateWithRegex(
+				userInfo.birthday,
+				birthdayInputRef.current,
+				"Vui lòng nhập ngày sinh!",
+				/^\d{4}-\d{2}-\d{2}$/
+			);
+
+		if (isValid) {
+			await userService
+				.updateUserInfoApi(userInfo.id, userInfo)
+				.then((result) => {
+					dispatch(setUserInfoAction(result.data.content));
+					notification.success({
+						message: "Cập nhật thông tin thành công",
+						placement: "topRight",
+					});
+					document.getElementById("btnDong").click();
+				})
+				.catch((err) => {
+					notification.danger({
+						message: err.response.data.content,
+						placement: "topRight",
+					});
 				});
-				document.getElementById("btnDong").click();
-			})
-			.catch((err) => {
-				notification.danger({
-					message: err.response.data.content,
-					placement: "topRight",
-				});
-			});
+		}
 	};
 
 	const handleUploadAvatar = (e) => {
@@ -140,7 +193,6 @@ export default function PersonalInfo() {
 										<select
 											disabled={true}
 											value={userInfo.gender}
-											onChange={handleOnchange}
 											className="form-control"
 											name="gender"
 										>
@@ -285,7 +337,7 @@ export default function PersonalInfo() {
 									</div>
 									<div className="modal-body">
 										{/* Modal body.. */}
-										<form action="">
+										<form>
 											<div className="form-group">
 												<label
 													className="labelRegister"
@@ -295,11 +347,15 @@ export default function PersonalInfo() {
 												</label>
 												<input
 													value={userInfo.name}
-													onChange={handleOnchange}
+													onChange={handleChange}
 													type="text"
 													className="form-control"
 													name="name"
 												/>
+												<p
+													ref={fullNameInputRef}
+													className="text-danger"
+												></p>
 											</div>
 											<div className="form-group">
 												<label
@@ -310,14 +366,14 @@ export default function PersonalInfo() {
 												</label>
 												<select
 													value={userInfo.gender}
-													onChange={handleOnchange}
+													onChange={handleChange}
 													className="form-control"
 													name="gender"
 												>
-													<option value={true}>
+													<option value="true">
 														Nam
 													</option>
-													<option value={false}>
+													<option value="false">
 														Nữ
 													</option>
 												</select>
@@ -331,11 +387,15 @@ export default function PersonalInfo() {
 												</label>
 												<input
 													value={userInfo.birthday}
-													onChange={handleOnchange}
+													onChange={handleChange}
 													type="date"
 													className="form-control"
 													name="birthday"
 												/>
+												<p
+													ref={birthdayInputRef}
+													className="text-danger"
+												></p>
 											</div>
 											<div className="form-group">
 												<label
@@ -346,7 +406,7 @@ export default function PersonalInfo() {
 												</label>
 												<input
 													value={userInfo.email}
-													onChange={handleOnchange}
+													disabled={true}
 													type="text"
 													className="form-control"
 													name="email"
@@ -361,11 +421,15 @@ export default function PersonalInfo() {
 												</label>
 												<input
 													value={userInfo.phone}
-													onChange={handleOnchange}
+													onChange={handleChange}
 													type="text"
 													className="form-control"
 													name="phone"
 												/>
+												<p
+													ref={phoneNumberInputRef}
+													className="text-danger"
+												></p>
 											</div>
 										</form>
 									</div>
@@ -373,7 +437,7 @@ export default function PersonalInfo() {
 										<button
 											type="button"
 											className="btn btn-warning"
-											onClick={() => updateUserInfo()}
+											onClick={handleSubmitUpdate}
 										>
 											Cập nhật
 										</button>
