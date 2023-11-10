@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { Layout, Menu } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 
 import "../../styles/styling.scss";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserInfoAction } from "../../store/actions/userAction";
 
 const { Header } = Layout;
 
 export default function HeaderHome() {
+  const dispatch = useDispatch();
   const userState = useSelector((state) => state.userReducer);
   const navigate = useNavigate();
 
@@ -30,7 +32,26 @@ export default function HeaderHome() {
           </button>
         </>
       );
+    } else if (useState.userInfo) {
+      <>
+        <span className="state">Hello {userState.userInfo.hoTen}</span>
+        <button onClick={handleLogout} className=" ml-2 btn btn-login">
+          LOGOUT
+        </button>
+      </>;
+
+      if (useState.userInfo.role === "ADMIN") {
+        <button className="btn-icon mr-2" onClick={() => navigate("/login")}>
+          SIGN IN
+        </button>;
+      }
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("USER_INFO");
+    dispatch(setUserInfoAction(null));
+    navigate("/");
   };
 
   return (
