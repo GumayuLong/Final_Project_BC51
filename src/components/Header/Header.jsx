@@ -25,7 +25,6 @@ const { RangePicker } = DatePicker;
 const { Option } = Select;
 const handleChange = (value) => {
   console.log(`selected id ${value}`);
-  
 };
 const onChange = (value) => {
   console.log("changed", value);
@@ -133,7 +132,6 @@ export default function Header() {
             {element.tinhThanh}
           </Space>
         </Option>
-        
       );
     });
   };
@@ -151,7 +149,6 @@ export default function Header() {
                 width: "100%",
               }}
               placeholder="select one location"
-              defaultValue={["Hồ Chí Minh"]}
               onChange={handleChange}
               optionLabelProp="label"
             >
@@ -160,7 +157,7 @@ export default function Header() {
           ),
           getItem(
             <Space direction="vertical" size={12}>
-              <RangePicker />
+              <RangePicker format={"DD-MM-YYYY"} />
             </Space>
           ),
           getItem(
@@ -169,7 +166,7 @@ export default function Header() {
               prefix="Number of people booking"
               min={1}
               max={10}
-              defaultValue={3}
+              defaultValue={1}
               onChange={onChange}
             />
           ),
@@ -243,7 +240,7 @@ export default function Header() {
 
   return (
     <nav className="navbar navbar-expand-sm navbar-light bg-light py-3 px-3">
-      <a className="navbar-brand" href="#">
+      <a className="navbar-brand" href="/">
         <svg
           width={102}
           height={32}
