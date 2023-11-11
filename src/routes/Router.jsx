@@ -28,6 +28,45 @@ export default function Router() {
           path: "/register",
           element: <Register />,
         },
+        {
+          path: "/personal-info/:userId",
+          element: <PersonalInfo />,
+        },
+      ],
+    },
+
+    {
+      path: "/admin",
+      element: <AdminLayout />,
+      children: [
+        {
+          path: "/admin/user",
+          element: <UserManagement />,
+        },
+        {
+          path: "/admin/user/create",
+          element: <CreateUser />,
+        },
+        {
+          path: "/admin/user/edit/:userId",
+          element: <EditUser />,
+        },
+        {
+          path: "/admin/department",
+          element: <DepartmentManagement />,
+        },
+        {
+          path: "/admin/department/create",
+          element: <CreateDepartment />,
+        },
+        {
+          path: "/admin/position",
+          element: <PositionManagement />,
+        },
+        {
+          path: "/admin/position/create",
+          element: <CreatePosition />,
+        },
       ],
     },
   ]);
