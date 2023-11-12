@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Table, notification } from "antd";
+import { Button, Popover, Table, notification } from "antd";
 import Search from "antd/es/input/Search";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -91,22 +91,26 @@ export default function UserManagement() {
       width: 150,
       render: (text, object) => (
         <div className="btn-action">
-          <NavLink
-            key={1}
-            className="mb-1"
-            to={`/admin/user/edit/${object.id}`}
-          >
-            <button className="btn-icon text-info">
-              <FontAwesomeIcon className="icon-size" icon={faPen} />
-            </button>
-          </NavLink>
+          <Popover placement="bottom" content="Sửa">
+            <NavLink
+              key={1}
+              className="mb-1"
+              to={`/admin/user/edit/${object.id}`}
+            >
+              <button className="btn-icon text-info">
+                <FontAwesomeIcon className="icon-size" icon={faPen} />
+              </button>
+            </NavLink>
+          </Popover>
 
-          <button
-            className="btn-icon text-danger"
-            onClick={() => handleDeleteUser(object)}
-          >
-            <FontAwesomeIcon className="icon-size" icon={faTrash} />
-          </button>
+          <Popover placement="bottom" content="Xóa">
+            <button
+              className="btn-icon text-danger"
+              onClick={() => handleDeleteUser(object)}
+            >
+              <FontAwesomeIcon className="icon-size" icon={faTrash} />
+            </button>
+          </Popover>
         </div>
       ),
     },
@@ -122,7 +126,7 @@ export default function UserManagement() {
 
   const handleDeleteUser = async (object) => {
     const confirm = window.confirm(
-      "Bạn có chắc muốn xóa người dùng " + object.id + "?"
+      "Bạn có chắc muốn xóa người dùng " + object.name + "?"
     );
 
     if (!confirm) return;

@@ -16,6 +16,9 @@ import PositionManagement from "../pages/PositionManagement/PositionManagement";
 import CreatePosition from "../pages/PositionManagement/CreatePosition/CreatePosition";
 import CreateDepartment from "../pages/DepartmentManagement/CreateDepartment/CreateDepartment";
 import PersonalInfo from "../pages/Personalinfo/PersonalInfo";
+import EditDepartment from "../pages/DepartmentManagement/EditDepartment/EditDepartment";
+import EditPosition from "../pages/PositionManagement/EditPosition/EditPosition";
+import BookedManagement from "../pages/BookedManagement/BookedManagement";
 
 
 export default function Router() {
@@ -72,12 +75,24 @@ export default function Router() {
           element: <CreateDepartment />,
         },
         {
+          path: "/admin/department/edit/:departmentId",
+          element: <EditDepartment />,
+        },
+        {
           path: "/admin/position",
           element: <PositionManagement />,
         },
         {
           path: "/admin/position/create",
           element: <CreatePosition />,
+        },
+        {
+          path: "/admin/position/edit/:positionId",
+          element: <EditPosition />,
+        },
+        {
+          path: "/admin/booked",
+          element: <BookedManagement />,
         },
       ],
     },

@@ -70,8 +70,8 @@ export default function AdminLayout() {
           <Menu.Item key="3" icon={<DesktopOutlined />}>
             <Link to="/admin/department">Thông tin phòng</Link>
           </Menu.Item>
-          <Menu.Item disabled key="4" icon={<FileOutlined />}>
-            <Link to="#">Quản lý đặt phòng</Link>
+          <Menu.Item key="4" icon={<FileOutlined />}>
+            <Link to="/admin/booked">Quản lý đặt phòng</Link>
           </Menu.Item>
         </Menu>
       </Sider>

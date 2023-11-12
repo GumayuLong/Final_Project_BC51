@@ -15,6 +15,20 @@ class PositionService {
       data: data,
     });
   }
+  fetchPositionDetailApi(id) {
+    return request({
+      url: `/vi-tri/${id}`,
+      method: "GET",
+    });
+  }
+
+  fetchUpdatePositionApi(id, data) {
+    return request({
+      url: `/vi-tri/${id}`,
+      method: "PUT",
+      data,
+    });
+  }
 
   fetchDeletePositionApi(id) {
     return request({

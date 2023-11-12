@@ -8,6 +8,29 @@ class DepartmentService {
     });
   }
 
+  fetchCreateDepartmentApi(data) {
+    return request({
+      url: `/phong-thue`,
+      method: "POST",
+      data,
+    });
+  }
+
+  fetchDepartmentDetailApi(id) {
+    return request({
+      url: `/phong-thue/${id}`,
+      method: "GET",
+    });
+  }
+
+  fetchUpdateDepartmentApi(id, data) {
+    return request({
+      url: `/phong-thue/${id}`,
+      method: "GET",
+      data,
+    });
+  }
+
   fetchDeleteDepartmentApi(id) {
     return request({
       url: `/phong-thue/${id}`,

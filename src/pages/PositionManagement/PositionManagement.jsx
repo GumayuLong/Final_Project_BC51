@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Table, notification } from "antd";
+import { Button, Popover, Table, notification } from "antd";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -79,22 +79,26 @@ export default function PositionManagement() {
       width: 150,
       render: (text, object) => (
         <div className="btn-action">
-          <NavLink
-            key={1}
-            className="mb-1"
-            to={`/admin/user/edit/${object.id}`}
-          >
-            <button className="btn-icon text-info">
-              <FontAwesomeIcon className="icon-size" icon={faPen} />
-            </button>
-          </NavLink>
+          <Popover placement="bottom" content="Sửa">
+            <NavLink
+              key={1}
+              className="mb-1"
+              to={`/admin/position/edit/${object.id}`}
+            >
+              <button className="btn-icon text-info">
+                <FontAwesomeIcon className="icon-size" icon={faPen} />
+              </button>
+            </NavLink>
+          </Popover>
 
-          <button
-            className="btn-icon text-danger"
-            onClick={() => handleDeletePosition(object)}
-          >
-            <FontAwesomeIcon className="icon-size" icon={faTrash} />
-          </button>
+          <Popover placement="bottom" content="Xóa">
+            <button
+              className="btn-icon text-danger"
+              onClick={() => handleDeletePosition(object)}
+            >
+              <FontAwesomeIcon className="icon-size" icon={faTrash} />
+            </button>
+          </Popover>
         </div>
       ),
     },
@@ -115,7 +119,7 @@ export default function PositionManagement() {
 
     if (!confirm) return;
     try {
-      await positionService.fetchDeletePositionApi(object.id);
+      await positionService.fetchDeletePositionApi(object.tenViTri);
       notification.success({
         message: "Xóa vị trí thành công",
         placement: "bottomRight",
