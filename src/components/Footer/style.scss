@@ -1,0 +1,18 @@
+.bg {
+  background-image: linear-gradient(
+    to right,
+    rgb(244, 192, 218),
+    rgb(254, 155, 177),
+    rgb(253, 184, 229)
+  );
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.cursor-pointer:hover {
+  text-decoration: underline;
+}
+.info-left,
+.info-left svg {
+  color: rgb(44, 42, 42);
+}
