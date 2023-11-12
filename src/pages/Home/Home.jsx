@@ -1,5 +1,4 @@
 import React from "react";
-
 import { useNavigate } from "react-router-dom";
 import useRoomList from "../../hooks/useRoomList";
 import { Card } from "antd";
@@ -19,5 +18,16 @@ export default function Home() {
                 Price: ${element.giaTien}$
                 `}
             />
-      
+          </Card>
+        </div>
+      );
+    });
+  };
+  return (
+    <>
+      <div className="py-5 bg-movieList">
+        <div className="row mx-auto">{renderRoomList()}</div>
+      </div>
+    </>
+  );
 }
