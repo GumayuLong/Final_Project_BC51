@@ -21,7 +21,7 @@ GlobalOutlined {
 }
 
 .ant-menu-item-icon {
-  background-color: #f43f7b;
+  background-color: #ef4444;
   border-radius: 9999px;
   width: 2rem;
   height: 2rem;
@@ -43,8 +43,8 @@ GlobalOutlined {
 
 .ant-menu-submenu-title:hover,
 Button:hover {
-  box-shadow: 0px 10px 20px 5px rgba(0, 0, 0, 0.5);
-  transform: translateY(-5px);
+  box-shadow: 0px 10px 20px 5px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
 }
 
 .ant-menu-title-content {
@@ -81,4 +81,8 @@ Button:hover {
 
 .ant-input-number-input {
   padding-left: 20vh !important;
+}
+
+.navbar-collapse {
+  flex-basis: 0;
 }
