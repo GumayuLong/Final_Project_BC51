@@ -1,3 +1,5 @@
+/** @format */
+
 import React, { useEffect, useState } from "react";
 import "./style.scss";
 import {
@@ -19,7 +21,7 @@ import Icon, {
 import { useDispatch, useSelector } from "react-redux";
 import { setUserInfoAction } from "../../store/actions/userAction";
 import { useNavigate } from "react-router-dom";
-import { locateService } from "../../services/locate";
+import { positionService } from "../../services/positionService";
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -117,7 +119,7 @@ export default function Header() {
   const userState = useSelector((state) => state.userReducer);
   const [locateDetail, setLocataDetail] = useState([]);
   const fetchLocateDetailApi = async () => {
-    const result = await locateService.fetchLocateDetailApi();
+    const result = await positionService.fetchPositionListApi();
     setLocataDetail(result.data.content);
   };
   useEffect(() => {
@@ -226,7 +228,7 @@ export default function Header() {
   const handleLogout = () => {
     localStorage.removeItem("USER_INFO");
     dispatch(setUserInfoAction(null));
-    navigate("/");
+    navigate("/login");
   };
   const onOpenChange = (keys) => {
     const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
