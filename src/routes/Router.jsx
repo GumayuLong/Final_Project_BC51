@@ -23,79 +23,78 @@ import BookedManagement from "../pages/BookedManagement/BookedManagement";
 
 export default function Router() {
   const routing = useRoutes([
-    {
-      path: "/",
-      element: <HomeLayout />,
-      children: [
-        {
-          path: "/",
-          element: <Home />,
-        },
-        {
-          path: "detail/:id",
-          element: <RoomDetail />,
-        },
-        {
-          path: "/login",
-          element: <Login />,
-        },
-        {
-          path: "/register",
-          element: <Register />,
-        },
-        {
-          path: "/personal-info/:userId",
-          element: <PersonalInfo />,
-        },
-      ],
-    },
-
-    {
-      path: "/admin",
-      element: <AdminLayout />,
-      children: [
-        {
-          path: "/admin/user",
-          element: <UserManagement />,
-        },
-        {
-          path: "/admin/user/create",
-          element: <CreateUser />,
-        },
-        {
-          path: "/admin/user/edit/:userId",
-          element: <EditUser />,
-        },
-        {
-          path: "/admin/department",
-          element: <DepartmentManagement />,
-        },
-        {
-          path: "/admin/department/create",
-          element: <CreateDepartment />,
-        },
-        {
-          path: "/admin/department/edit/:departmentId",
-          element: <EditDepartment />,
-        },
-        {
-          path: "/admin/position",
-          element: <PositionManagement />,
-        },
-        {
-          path: "/admin/position/create",
-          element: <CreatePosition />,
-        },
-        {
-          path: "/admin/position/edit/:positionId",
-          element: <EditPosition />,
-        },
-        {
-          path: "/admin/booked",
-          element: <BookedManagement />,
-        },
-      ],
-    },
+		{
+			path: "/",
+			element: <HomeLayout />,
+			children: [
+				{
+					path: "/",
+					element: <Home />,
+				},
+				{
+					path: "detail/:id",
+					element: <RoomDetail />,
+				},
+				{
+					path: "/login",
+					element: <Login />,
+				},
+				{
+					path: "/register",
+					element: <Register />,
+				},
+				{
+					path: "/personal-info/:userId",
+					element: <PersonalInfo />,
+				},
+				{
+					path: "/admin",
+					element: <AdminLayout />,
+					children: [
+						{
+							path: "/admin/user",
+							element: <UserManagement />,
+						},
+						{
+							path: "/admin/user/create",
+							element: <CreateUser />,
+						},
+						{
+							path: "/admin/user/edit/:userId",
+							element: <EditUser />,
+						},
+						{
+							path: "/admin/department",
+							element: <DepartmentManagement />,
+						},
+						{
+							path: "/admin/department/create",
+							element: <CreateDepartment />,
+						},
+						{
+							path: "/admin/department/edit/:departmentId",
+							element: <EditDepartment />,
+						},
+						{
+							path: "/admin/position",
+							element: <PositionManagement />,
+						},
+						{
+							path: "/admin/position/create",
+							element: <CreatePosition />,
+						},
+						{
+							path: "/admin/position/edit/:positionId",
+							element: <EditPosition />,
+						},
+						{
+							path: "/admin/booked",
+							element: <BookedManagement />,
+						},
+					],
+				},
+			],
+		},
   ]);
 
   return routing;

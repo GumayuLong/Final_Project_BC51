@@ -1,6 +1,25 @@
 import { request } from "../configs/api";
 
 class UserService {
+	// LOGIN AND LOGOUT API
+	loginApi(data) {
+		return request({
+			url: `/auth/signin`,
+			method: "POST",
+			data,
+		});
+	}
+
+	registerApi(data) {
+		return request({
+			url: `/auth/signup`,
+			method: "POST",
+			data,
+		});
+	}
+
+	// USER API
+
 	fetchUserListApi() {
 		return request({
 			url: "/users",
@@ -23,13 +42,6 @@ class UserService {
 		});
 	}
 
-	// fetchUploadAvatarApi() {
-	//   return request({
-	//     url: "/users/upload-avatar",
-	//     method: "POST",
-	//   });
-	// }
-
 	fetchDeleteUserApi(id) {
 		return request({
 			url: `/users?id=${id}`,
@@ -51,34 +63,18 @@ class UserService {
 		});
 	}
 
-	loginApi(data) {
-		return request({
-			url: `/auth/signin`,
-			method: "POST",
-			data,
-		});
-	}
-
-	registerApi(data) {
-		return request({
-			url: `/auth/signup`,
-			method: "POST",
-			data,
-		});
-	}
-
 	userInfoApi(userId) {
-    return request ({
-      url: `/users/${userId}`,
-      method: "GET",
-    })
-  };
+		return request({
+			url: `/users/${userId}`,
+			method: "GET",
+		});
+	}
 
-  	updateUserInfoApi(userId, data) {
+	updateUserInfoApi(userId, data) {
 		return request({
 			url: `/users/${userId}`,
 			method: "PUT",
-			data
+			data,
 		});
 	}
 
@@ -86,8 +82,8 @@ class UserService {
 		return request({
 			url: "/users/upload-avatar",
 			method: "POST",
-			data
-		})
+			data,
+		});
 	}
 }
 

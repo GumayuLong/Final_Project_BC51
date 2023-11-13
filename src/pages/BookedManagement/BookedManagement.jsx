@@ -4,10 +4,9 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 
-import { bookedManageService } from "../../services/bookedManageService";
-
 import "../../styles/styling.scss";
 import dayjs from "dayjs";
+import { bookRoomService } from "../../services/bookRoomService";
 
 export default function BookedManagement() {
   const [bookedList, setBookedList] = useState();
@@ -18,7 +17,7 @@ export default function BookedManagement() {
   }, []);
 
   const fetchBookedRoomList = async () => {
-    const result = await bookedManageService.fetchBookedRoomListApi();
+    const result = await bookRoomService.fetchBookedRoomFromUserApi();
     setBookedList(result.data.content);
   };
 
