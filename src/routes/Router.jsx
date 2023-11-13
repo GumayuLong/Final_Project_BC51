@@ -20,7 +20,6 @@ import EditDepartment from "../pages/DepartmentManagement/EditDepartment/EditDep
 import EditPosition from "../pages/PositionManagement/EditPosition/EditPosition";
 import BookedManagement from "../pages/BookedManagement/BookedManagement";
 
-
 export default function Router() {
   const routing = useRoutes([
     {
