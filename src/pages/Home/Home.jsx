@@ -6,12 +6,18 @@ const { Meta } = Card;
 export default function Home() {
   const navigate = useNavigate();
   const roomList = useRoomList();
-  
+
   const renderRoomList = () => {
     return roomList.map((element) => {
       return (
         <div key={element.id} className="col-3 mt-5">
-          <Card onClick={()=>{navigate(`/detail/${element.id}`)}} hoverable cover={<img alt="example" src={element.hinhAnh} />}>
+          <Card
+            onClick={() => {
+              navigate(`/detail/${element.id}`);
+            }}
+            hoverable
+            cover={<img alt="example" src={element.hinhAnh} />}
+          >
             <Meta
               title={element.tenPhong}
               description={`Member: ${element.khach}
