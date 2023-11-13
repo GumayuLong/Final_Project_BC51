@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
 
-import "./adminLayout.scss";
+import "../../styles/styling.scss";
 
 const { Header, Content, Footer, Sider } = Layout;
 
