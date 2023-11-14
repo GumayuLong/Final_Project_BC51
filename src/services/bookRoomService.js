@@ -7,6 +7,13 @@ class BookRoomService {
 			method: "GET",
 		});
     }
+
+    fetchListBookedRoomApi() {
+        return request({
+			url: "/dat-phong",
+			method: "GET",
+		});
+    }
 }
 
 export const bookRoomService = new BookRoomService();
