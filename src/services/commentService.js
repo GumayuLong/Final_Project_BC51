@@ -8,10 +8,11 @@ class CommentService {
 		});
 	}
 
-    createCommentApi() {
+    createCommentApi(data) {
         return request({
 			url: "/binh-luan",
             method: "POST",
+			data
 		});
     }
 }

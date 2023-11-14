@@ -22,11 +22,11 @@ export default function RoomDetail() {
 
   const [comment, setComment] = useState({
 		id: 0,
-		maPhong: params.id,
+		maPhong: Number(params.id),
 		maNguoiBinhLuan: user.user.id,
 		ngayBinhLuan: formattedDate,
 		noiDung: "",
-		soSaoBinhLuan: "",
+		saoBinhLuan: "",
   });
 
 	useEffect(() => {
@@ -41,7 +41,6 @@ export default function RoomDetail() {
 			.fetchDepartmentDetailApi(params.id)
 			.then((result) => {
 				// console.log(result.data.content);
-        console.log(comment)
 				setDetail(result.data.content);
 			})
 			.catch((err) => console.log(err));
@@ -73,14 +72,55 @@ export default function RoomDetail() {
   const checkBookedDepartment = () => {
 		const data = [...listDepartment];
 		const check = data.filter((element) => element.maPhong === detail.id);
-		console.log(check);
+		// console.log(check);
     // SỬ DỤNG DANH SÁCH ĐÃ FILTER (check) ĐỂ HIỂN THỊ THỜI GIAN ĐÃ ĐƯỢC ĐẶT
   };
 
+  // HANDLE ONCHANGE INPUT COMMENT
+  const handleComment = (event) => {
+    setComment({
+      ...comment,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    await commentService.createCommentApi(comment).then((result) => {
+      console.log(result.data.content);
+      setComment(result.data.content);
+    }).catch((err) => console.log(err))
+  }
+
 	return (
 		<>
-			<div>RoomDetail</div>
+			{/* <div>RoomDetail</div> */}
 			{checkBookedDepartment()}
+			<form className="container" onSubmit={handleSubmit}>
+				<div>
+					<label htmlFor="">Comment</label>
+					<input
+						name="noiDung"
+						type="text"
+						className="form-control my-2"
+						onChange={handleComment}
+					/>
+				</div>
+				<div>
+					<label htmlFor="">Rate</label>
+					<input
+						name="saoBinhLuan"
+						type="number"
+						min={1}
+						max={5}
+						className="form-control my-2"
+						onChange={handleComment}
+					/>
+				</div>
+				<button className="btn btn-success my-2 mx-5">
+					Add comment
+				</button>
+			</form>
 		</>
 	);
 }
