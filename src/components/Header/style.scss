@@ -21,7 +21,6 @@ GlobalOutlined {
 }
 
 .ant-menu-item-icon {
-  background-color: #ef4444;
   border-radius: 9999px;
   width: 2rem;
   height: 2rem;
@@ -47,8 +46,10 @@ Button:hover {
   transform: translateY(-2px);
 }
 
-.ant-menu-title-content {
-  color: rgb(44, 42, 42);
+.content-center {
+  .ant-menu-title-content {
+    color: rgb(44, 42, 42);
+  }
 }
 
 .ant-picker-range {
@@ -59,12 +60,9 @@ Button:hover {
   width: 100%;
 }
 
-.ant-menu-item:active,
-.ant-menu-item:hover,
 .ant-menu-item-selected {
-  background-color: #ef9bb7 !important;
+  background-color: transparent !important;
 }
-
 .ant-menu-item:focus-visible {
   outline: 4px solid #ef9bb7 !important;
 }
@@ -77,10 +75,6 @@ Button:hover {
 
 .ant-menu-item {
   line-height: 32px !important;
-}
-
-.ant-input-number-input {
-  padding-left: 20vh !important;
 }
 
 .navbar-collapse {
