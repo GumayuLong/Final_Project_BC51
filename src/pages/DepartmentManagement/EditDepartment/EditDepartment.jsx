@@ -74,7 +74,7 @@ export default function EditDepartment() {
 
         navigate("/admin/department");
       } catch (error) {
-        notification.success({
+        notification.error({
           message: "Cập nhật phòng thuê thất bại!",
           placement: "bottomRight",
         });
@@ -248,7 +248,7 @@ export default function EditDepartment() {
               <Switch
                 name="mayGiat"
                 onChange={handleChangeValue("mayGiat")}
-                value={formik.values.mayGiat}
+                checked={formik.values.mayGiat}
               />
             </Form.Item>
           </Col>
@@ -257,7 +257,7 @@ export default function EditDepartment() {
               <Switch
                 name="banLa"
                 onChange={handleChangeValue("banLa")}
-                value={formik.values.banLa}
+                checked={formik.values.banLa}
               />
             </Form.Item>
           </Col>
@@ -266,7 +266,7 @@ export default function EditDepartment() {
               <Switch
                 name="tivi"
                 onChange={handleChangeValue("tivi")}
-                value={formik.values.tivi}
+                checked={formik.values.tivi}
               />
             </Form.Item>
           </Col>
@@ -275,7 +275,7 @@ export default function EditDepartment() {
               <Switch
                 name="dieuHoa"
                 onChange={handleChangeValue("dieuHoa")}
-                value={formik.values.dieuHoa}
+                checked={formik.values.dieuHoa}
               />
             </Form.Item>
           </Col>
@@ -284,7 +284,7 @@ export default function EditDepartment() {
               <Switch
                 name="wifi"
                 onChange={handleChangeValue("wifi")}
-                value={formik.values.wifi}
+                checked={formik.values.wifi}
               />
             </Form.Item>
           </Col>
@@ -293,7 +293,7 @@ export default function EditDepartment() {
               <Switch
                 name="bep"
                 onChange={handleChangeValue("bep")}
-                value={formik.values.bep}
+                checked={formik.values.bep}
               />
             </Form.Item>
           </Col>
@@ -302,7 +302,7 @@ export default function EditDepartment() {
               <Switch
                 name="doXe"
                 onChange={handleChangeValue("doXe")}
-                value={formik.values.doXe}
+                checked={formik.values.doXe}
               />
             </Form.Item>
           </Col>
@@ -311,7 +311,7 @@ export default function EditDepartment() {
               <Switch
                 name="hoBoi"
                 onChange={handleChangeValue("hoBoi")}
-                value={formik.values.hoBoi}
+                checked={formik.values.hoBoi}
               />
             </Form.Item>
           </Col>
@@ -320,7 +320,7 @@ export default function EditDepartment() {
               <Switch
                 name="banUi"
                 onChange={handleChangeValue("banUi")}
-                value={formik.values.banUi}
+                checked={formik.values.banUi}
               />
             </Form.Item>
           </Col>
@@ -333,7 +333,7 @@ export default function EditDepartment() {
         </Row>
         <div className="d-flex justify-content-end">
           <button type="submit" className="btn btn-primary mr-2">
-            Thêm mới
+            Lưu thay đổi
           </button>
           <button
             type="submit"
