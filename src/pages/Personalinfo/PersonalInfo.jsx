@@ -97,7 +97,13 @@ export default function PersonalInfo() {
 			await userService
 				.updateUserInfoApi(userInfo.id, userInfo)
 				.then((result) => {
-					dispatch(setUserInfoAction(result.data.content));
+					// console.log(result.data.content);
+					// localStorage.setItem(
+					// 	"USER_INFO",
+					// 	JSON.stringify(result.data.content)
+					// );
+					// dispatch(setUserInfoAction(newLocal));
+
 					notification.success({
 						message: "Cập nhật thông tin thành công",
 						placement: "topRight",

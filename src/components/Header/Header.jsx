@@ -89,13 +89,19 @@ export default function HeaderHome() {
 					<div className="dropdown">
 						<button
 							type="button"
-							className="ml-2 btn-custom-1 dropdown-toggle"
+							className="btn-custom-1 dropdown-toggle"
 							data-toggle="dropdown"
+              style={{marginRight: "120px"}}
 						>
-							Hello {userState.user.name}
+							<UserOutlined />
 						</button>
 						<div className="dropdown-menu">
-							<button className="dropdown-item btn-custom-1" onClick={() => {navigate(`/personal-info/${user.user.id}`)}}>
+							<button
+								className="dropdown-item btn-custom-1"
+								onClick={() => {
+									navigate(`/personal-info/${user.user.id}`);
+								}}
+							>
 								TRANG CÁ NHÂN
 							</button>
 							<button
@@ -235,7 +241,7 @@ export default function HeaderHome() {
 					</div>
 
 					<div
-						className="collapse d-flex justify-content-center navbar-collapse"
+						className="collapse d-flex justify-content-center navbar-collapse container"
 						id="collapsibleNavId"
 						style={{
 							flexBasis: 0,
