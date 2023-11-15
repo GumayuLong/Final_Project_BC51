@@ -19,6 +19,7 @@ import PersonalInfo from "../pages/Personalinfo/PersonalInfo";
 import EditDepartment from "../pages/DepartmentManagement/EditDepartment/EditDepartment";
 import EditPosition from "../pages/PositionManagement/EditPosition/EditPosition";
 import BookedManagement from "../pages/BookedManagement/BookedManagement";
+import BookedDetail from "../pages/BookedManagement/BookedDetail/BookedDetail";
 
 export default function Router() {
   const routing = useRoutes([
@@ -92,6 +93,11 @@ export default function Router() {
         {
           path: "/admin/booked",
           element: <BookedManagement />,
+        },
+
+        {
+          path: "/admin/booked/detail/:id",
+          element: <BookedDetail />,
         },
       ],
     },
