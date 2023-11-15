@@ -6,36 +6,39 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, theme } from "antd";
-import { Link, Outlet } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
 
 import "../../styles/styling.scss";
+import { setUserInfoAction } from "../../store/actions/userAction";
 
 const { Header, Content, Footer, Sider } = Layout;
 
 export default function AdminLayout() {
-  const userState = useSelector((state) => state.userReducer);
+  const userState = useSelector((state) => state.userReducer.userInfo);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("USER_INFO");
+    dispatch(setUserInfoAction(null));
+    navigate("/");
+  };
 
   const renderContent = () => {
-    if (userState.userInfo) {
+    if (userState) {
       return (
         <div
           className="d-flex align-items-center justify-content-end"
           style={{ borderBottom: "1px solid #343a40", height: 50 }}
         >
-          <span className="text-dark">Hello {userState.userInfo.name}</span>
-          <button
-            // onClick={handleLogout}
-            className="ml-3 btn btn-warning"
-          >
+          <span className="text-dark">Hello {userState.user.name}</span>
+          <button onClick={handleLogout} className="ml-3 btn btn-warning">
             LOGOUT
           </button>
-          <button
-            // onClick={handleBack}
-            className="mx-3 btn "
-          >
+          <button onClick={() => navigate("/")} className="mx-3 btn ">
             <FontAwesomeIcon icon={faRightToBracket} className="text-dark" />
           </button>
         </div>

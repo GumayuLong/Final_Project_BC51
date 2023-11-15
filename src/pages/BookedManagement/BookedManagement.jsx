@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Button, Table, notification } from "antd";
+import { Button, Popover, Table, notification } from "antd";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import dayjs from "dayjs";
 
 import "../../styles/styling.scss";
-import dayjs from "dayjs";
 import { bookRoomService } from "../../services/bookRoomService";
+import { userService } from "../../services/userService";
+import { faFileLines } from "@fortawesome/free-regular-svg-icons";
 
 export default function BookedManagement() {
   const [bookedList, setBookedList] = useState();
@@ -16,8 +17,9 @@ export default function BookedManagement() {
     fetchBookedRoomList();
   }, []);
 
+  //LIST ĐẶT PHÒNG
   const fetchBookedRoomList = async () => {
-    const result = await bookRoomService.fetchBookedRoomFromUserApi();
+    const result = await bookRoomService.fetchListBookedRoomApi();
     setBookedList(result.data.content);
   };
 
@@ -65,31 +67,26 @@ export default function BookedManagement() {
         <>{dayjs(object.ngayDi).format("DD/MM/YYYY")}</>
       ),
     },
-    // {
-    //   title: "Thao tác",
-    //   dataIndex: "id",
-    //   width: 150,
-    //   render: (text, object) => (
-    //     <div className="btn-action">
-    //       <NavLink
-    //         key={1}
-    //         className="mb-1"
-    //         to={`/admin/position/edit/${object.id}`}
-    //       >
-    //         <button className="btn-icon text-info">
-    //           <FontAwesomeIcon className="icon-size" icon={faPen} />
-    //         </button>
-    //       </NavLink>
-
-    //       <button
-    //         className="btn-icon text-danger"
-    //         onClick={() => handleDeletePosition(object)}
-    //       >
-    //         <FontAwesomeIcon className="icon-size" icon={faTrash} />
-    //       </button>
-    //     </div>
-    //   ),
-    // },
+    {
+      title: "Thao tác",
+      dataIndex: "id",
+      width: 150,
+      render: (text, object) => (
+        <div className="btn-action">
+          <Popover placement="bottom" content="Xem chi tiết">
+            <NavLink
+              key={1}
+              className="mb-1"
+              to={`/admin/booked/detail/${object.id}`}
+            >
+              <button className="btn-icon text-primary">
+                <FontAwesomeIcon className="icon-size" icon={faFileLines} />
+              </button>
+            </NavLink>
+          </Popover>
+        </div>
+      ),
+    },
   ];
 
   const onChange = (pagination, filters, sorter, extra) => {
