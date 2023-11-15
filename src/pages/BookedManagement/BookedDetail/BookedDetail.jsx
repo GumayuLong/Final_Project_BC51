@@ -60,14 +60,14 @@ export default function BookedDetail() {
         <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
           <Col className="gutter-row" span={12}>
             <Form.Item label="Tên phòng">
-              <Input size="large" name="tenPhong" value={room.tenPhong} />
+              <Input size="large" name="maPhong" value={room.tenPhong} />
             </Form.Item>
           </Col>
           <Col className="gutter-row" span={12}>
             <Form.Item label="Ngày đến">
               <Input
                 size="large"
-                name="tenPhong"
+                name="ngayDen"
                 value={dayjs(detail.ngayDen).format("DD/MM/YYYY")}
               />
             </Form.Item>
@@ -76,19 +76,23 @@ export default function BookedDetail() {
             <Form.Item label="Ngày đi">
               <Input
                 size="large"
-                name="tenPhong"
+                name="ngayDi"
                 value={dayjs(detail.ngayDi).format("DD/MM/YYYY")}
               />
             </Form.Item>
           </Col>
           <Col className="gutter-row" span={12}>
             <Form.Item label="Khách đặt">
-              <Input size="large" name="tenPhong" value={user.name} />
+              <Input size="large" name="maNguoiDung" value={user.name} />
             </Form.Item>
           </Col>
           <Col className="gutter-row" span={12}>
-            <Form.Item label="Khách đặt">
-              <Input size="large" name="tenPhong" value={detail.soLuongKhach} />
+            <Form.Item label="Số lượng khách">
+              <Input
+                size="large"
+                name="soLuongKhach"
+                value={detail.soLuongKhach}
+              />
             </Form.Item>
           </Col>
         </Row>
