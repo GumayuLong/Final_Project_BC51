@@ -1,6 +1,4 @@
-/** @format */
-
-import React, { useEffect, useState } from "react";
+import React, { createRef, useEffect, useState } from "react";
 import { departmentService } from "../../services/departmentServices";
 import { useParams } from "react-router-dom";
 import { bookRoomService } from "../../services/bookRoomService";
@@ -36,7 +34,8 @@ export default function RoomDetail() {
 	const [locate, setLocate] = useState({});
 	const [listDepartment, setListDepartment] = useState([]);
 	const [listComments, setListComments] = useState([]);
-  const [checkBooked, setCheckBooked] = useState([]);
+	const [startDate, setStartDate] = useState("");
+	const [endDate, setEndDate] = useState("");
 
 	const userString = localStorage.getItem("USER_INFO");
 	const user = JSON.parse(userString);
@@ -114,15 +113,6 @@ export default function RoomDetail() {
 			.catch((err) => console.log(err));
 	};
 
-	// HÀM KIỂM TRA THỜI GIAN BOOK CỦA PHÒNG ĐÓ
-	const checkBookedDepartment = () => {
-		const data = [...listDepartment];
-		const check = data.filter((element) => element.maPhong === detail.id);
-    console.log(check);
-    // setCheckBooked(check);
-		// SỬ DỤNG DANH SÁCH ĐÃ FILTER (check) ĐỂ HIỂN THỊ THỜI GIAN ĐÃ ĐƯỢC ĐẶT
-	};
-
 	// HANDLE ONCHANGE INPUT COMMENT
 	const handleComment = (event) => {
 		setComment({
@@ -147,6 +137,22 @@ export default function RoomDetail() {
 		const date = dayjs(value).format("DD/MM/YYYY");
 	};
 
+	const handleStartDateChange = (e) => {
+		setStartDate(e.target.value);
+		setBookRoom({
+			...bookRoom,
+			[e.target.name]: e.target.value,
+		});
+	};
+
+	const handleEndDateChange = (e) => {
+		setEndDate(e.target.value);
+		setBookRoom({
+			...bookRoom,
+			[e.target.name]: e.target.value,
+		});
+	};
+
 	const handleChangeBookRoom = (event) => {
 		setBookRoom({
 			...bookRoom,
@@ -156,32 +162,42 @@ export default function RoomDetail() {
 
 	const handleBookRoom = async (event) => {
 		event.preventDefault();
-    // const data = [...listDepartment];
-	  // const check = data.filter((element) => element.maPhong === detail.id);
-    // return check.map((element) => {
-    //   if (element.ngayDen <= bookRoom.ngayDen && element.ngayDi <= bookRoom.ngayDi) {
-    //     console.log("Đặt phòng thành công");
-    //   } else {
-    //     console.log("Đặt phòng thất bại"); 
-    //   }
-    // })
-		// console.log(bookRoom);
-		await bookRoomService
-			.bookRoomApi(bookRoom)
-			.then((result) => {
-        // if(result.data.content)
-				console.log(result.data.content);
-				notification.success({
-					message: "Đặt phòng thành công",
-					placement: "topRight",
+		const data = [...listDepartment];
+		const listBookedRoom = data.filter(
+			(element) => element.maPhong === detail.id
+		);
+		const checkBookedRoom = listBookedRoom.every((element) => {
+			if (
+				(dayjs(element.ngayDen).format("YYYY-MM-DD") > startDate ||
+					dayjs(element.ngayDi).format("YYYY-MM-DD") <= startDate) &&
+				(dayjs(element.ngayDi).format("YYYY-MM-DD") < endDate ||
+					dayjs(element.ngayDen).format("YYYY-MM-DD") >= endDate)
+			) {
+				return true;
+			}
+		});
+		if (checkBookedRoom) {
+			await bookRoomService
+				.bookRoomApi(bookRoom)
+				.then((result) => {
+					console.log(result.data.content);
+					notification.success({
+						message: "Đặt phòng thành công",
+						placement: "topRight",
+					});
+				})
+				.catch((err) => {
+					notification.error({
+						message: `${err.message}`,
+						placement: "topRight",
+					});
 				});
-			})
-			.catch((err) => {
-				notification.danger({
-					message: `${err.message}`,
-					placement: "topRight",
-				});
+		} else {
+			notification.error({
+				message: "Phòng đã có người đặt",
+				placement: "topRight",
 			});
+		}
 	};
 
 	return (
@@ -537,12 +553,13 @@ export default function RoomDetail() {
 											<input
 												type="date"
 												className="mt-2 form-control"
-												onChange={handleChangeBookRoom}
+												onChange={handleStartDateChange}
 												size="large"
 												format={"DD/MM/YYYY"}
 												name="ngayDen"
+												min={formattedDate}
 												style={{ width: "100%" }}
-                        id="ngayDen"
+												id="ngayDen"
 											/>
 										</div>
 										<div className=" rounded-tr-md w-full cursor-pointer hover:bg-gray-100">
@@ -552,11 +569,12 @@ export default function RoomDetail() {
 											<input
 												type="date"
 												className="mt-2 form-control"
-												onChange={handleChangeBookRoom}
+												onChange={handleEndDateChange}
 												size="large"
 												format={"DD/MM/YYYY"}
 												name="ngayDi"
-                        id="ngayDi"
+												id="ngayDi"
+												min={bookRoom.ngayDen}
 												style={{ width: "100%" }}
 											/>
 										</div>
@@ -623,7 +641,6 @@ export default function RoomDetail() {
 					</div>
 				</div>
 			</section>
-			{checkBookedDepartment()}
 			<form className="container" onSubmit={handleSubmit}>
 				<div>
 					<label htmlFor="">Comment</label>
