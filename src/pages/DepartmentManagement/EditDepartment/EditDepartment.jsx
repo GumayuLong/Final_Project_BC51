@@ -10,10 +10,11 @@ import {
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { useFormik } from "formik";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { positionService } from "../../../services/positionService";
 import { departmentService } from "../../../services/departmentServices";
+import { loadingContext } from "../../../contexts/LoadingContext/LoadingContext";
 
 export default function EditDepartment() {
   const [state, setState] = useState({
@@ -21,6 +22,7 @@ export default function EditDepartment() {
   });
   const [department, setDepartment] = useState({});
   const [img, setImg] = useState("");
+  const [_, setLoadingContext] = useContext(loadingContext);
   const navigate = useNavigate();
   const params = useParams();
 
@@ -30,11 +32,12 @@ export default function EditDepartment() {
   }, []);
 
   const fetchDepartmentDetail = async () => {
+    setLoadingContext({ isLoading: true });
     const result = await departmentService.fetchDepartmentDetailApi(
       params.departmentId
     );
-
     setDepartment(result.data.content);
+    setLoadingContext({ isLoading: false });
   };
 
   const formik = useFormik({
@@ -63,10 +66,14 @@ export default function EditDepartment() {
 
     onSubmit: async (values) => {
       console.log({ values });
+      // let formData = new FormData();
+      // if (values.hinhAnh !== null) {
+      //   formData.append("File", values.hinhAnh, values.hinhAnh.name);
+      // }
 
       try {
         await departmentService.fetchUpdateDepartmentApi(params.id, values);
-
+        // await departmentService.uploadImageApi(params.id);
         notification.success({
           message: "Cập nhật phòng thuê thành công!",
           placement: "bottomRight",
@@ -75,7 +82,7 @@ export default function EditDepartment() {
         navigate("/admin/department");
       } catch (error) {
         notification.error({
-          message: "Cập nhật phòng thuê thất bại!",
+          message: `${error.response?.data.content}`,
           placement: "bottomRight",
         });
       }
@@ -338,7 +345,7 @@ export default function EditDepartment() {
           <button
             type="submit"
             className="btn btn-outline-primary"
-            onClick={() => navigate("/admin/user")}
+            onClick={() => navigate("/admin/department")}
           >
             Trở lại
           </button>

@@ -36,6 +36,13 @@ class PositionService {
       method: "DELETE",
     });
   }
+
+  uploadImage(id) {
+    return request({
+      url: `/vi-tri/upload-hinh-vitri?maViTri=${id}`,
+      method: "POST",
+    });
+  }
 }
 
 export const positionService = new PositionService();

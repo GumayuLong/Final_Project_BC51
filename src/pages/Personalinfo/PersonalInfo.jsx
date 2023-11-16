@@ -1,6 +1,5 @@
 import React, { createRef, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { setUserInfoAction } from "../../store/actions/userAction";
+import { useParams } from "react-router-dom";
 import { notification } from "antd";
 import { userService } from "../../services/userService";
 import { bookRoomService } from "../../services/bookRoomService";

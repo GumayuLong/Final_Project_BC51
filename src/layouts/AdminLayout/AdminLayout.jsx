@@ -63,7 +63,12 @@ export default function AdminLayout() {
         onCollapse={(value) => setCollapsed(value)}
       >
         <div className="demo-logo-vertical" />
-        <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
+        <Menu
+          className="nav-admin"
+          theme="dark"
+          defaultSelectedKeys={["1"]}
+          mode="inline"
+        >
           <Menu.Item key="1" icon={<UserOutlined />}>
             <Link to="/admin/user">Người dùng</Link>
           </Menu.Item>

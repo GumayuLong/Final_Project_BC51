@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { Button, Popover, Table, notification } from "antd";
-import { NavLink, useNavigate } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Popover, Table } from "antd";
+import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 
 import "../../styles/styling.scss";
 import { bookRoomService } from "../../services/bookRoomService";
-import { userService } from "../../services/userService";
 import { faFileLines } from "@fortawesome/free-regular-svg-icons";
+import { loadingContext } from "../../contexts/LoadingContext/LoadingContext";
 
 export default function BookedManagement() {
   const [bookedList, setBookedList] = useState();
-  const navigate = useNavigate();
+  const [_, setLoadingContext] = useContext(loadingContext);
 
   useEffect(() => {
     fetchBookedRoomList();
@@ -19,8 +19,10 @@ export default function BookedManagement() {
 
   //LIST ĐẶT PHÒNG
   const fetchBookedRoomList = async () => {
+    setLoadingContext({ isLoading: true });
     const result = await bookRoomService.fetchListBookedRoomApi();
     setBookedList(result.data.content);
+    setLoadingContext({ isLoading: false });
   };
 
   const columns = [

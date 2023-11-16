@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, Popover, Table, notification } from "antd";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,9 +7,11 @@ import { faPen, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { positionService } from "../../services/positionService";
 
 import "../../styles/styling.scss";
+import { loadingContext } from "../../contexts/LoadingContext/LoadingContext";
 
 export default function PositionManagement() {
   const [positionList, setPositionList] = useState();
+  const [_, setLoadingContext] = useContext(loadingContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,9 +19,10 @@ export default function PositionManagement() {
   }, []);
 
   const fetchPositionList = async () => {
+    setLoadingContext({ isLoading: true });
     const result = await positionService.fetchPositionListApi();
-
     setPositionList(result.data.content);
+    setLoadingContext({ isLoading: false });
   };
 
   const columns = [
