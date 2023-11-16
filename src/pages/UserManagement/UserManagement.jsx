@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, Popover, Table, notification } from "antd";
 import Search from "antd/es/input/Search";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -8,9 +8,11 @@ import { faPen, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { userService } from "../../services/userService";
 
 import "../../styles/styling.scss";
+import { loadingContext } from "../../contexts/LoadingContext/LoadingContext";
 
 export default function UserManagement() {
   const [userList, setUserList] = useState();
+  const [_, setLoadingContext] = useContext(loadingContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,6 +20,7 @@ export default function UserManagement() {
   }, []);
 
   const fetchUserList = async (name = "") => {
+    setLoadingContext({ isLoading: true });
     if (name.trim() !== "") {
       const result = await userService.fetchSearchUserApi(name);
 
@@ -27,6 +30,7 @@ export default function UserManagement() {
 
       setUserList(result.data.content);
     }
+    setLoadingContext({ isLoading: false });
   };
 
   const columns = [

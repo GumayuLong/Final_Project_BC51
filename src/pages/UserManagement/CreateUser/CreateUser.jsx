@@ -19,7 +19,6 @@ export default function CreateUser() {
       birthday: "",
       gender: true,
       role: "ADMIN",
-      avatar: null,
     },
     onSubmit: async (values) => {
       console.log({ values });
@@ -31,9 +30,8 @@ export default function CreateUser() {
         });
         navigate("/admin/user");
       } catch (error) {
-        console.log(error.response?.data);
         notification.error({
-          message: "Thêm mới người dùng thất bại!",
+          message: `${error.response?.data.content}`,
           placement: "bottomRight",
         });
       }
@@ -174,11 +172,6 @@ export default function CreateUser() {
               <Input size="large" disabled value={"ADMIN"} name="role" />
             </Form.Item>
           </Col>
-
-          <Form.Item label="Hình ảnh">
-            <input type="file" onChange={handleUploadFile} />
-            <img className="mt-2" src={avatar} width={200} alt="" />
-          </Form.Item>
         </Row>
         <div className="d-flex justify-content-end">
           <button type="submit" className="btn btn-primary mr-2">

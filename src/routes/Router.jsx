@@ -4,9 +4,7 @@ import HomeLayout from "../layouts/HomeLayout/HomeLayout";
 import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
-
 import RoomDetail from "../pages/RoomDetail/RoomDetail";
-
 import AdminLayout from "../layouts/AdminLayout/AdminLayout";
 import UserManagement from "../pages/UserManagement/UserManagement";
 import CreateUser from "../pages/UserManagement/CreateUser/CreateUser";
@@ -20,6 +18,7 @@ import EditDepartment from "../pages/DepartmentManagement/EditDepartment/EditDep
 import EditPosition from "../pages/PositionManagement/EditPosition/EditPosition";
 import BookedManagement from "../pages/BookedManagement/BookedManagement";
 import BookedDetail from "../pages/BookedManagement/BookedDetail/BookedDetail";
+import AdminGuard from "../guards/AdminGuard";
 
 export default function Router() {
   const routing = useRoutes([
@@ -52,7 +51,11 @@ export default function Router() {
 
     {
       path: "/admin",
-      element: <AdminLayout />,
+      element: (
+        <AdminGuard>
+          <AdminLayout />
+        </AdminGuard>
+      ),
       children: [
         {
           path: "/admin/user",

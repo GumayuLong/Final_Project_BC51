@@ -1,12 +1,14 @@
 import { Col, Form, Input, Row, notification } from "antd";
 import { useFormik } from "formik";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { positionService } from "../../../services/positionService";
+import { loadingContext } from "../../../contexts/LoadingContext/LoadingContext";
 
 export default function EditPosition() {
   const [img, setImg] = useState();
   const [positionDetail, setPositionDetail] = useState({});
+  const [_, setLoadingContext] = useContext(loadingContext);
   const navigate = useNavigate();
   const params = useParams();
 
@@ -15,10 +17,12 @@ export default function EditPosition() {
   }, []);
 
   const fetchPositionDetail = async () => {
+    setLoadingContext({ isLoading: true });
     const result = await positionService.fetchPositionDetailApi(
       params.positionId
     );
     setPositionDetail(result.data.content);
+    setLoadingContext({ isLoading: false });
   };
 
   const formik = useFormik({
@@ -32,8 +36,14 @@ export default function EditPosition() {
     },
 
     onSubmit: async (values) => {
+      let formData = new FormData();
+      if (values.hinhAnh !== null) {
+        formData.append("File", values.hinhAnh, values.hinhAnh.name);
+      }
+
       try {
         await positionService.fetchUpdatePositionApi(params.positionId, values);
+        await positionService.uploadImage(params.positionId);
         notification.success({
           message: "Cập nhật vị trí thành công!",
           placement: "bottomRight",
@@ -41,7 +51,7 @@ export default function EditPosition() {
         navigate("/admin/position");
       } catch (error) {
         notification.error({
-          message: "Cập nhật vị trí thất bại!",
+          message: `${error.response?.data.content}`,
           placement: "bottomRight",
         });
       }

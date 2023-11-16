@@ -1,22 +1,15 @@
-import {
-  Col,
-  DatePicker,
-  Form,
-  Input,
-  Radio,
-  Row,
-  Select,
-  notification,
-} from "antd";
+import { Col, DatePicker, Form, Input, Radio, Row, notification } from "antd";
 import { useFormik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { userService } from "../../../services/userService";
 import dayjs from "dayjs";
+import { loadingContext } from "../../../contexts/LoadingContext/LoadingContext";
 
 export default function EditUser() {
   const [gender, setGender] = useState("");
   const [userDetail, setUserDetail] = useState({});
+  const [_, setLoadingContext] = useContext(loadingContext);
   const navigate = useNavigate();
   const params = useParams();
 
@@ -25,10 +18,12 @@ export default function EditUser() {
   }, []);
 
   const fetchUserDetail = async () => {
+    setLoadingContext({ isLoading: true });
     const result = await userService.fetchUserDetailApi(params.userId);
     setUserDetail(result.data.content);
+    setLoadingContext({ isLoading: false });
   };
-  console.log(userDetail);
+
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -206,7 +201,7 @@ export default function EditUser() {
       </Row>
       <div className="d-flex justify-content-end">
         <button type="submit" className="btn btn-primary mr-2">
-          Cập nhật
+          Lưu thay đổi{" "}
         </button>
         <button
           type="submit"

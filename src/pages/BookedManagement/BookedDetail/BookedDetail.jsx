@@ -1,18 +1,18 @@
-import { Col, Form, Input, InputNumber, Row, Select, Switch } from "antd";
-import TextArea from "antd/es/input/TextArea";
-import React, { Fragment, useEffect, useState } from "react";
+import { Col, Form, Input, Row } from "antd";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { bookRoomService } from "../../../services/bookRoomService";
 import dayjs from "dayjs";
 import { departmentService } from "../../../services/departmentServices";
-import { result } from "lodash";
 import { userService } from "../../../services/userService";
+import { loadingContext } from "../../../contexts/LoadingContext/LoadingContext";
 
 export default function BookedDetail() {
   const navigate = useNavigate();
   const [detail, setDetail] = useState({});
   const [room, setRoom] = useState({});
   const [user, setUser] = useState({});
+  const [_, setLoadingContext] = useContext(loadingContext);
   const params = useParams();
 
   useEffect(() => {
@@ -22,8 +22,12 @@ export default function BookedDetail() {
   }, []);
 
   const fetchBookedDetail = async () => {
+    setLoadingContext({ isLoading: true });
     const result = await bookRoomService.fetchBookedDetailApi(params.id);
     setDetail(result.data.content);
+    setLoadingContext({ isLoading: false });
+
+    console.log(detail.maNguoiDung);
   };
 
   //Lấy tên phòng theo mã phòng
@@ -32,14 +36,12 @@ export default function BookedDetail() {
       detail.maPhong
     );
     setRoom(result.data.content);
-    console.log(room);
   };
 
   //Lấy tên người dùng theo mã người dùng
   const fetchUserDetail = async () => {
     const result = await userService.fetchUserDetailApi(detail.maNguoiDung);
     setUser(result.data.content);
-    console.log(user);
   };
 
   return (

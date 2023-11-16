@@ -17,7 +17,6 @@ export default function CreatePosition() {
     },
 
     onSubmit: async (values) => {
-      console.log({ values });
       try {
         await positionService.fetchCreatePositionApi(values);
         notification.success({
@@ -27,31 +26,12 @@ export default function CreatePosition() {
         navigate("/admin/position");
       } catch (error) {
         notification.error({
-          message: "Tạo vị trí thất bại!",
+          message: `${error.response?.data.content}`,
           placement: "bottomRight",
         });
       }
     },
   });
-
-  const handleUploadFile = (event) => {
-    let file = event.target.files[0];
-
-    if (
-      file.type === "image/jpeg" ||
-      file.type === "image/jpg" ||
-      file.type === "image/png" ||
-      file.type === "image/gif"
-    ) {
-      let reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = (e) => {
-        setImg(e.target.result);
-      };
-
-      formik.setFieldValue("avatar", file);
-    }
-  };
 
   return (
     <Fragment>
@@ -100,12 +80,6 @@ export default function CreatePosition() {
               />
             </Form.Item>
           </Col>
-          <Col className="gutter-row" span={12}>
-            <Form.Item label="Hình ảnh">
-              <input type="file" onChange={handleUploadFile} />
-              <img className="mt-2" src={img} width={200} alt="" />
-            </Form.Item>
-          </Col>
         </Row>
         <div className="d-flex justify-content-end">
           <button type="submit" className="btn btn-primary mr-2">
@@ -114,7 +88,7 @@ export default function CreatePosition() {
           <button
             type="submit"
             className="btn btn-outline-primary"
-            onClick={() => navigate("/admin/user")}
+            onClick={() => navigate("/admin/position")}
           >
             Trở lại
           </button>

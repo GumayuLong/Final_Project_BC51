@@ -26,7 +26,7 @@ class DepartmentService {
   fetchUpdateDepartmentApi(id, data) {
     return request({
       url: `/phong-thue/${id}`,
-      method: "GET",
+      method: "PUT",
       data,
     });
   }
@@ -35,6 +35,13 @@ class DepartmentService {
     return request({
       url: `/phong-thue/${id}`,
       method: "DELETE",
+    });
+  }
+
+  uploadImageApi(id) {
+    return request({
+      url: `/phong-thue/upload-hinh-phong?maPhong=${id}`,
+      method: "POST",
     });
   }
 }
