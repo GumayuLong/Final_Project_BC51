@@ -94,6 +94,7 @@ export default function PersonalInfo() {
       await userService
         .updateUserInfoApi(userInfo.id, userInfo)
         .then((result) => {
+          setUserInfo(result.data.content)
           notification.success({
             message: "Cập nhật thông tin thành công",
             placement: "topRight",
@@ -186,8 +187,8 @@ export default function PersonalInfo() {
                       className="form-control"
                       name="gender"
                     >
-                      <option value={false}>Nam</option>
-                      <option value={true}>Nữ</option>
+                      <option value={true}>Nam</option>
+                      <option value={false}>Nữ</option>
                     </select>
                   </div>
                   <div className="form-group">
