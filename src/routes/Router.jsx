@@ -19,6 +19,8 @@ import EditPosition from "../pages/PositionManagement/EditPosition/EditPosition"
 import BookedManagement from "../pages/BookedManagement/BookedManagement";
 import BookedDetail from "../pages/BookedManagement/BookedDetail/BookedDetail";
 import AdminGuard from "../guards/AdminGuard";
+import AuthGuard from "../guards/AuthGuard";
+import NoAuthGuard from "../guards/NoAuthGuard";
 
 export default function Router() {
   const routing = useRoutes([
@@ -32,11 +34,19 @@ export default function Router() {
         },
         {
           path: "detail/:id",
-          element: <RoomDetail />,
+          element: (
+            <AuthGuard>
+              <RoomDetail />
+            </AuthGuard>
+            ),
         },
         {
           path: "/login",
-          element: <Login />,
+          element: (
+            <NoAuthGuard>
+              <Login />
+            </NoAuthGuard>
+            ),
         },
         {
           path: "/register",

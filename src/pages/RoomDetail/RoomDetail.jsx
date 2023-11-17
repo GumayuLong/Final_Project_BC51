@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { createRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { departmentService } from "../../services/departmentServices";
 import { useParams } from "react-router-dom";
 import { bookRoomService } from "../../services/bookRoomService";
@@ -27,9 +27,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { UserOutlined } from "@ant-design/icons";
 import { positionService } from "../../services/positionService";
-import { DatePicker, InputNumber, notification } from "antd";
+import { notification } from "antd";
 import dayjs from "dayjs";
 import { faCommentDots } from "@fortawesome/free-regular-svg-icons";
+import { useSelector } from "react-redux";
 
 export default function RoomDetail() {
 	const params = useParams();
@@ -42,8 +43,11 @@ export default function RoomDetail() {
 	const [numberOfDays, setNumberOfDays] = useState(null);
 	const [serviceCost, setServiceCost] = useState(10);
 
-	const userString = localStorage.getItem("USER_INFO");
-	const user = JSON.parse(userString);
+	const userState = useSelector((state) => {
+		if (state.userReducer.userInfo) {
+			return state.userReducer.userInfo.user.id
+		} return state.userReducer.userInfo
+		})
 
 	// FORMAT CURRENT DAY
 	const currentDate = new Date();
@@ -56,7 +60,7 @@ export default function RoomDetail() {
 	const [comment, setComment] = useState({
 		id: 0,
 		maPhong: Number(params.id),
-		maNguoiBinhLuan: user.user.id,
+		maNguoiBinhLuan: userState,
 		ngayBinhLuan: formattedDate,
 		noiDung: "",
 		saoBinhLuan: "",
@@ -68,7 +72,7 @@ export default function RoomDetail() {
 		ngayDen: "",
 		ngayDi: "",
 		soLuongKhach: "",
-		maNguoiDung: user.user.id,
+		maNguoiDung: userState,
 	});
 
 	useEffect(() => {
@@ -114,12 +118,8 @@ export default function RoomDetail() {
 			.fetchCommentListApi(params.id)
 			.then((result) => {
 				setListComments(result.data.content);
-
-				console.log(listComments);
 			})
 			.catch((err) => console.log(err));
-
-		console.log(listComments);
 	};
 
 	// HANDLE ONCHANGE INPUT COMMENT
@@ -135,8 +135,6 @@ export default function RoomDetail() {
 		await commentService
 			.createCommentApi(comment)
 			.then((result) => {
-				console.log(result.data.content);
-				// setComment(result.data.content);
 				notification.success({
 					message: "Thêm bình luận thành công",
 					placement: "topRight",
@@ -201,7 +199,6 @@ export default function RoomDetail() {
 			await bookRoomService
 				.bookRoomApi(bookRoom)
 				.then((result) => {
-					console.log(result.data.content);
 					notification.success({
 						message: "Đặt phòng thành công",
 						placement: "topRight",

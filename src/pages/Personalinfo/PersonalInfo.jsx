@@ -4,7 +4,6 @@ import { notification } from "antd";
 import { userService } from "../../services/userService";
 import { bookRoomService } from "../../services/bookRoomService";
 import { validation } from "../../validations/validation";
-import { useDispatch } from "react-redux";
 
 export default function PersonalInfo() {
   const params = useParams();
@@ -14,7 +13,6 @@ export default function PersonalInfo() {
     "http://dergipark.org.tr/assets/app/images/buddy_sample.png"
   );
   const [file, setFile] = useState(null);
-  const dispatch = useDispatch();
 
   const fullNameInputRef = createRef();
   const phoneNumberInputRef = createRef();
@@ -96,13 +94,6 @@ export default function PersonalInfo() {
       await userService
         .updateUserInfoApi(userInfo.id, userInfo)
         .then((result) => {
-          // console.log(result.data.content);
-          // localStorage.setItem(
-          // 	"USER_INFO",
-          // 	JSON.stringify(result.data.content)
-          // );
-          // dispatch(setUserInfoAction(newLocal));
-
           notification.success({
             message: "Cập nhật thông tin thành công",
             placement: "topRight",
