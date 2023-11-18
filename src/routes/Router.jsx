@@ -16,6 +16,7 @@ import PositionManagement from "../pages/PositionManagement/PositionManagement";
 import CreatePosition from "../pages/PositionManagement/CreatePosition/CreatePosition";
 import CreateDepartment from "../pages/DepartmentManagement/CreateDepartment/CreateDepartment";
 import PersonalInfo from "../pages/Personalinfo/PersonalInfo";
+import ListRoomByLocate from "../pages/ListRoomByLocate/ListRoomByLocate";
 
 
 export default function Router() {
@@ -29,7 +30,7 @@ export default function Router() {
           element: <Home />,
         },
         {
-          path: "detail/:id",
+          path: "/detail/:id",
           element: <RoomDetail />,
         },
         {
@@ -43,6 +44,10 @@ export default function Router() {
         {
           path: "/personal-info/:userId",
           element: <PersonalInfo />,
+        },
+        {
+          path: "/listroombylocate",
+          element: <ListRoomByLocate />,
         },
       ],
     },
