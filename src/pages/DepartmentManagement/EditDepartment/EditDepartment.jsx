@@ -10,48 +10,75 @@ import {
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { useFormik } from "formik";
-import React, { Fragment, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { Fragment, useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { positionService } from "../../../services/positionService";
 import { departmentService } from "../../../services/departmentServices";
+import { loadingContext } from "../../../contexts/LoadingContext/LoadingContext";
 
-export default function CreateDepartment() {
+export default function EditDepartment() {
   const [state, setState] = useState({
     position: [],
   });
+  const [department, setDepartment] = useState({});
+  const [img, setImg] = useState("");
+  const [_, setLoadingContext] = useContext(loadingContext);
   const navigate = useNavigate();
+  const params = useParams();
+
+  useEffect(() => {
+    fetchDepartmentDetail();
+    fetchPositionList();
+  }, []);
+
+  const fetchDepartmentDetail = async () => {
+    setLoadingContext({ isLoading: true });
+    const result = await departmentService.fetchDepartmentDetailApi(
+      params.departmentId
+    );
+    setDepartment(result.data.content);
+    setLoadingContext({ isLoading: false });
+  };
 
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      id: 0,
-      tenPhong: "",
-      khach: 0,
-      phongNgu: 0,
-      giuong: 0,
-      phongTam: 0,
-      moTa: "",
-      giaTien: 0,
-      mayGiat: true,
-      banLa: true,
-      tivi: true,
-      dieuHoa: true,
-      wifi: true,
-      bep: true,
-      doXe: true,
-      hoBoi: true,
-      banUi: true,
-      maViTri: 0,
-      hinhAnh: "",
+      id: params.departmentId,
+      tenPhong: department.tenPhong,
+      khach: department.khach,
+      phongNgu: department.phongNgu,
+      giuong: department.giuong,
+      phongTam: department.phongTam,
+      moTa: department.moTa,
+      giaTien: department.giaTien,
+      mayGiat: department.mayGiat,
+      banLa: department.banLa,
+      tivi: department.tivi,
+      dieuHoa: department.dieuHoa,
+      wifi: department.wifi,
+      bep: department.bep,
+      doXe: department.doXe,
+      hoBoi: department.hoBoi,
+      banUi: department.banUi,
+      maViTri: department.maViTri,
+      hinhAnh: department?.hinhAnh,
     },
 
     onSubmit: async (values) => {
-      try {
-        await departmentService.fetchCreateDepartmentApi(values);
+      console.log({ values });
+      // let formData = new FormData();
+      // if (values.hinhAnh !== null) {
+      //   formData.append("File", values.hinhAnh, values.hinhAnh.name);
+      // }
 
+      try {
+        await departmentService.fetchUpdateDepartmentApi(params.id, values);
+        // await departmentService.uploadImageApi(params.id);
         notification.success({
-          message: "Thêm phòng thuê thành công!",
+          message: "Cập nhật phòng thuê thành công!",
           placement: "bottomRight",
         });
+
         navigate("/admin/department");
       } catch (error) {
         notification.error({
@@ -61,10 +88,6 @@ export default function CreateDepartment() {
       }
     },
   });
-
-  useEffect(() => {
-    fetchPositionList();
-  }, []);
 
   const fetchPositionList = async () => {
     try {
@@ -92,9 +115,28 @@ export default function CreateDepartment() {
     };
   };
 
+  const handleUploadFile = (event) => {
+    let file = event.target.files[0];
+
+    if (
+      file.type === "image/jpeg" ||
+      file.type === "image/jpg" ||
+      file.type === "image/png" ||
+      file.type === "image/gif"
+    ) {
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (e) => {
+        setImg(e.target.result);
+      };
+
+      formik.setFieldValue("img", file);
+    }
+  };
+
   return (
     <Fragment>
-      <h4>Thêm phòng thuê</h4>
+      <h4>Cập nhật phòng thuê</h4>
       <Form
         onSubmitCapture={formik.handleSubmit}
         labelCol={{
@@ -115,6 +157,7 @@ export default function CreateDepartment() {
                 size="large"
                 name="tenPhong"
                 onChange={formik.handleChange}
+                value={formik.values.tenPhong}
                 placeholder="Tên phòng"
               />
             </Form.Item>
@@ -126,6 +169,7 @@ export default function CreateDepartment() {
                 size="large"
                 placeholder="Chọn vị trí"
                 onChange={handleChangePosition}
+                value={formik.values.maViTri}
               />
             </Form.Item>
           </Col>
@@ -135,7 +179,9 @@ export default function CreateDepartment() {
                 style={{ width: "100%" }}
                 size="large"
                 name="khach"
+                min={1}
                 onChange={handleChangeValue("khach")}
+                value={formik.values.khach}
                 placeholder="Số khách"
               />
             </Form.Item>
@@ -146,7 +192,9 @@ export default function CreateDepartment() {
                 style={{ width: "100%" }}
                 size="large"
                 name="phongNgu"
+                min={1}
                 onChange={handleChangeValue("phongNgu")}
+                value={formik.values.phongNgu}
                 placeholder="Số phòng ngủ"
               />
             </Form.Item>
@@ -157,7 +205,9 @@ export default function CreateDepartment() {
                 style={{ width: "100%" }}
                 size="large"
                 name="giuong"
+                min={1}
                 onChange={handleChangeValue("giuong")}
+                value={formik.values.giuong}
                 placeholder="Số giường"
               />
             </Form.Item>
@@ -168,7 +218,9 @@ export default function CreateDepartment() {
                 style={{ width: "100%" }}
                 size="large"
                 name="phongTam"
+                min={1}
                 onChange={handleChangeValue("phongTam")}
+                value={formik.values.phongTam}
                 placeholder="Số phòng tắm"
               />
             </Form.Item>
@@ -181,6 +233,7 @@ export default function CreateDepartment() {
                 name="giaTien"
                 min={0}
                 onChange={handleChangeValue("giaTien")}
+                value={formik.values.giaTien}
                 placeholder="Giá tiền"
               />
             </Form.Item>
@@ -188,63 +241,106 @@ export default function CreateDepartment() {
           <Col className="gutter-row" span={12}>
             <Form.Item label="Mô tả">
               <TextArea
-                rows={3}
+                rows={6}
                 size="large"
                 name="moTa"
                 onChange={formik.handleChange}
+                value={formik.values.moTa}
                 placeholder="Mô tả"
               />
             </Form.Item>
           </Col>
           <Col className="gutter-row" span={8}>
             <Form.Item label="Máy giặt" valuePropName="checked">
-              <Switch name="mayGiat" onChange={handleChangeValue("mayGiat")} />
+              <Switch
+                name="mayGiat"
+                onChange={handleChangeValue("mayGiat")}
+                checked={formik.values.mayGiat}
+              />
             </Form.Item>
           </Col>
           <Col className="gutter-row" span={8}>
             <Form.Item label="Bàn là" valuePropName="checked">
-              <Switch name="banLa" onChange={handleChangeValue("banLa")} />
+              <Switch
+                name="banLa"
+                onChange={handleChangeValue("banLa")}
+                checked={formik.values.banLa}
+              />
             </Form.Item>
           </Col>
           <Col className="gutter-row" span={8}>
             <Form.Item label="Tivi" valuePropName="checked">
-              <Switch name="tivi" onChange={handleChangeValue("tivi")} />
+              <Switch
+                name="tivi"
+                onChange={handleChangeValue("tivi")}
+                checked={formik.values.tivi}
+              />
             </Form.Item>
           </Col>
           <Col className="gutter-row" span={8}>
             <Form.Item label="Điều hòa" valuePropName="checked">
-              <Switch name="dieuHoa" onChange={handleChangeValue("dieuHoa")} />
+              <Switch
+                name="dieuHoa"
+                onChange={handleChangeValue("dieuHoa")}
+                checked={formik.values.dieuHoa}
+              />
             </Form.Item>
           </Col>
           <Col className="gutter-row" span={8}>
             <Form.Item label="Wifi" valuePropName="checked">
-              <Switch name="wifi" onChange={handleChangeValue("wifi")} />
+              <Switch
+                name="wifi"
+                onChange={handleChangeValue("wifi")}
+                checked={formik.values.wifi}
+              />
             </Form.Item>
           </Col>
           <Col className="gutter-row" span={8}>
             <Form.Item label="Phòng bếp" valuePropName="checked">
-              <Switch name="bep" onChange={handleChangeValue("bep")} />
+              <Switch
+                name="bep"
+                onChange={handleChangeValue("bep")}
+                checked={formik.values.bep}
+              />
             </Form.Item>
           </Col>
           <Col className="gutter-row" span={8}>
             <Form.Item label="Nơi đỗ xe" valuePropName="checked">
-              <Switch name="doXe" onChange={handleChangeValue("doXe")} />
+              <Switch
+                name="doXe"
+                onChange={handleChangeValue("doXe")}
+                checked={formik.values.doXe}
+              />
             </Form.Item>
           </Col>
           <Col className="gutter-row" span={8}>
             <Form.Item label="Hồ bơi" valuePropName="checked">
-              <Switch name="hoBoi" onChange={handleChangeValue("hoBoi")} />
+              <Switch
+                name="hoBoi"
+                onChange={handleChangeValue("hoBoi")}
+                checked={formik.values.hoBoi}
+              />
             </Form.Item>
           </Col>
           <Col className="gutter-row" span={8}>
             <Form.Item label="Bàn ủi" valuePropName="checked">
-              <Switch name="banUi" onChange={handleChangeValue("banUi")} />
+              <Switch
+                name="banUi"
+                onChange={handleChangeValue("banUi")}
+                checked={formik.values.banUi}
+              />
+            </Form.Item>
+          </Col>
+          <Col className="gutter-row" span={12}>
+            <Form.Item label="Hình ảnh">
+              <input type="file" onChange={handleUploadFile} />
+              <img className="mt-2" src={img} width={200} alt="" />
             </Form.Item>
           </Col>
         </Row>
         <div className="d-flex justify-content-end">
           <button type="submit" className="btn btn-primary mr-2">
-            Thêm mới
+            Lưu thay đổi
           </button>
           <button
             type="submit"

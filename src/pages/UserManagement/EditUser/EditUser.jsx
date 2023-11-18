@@ -1,13 +1,15 @@
-import { Col, DatePicker, Form, Input, Radio, Row, Select } from "antd";
+import { Col, DatePicker, Form, Input, Radio, Row, notification } from "antd";
 import { useFormik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { userService } from "../../../services/userService";
 import dayjs from "dayjs";
+import { loadingContext } from "../../../contexts/LoadingContext/LoadingContext";
 
 export default function EditUser() {
   const [gender, setGender] = useState("");
   const [userDetail, setUserDetail] = useState({});
+  const [_, setLoadingContext] = useContext(loadingContext);
   const navigate = useNavigate();
   const params = useParams();
 
@@ -16,10 +18,12 @@ export default function EditUser() {
   }, []);
 
   const fetchUserDetail = async () => {
+    setLoadingContext({ isLoading: true });
     const result = await userService.fetchUserDetailApi(params.userId);
     setUserDetail(result.data.content);
+    setLoadingContext({ isLoading: false });
   };
-  console.log(userDetail);
+
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -33,7 +37,19 @@ export default function EditUser() {
       role: userDetail.role,
     },
     onSubmit: async (values) => {
-      console.log({ values });
+      try {
+        await userService.fetchUpdateUserApi(params.userId, values);
+        notification.success({
+          message: "Cập nhật người dùng thành công!",
+          placement: "bottomRight",
+        });
+        navigate("/admin/user");
+      } catch (error) {
+        notification.error({
+          message: "Cập nhật người dùng thất bại!",
+          placement: "bottomRight",
+        });
+      }
     },
   });
 
@@ -55,6 +71,36 @@ export default function EditUser() {
   const handleChangeDatePicker = (value) => {
     const birthday = dayjs(value).format("YYYY-MM-DD");
     formik.setFieldValue("birthday", birthday);
+  };
+
+  const pattent = /^\d{4}-\d{2}-\d{2}$/;
+  const renderDatePicker = () => {
+    if (pattent.test(formik.values.birthday)) {
+      return (
+        <DatePicker
+          name="birthday"
+          format={"DD/MM/YYYY"}
+          size="large"
+          style={{ width: "100%" }}
+          onChange={handleChangeDatePicker}
+          value={dayjs(formik.values.birthday, "YYYY-MM-DD")}
+        />
+      );
+    } else {
+      return (
+        <DatePicker
+          size="large"
+          format="DD/MM/YYYY"
+          name="birthday"
+          value={dayjs(formik.values.birthday, "DD/MM/YYYY")}
+          onChange={(_, dateString) => {
+            formik.setFieldValue("birthday", dateString);
+          }}
+          placeholder="Ngày sinh"
+          style={{ width: "100%" }}
+        />
+      );
+    }
   };
 
   return (
@@ -118,19 +164,7 @@ export default function EditUser() {
           </Form.Item>
         </Col>
         <Col className="gutter-row" span={12}>
-          <Form.Item label="Ngày sinh">
-            <DatePicker
-              size="large"
-              format="DD/MM/YYYY"
-              name="birthday"
-              value={dayjs(formik.values.birthday, "DD/MM/YYYY")}
-              onChange={(_, dateString) => {
-                formik.setFieldValue("birthday", dateString);
-              }}
-              placeholder="Ngày sinh"
-              style={{ width: "100%" }}
-            />
-          </Form.Item>
+          <Form.Item label="Ngày sinh">{renderDatePicker()}</Form.Item>
         </Col>
         <Col className="gutter-row" span={12}>
           <Form.Item label="Giới tính">
@@ -167,7 +201,7 @@ export default function EditUser() {
       </Row>
       <div className="d-flex justify-content-end">
         <button type="submit" className="btn btn-primary mr-2">
-          Cập nhật
+          Lưu thay đổi{" "}
         </button>
         <button
           type="submit"

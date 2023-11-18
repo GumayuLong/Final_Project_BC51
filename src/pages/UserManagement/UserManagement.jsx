@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Button, Table, notification } from "antd";
+import React, { useContext, useEffect, useState } from "react";
+import { Button, Popover, Table, notification } from "antd";
 import Search from "antd/es/input/Search";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,9 +8,11 @@ import { faPen, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { userService } from "../../services/userService";
 
 import "../../styles/styling.scss";
+import { loadingContext } from "../../contexts/LoadingContext/LoadingContext";
 
 export default function UserManagement() {
   const [userList, setUserList] = useState();
+  const [_, setLoadingContext] = useContext(loadingContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,6 +20,7 @@ export default function UserManagement() {
   }, []);
 
   const fetchUserList = async (name = "") => {
+    setLoadingContext({ isLoading: true });
     if (name.trim() !== "") {
       const result = await userService.fetchSearchUserApi(name);
 
@@ -27,6 +30,7 @@ export default function UserManagement() {
 
       setUserList(result.data.content);
     }
+    setLoadingContext({ isLoading: false });
   };
 
   const columns = [
@@ -91,22 +95,26 @@ export default function UserManagement() {
       width: 150,
       render: (text, object) => (
         <div className="btn-action">
-          <NavLink
-            key={1}
-            className="mb-1"
-            to={`/admin/user/edit/${object.id}`}
-          >
-            <button className="btn-icon text-info">
-              <FontAwesomeIcon className="icon-size" icon={faPen} />
-            </button>
-          </NavLink>
+          <Popover placement="bottom" content="Sửa">
+            <NavLink
+              key={1}
+              className="mb-1"
+              to={`/admin/user/edit/${object.id}`}
+            >
+              <button className="btn-icon text-info">
+                <FontAwesomeIcon className="icon-size" icon={faPen} />
+              </button>
+            </NavLink>
+          </Popover>
 
-          <button
-            className="btn-icon text-danger"
-            onClick={() => handleDeleteUser(object)}
-          >
-            <FontAwesomeIcon className="icon-size" icon={faTrash} />
-          </button>
+          <Popover placement="bottom" content="Xóa">
+            <button
+              className="btn-icon text-danger"
+              onClick={() => handleDeleteUser(object)}
+            >
+              <FontAwesomeIcon className="icon-size" icon={faTrash} />
+            </button>
+          </Popover>
         </div>
       ),
     },
@@ -122,7 +130,7 @@ export default function UserManagement() {
 
   const handleDeleteUser = async (object) => {
     const confirm = window.confirm(
-      "Bạn có chắc muốn xóa người dùng " + object.id + "?"
+      "Bạn có chắc muốn xóa người dùng " + object.name + "?"
     );
 
     if (!confirm) return;

@@ -1,94 +1,91 @@
 import { request } from "../configs/api";
 
 class UserService {
-	fetchUserListApi() {
-		return request({
-			url: "/users",
-			method: "GET",
-		});
-	}
+  // LOGIN AND LOGOUT API
+  loginApi(data) {
+    return request({
+      url: `/auth/signin`,
+      method: "POST",
+      data,
+    });
+  }
 
-	fetchSearchUserApi(name) {
-		return request({
-			url: `users/search/${name}`,
-			method: "GET",
-		});
-	}
+  registerApi(data) {
+    return request({
+      url: `/auth/signup`,
+      method: "POST",
+      data,
+    });
+  }
 
-	fetchCreateUserApi(data) {
-		return request({
-			url: "/users",
-			method: "POST",
-			data,
-		});
-	}
+  // USER API
 
-	// fetchUploadAvatarApi() {
-	//   return request({
-	//     url: "/users/upload-avatar",
-	//     method: "POST",
-	//   });
-	// }
+  fetchUserListApi() {
+    return request({
+      url: "/users",
+      method: "GET",
+    });
+  }
 
-	fetchDeleteUserApi(id) {
-		return request({
-			url: `/users?id=${id}`,
-			method: "DELETE",
-		});
-	}
+  fetchSearchUserApi(name) {
+    return request({
+      url: `users/search/${name}`,
+      method: "GET",
+    });
+  }
 
-	fetchUpdateUserApi(id) {
-		return request({
-			url: `/users?id=${id}`,
-			method: "PUT",
-		});
-	}
+  fetchCreateUserApi(data) {
+    return request({
+      url: "/users",
+      method: "POST",
+      data,
+    });
+  }
 
-	fetchUserDetailApi(id) {
-		return request({
-			url: `/users/${id}`,
-			method: "GET",
-		});
-	}
+  fetchDeleteUserApi(id) {
+    return request({
+      url: `/users?id=${id}`,
+      method: "DELETE",
+    });
+  }
 
-	loginApi(data) {
-		return request({
-			url: `/auth/signin`,
-			method: "POST",
-			data,
-		});
-	}
+  fetchUpdateUserApi(id, data) {
+    return request({
+      url: `/users/${id}`,
+      method: "PUT",
+      data,
+    });
+  }
 
-	registerApi(data) {
-		return request({
-			url: `/auth/signup`,
-			method: "POST",
-			data,
-		});
-	}
+  fetchUserDetailApi(id) {
+    return request({
+      url: `/users/${id}`,
+      method: "GET",
+    });
+  }
 
-	userInfoApi(userId) {
-    return request ({
+  userInfoApi(userId) {
+    return request({
       url: `/users/${userId}`,
       method: "GET",
-    })
-  };
+    });
+  }
 
-  	updateUserInfoApi(userId, data) {
-		return request({
-			url: `/users/${userId}`,
-			method: "PUT",
-			data
-		});
-	}
+  updateUserInfoApi(userId, data) {
+    return request({
+      url: `/users/${userId}`,
+      method: "PUT",
+      data,
+    });
+  }
 
-	postAvatarApi(data) {
-		return request({
-			url: "/users/upload-avatar",
-			method: "POST",
-			data
-		})
-	}
+  postAvatarApi(data) {
+    return request({
+      url: "/users/upload-avatar",
+      method: "POST",
+      data,
+    });
+  }
 }
 
 export const userService = new UserService();

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Button, Table, notification } from "antd";
+import React, { useContext, useEffect, useState } from "react";
+import { Button, Popover, Table, notification } from "antd";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -7,9 +7,11 @@ import { faPen, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { positionService } from "../../services/positionService";
 
 import "../../styles/styling.scss";
+import { loadingContext } from "../../contexts/LoadingContext/LoadingContext";
 
 export default function PositionManagement() {
   const [positionList, setPositionList] = useState();
+  const [_, setLoadingContext] = useContext(loadingContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,9 +19,10 @@ export default function PositionManagement() {
   }, []);
 
   const fetchPositionList = async () => {
+    setLoadingContext({ isLoading: true });
     const result = await positionService.fetchPositionListApi();
-
     setPositionList(result.data.content);
+    setLoadingContext({ isLoading: false });
   };
 
   const columns = [
@@ -79,22 +82,26 @@ export default function PositionManagement() {
       width: 150,
       render: (text, object) => (
         <div className="btn-action">
-          <NavLink
-            key={1}
-            className="mb-1"
-            to={`/admin/user/edit/${object.id}`}
-          >
-            <button className="btn-icon text-info">
-              <FontAwesomeIcon className="icon-size" icon={faPen} />
-            </button>
-          </NavLink>
+          <Popover placement="bottom" content="Sửa">
+            <NavLink
+              key={1}
+              className="mb-1"
+              to={`/admin/position/edit/${object.id}`}
+            >
+              <button className="btn-icon text-info">
+                <FontAwesomeIcon className="icon-size" icon={faPen} />
+              </button>
+            </NavLink>
+          </Popover>
 
-          <button
-            className="btn-icon text-danger"
-            onClick={() => handleDeletePosition(object)}
-          >
-            <FontAwesomeIcon className="icon-size" icon={faTrash} />
-          </button>
+          <Popover placement="bottom" content="Xóa">
+            <button
+              className="btn-icon text-danger"
+              onClick={() => handleDeletePosition(object)}
+            >
+              <FontAwesomeIcon className="icon-size" icon={faTrash} />
+            </button>
+          </Popover>
         </div>
       ),
     },
@@ -115,7 +122,7 @@ export default function PositionManagement() {
 
     if (!confirm) return;
     try {
-      await positionService.fetchDeletePositionApi(object.id);
+      await positionService.fetchDeletePositionApi(object.tenViTri);
       notification.success({
         message: "Xóa vị trí thành công",
         placement: "bottomRight",

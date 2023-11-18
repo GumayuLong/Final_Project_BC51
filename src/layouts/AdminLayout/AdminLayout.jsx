@@ -6,36 +6,39 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, theme } from "antd";
-import { Link, Outlet } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
 
-import "./adminLayout.scss";
+import "../../styles/styling.scss";
+import { setUserInfoAction } from "../../store/actions/userAction";
 
 const { Header, Content, Footer, Sider } = Layout;
 
 export default function AdminLayout() {
-  const userState = useSelector((state) => state.userReducer);
+  const userState = useSelector((state) => state.userReducer.userInfo);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("USER_INFO");
+    dispatch(setUserInfoAction(null));
+    navigate("/");
+  };
 
   const renderContent = () => {
-    if (userState.userInfo) {
+    if (userState) {
       return (
         <div
           className="d-flex align-items-center justify-content-end"
           style={{ borderBottom: "1px solid #343a40", height: 50 }}
         >
-          <span className="text-dark">Hello {userState.userInfo.name}</span>
-          <button
-            // onClick={handleLogout}
-            className="ml-3 btn btn-warning"
-          >
+          <span className="text-dark">Hello {userState.user.name}</span>
+          <button onClick={handleLogout} className="ml-3 btn btn-warning">
             LOGOUT
           </button>
-          <button
-            // onClick={handleBack}
-            className="mx-3 btn "
-          >
+          <button onClick={() => navigate("/")} className="mx-3 btn ">
             <FontAwesomeIcon icon={faRightToBracket} className="text-dark" />
           </button>
         </div>
@@ -60,7 +63,12 @@ export default function AdminLayout() {
         onCollapse={(value) => setCollapsed(value)}
       >
         <div className="demo-logo-vertical" />
-        <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
+        <Menu
+          className="nav-admin"
+          theme="dark"
+          defaultSelectedKeys={["1"]}
+          mode="inline"
+        >
           <Menu.Item key="1" icon={<UserOutlined />}>
             <Link to="/admin/user">Người dùng</Link>
           </Menu.Item>
@@ -70,8 +78,8 @@ export default function AdminLayout() {
           <Menu.Item key="3" icon={<DesktopOutlined />}>
             <Link to="/admin/department">Thông tin phòng</Link>
           </Menu.Item>
-          <Menu.Item disabled key="4" icon={<FileOutlined />}>
-            <Link to="#">Quản lý đặt phòng</Link>
+          <Menu.Item key="4" icon={<FileOutlined />}>
+            <Link to="/admin/booked">Quản lý đặt phòng</Link>
           </Menu.Item>
         </Menu>
       </Sider>

@@ -1,26 +1,51 @@
 import { Col, Form, Input, Row, notification } from "antd";
 import { useFormik } from "formik";
-import React, { Fragment, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { Fragment, useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { positionService } from "../../../services/positionService";
+import { loadingContext } from "../../../contexts/LoadingContext/LoadingContext";
 
-export default function CreatePosition() {
+export default function EditPosition() {
   const [img, setImg] = useState();
+  const [positionDetail, setPositionDetail] = useState({});
+  const [_, setLoadingContext] = useContext(loadingContext);
   const navigate = useNavigate();
+  const params = useParams();
+
+  useEffect(() => {
+    fetchPositionDetail();
+  }, []);
+
+  const fetchPositionDetail = async () => {
+    setLoadingContext({ isLoading: true });
+    const result = await positionService.fetchPositionDetailApi(
+      params.positionId
+    );
+    setPositionDetail(result.data.content);
+    setLoadingContext({ isLoading: false });
+  };
 
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      tenViTri: "",
-      tinhThanh: "",
-      quocGia: "",
-      hinhAnh: "",
+      id: params.positionId,
+      tenViTri: positionDetail.tenViTri,
+      tinhThanh: positionDetail.tinhThanh,
+      quocGia: positionDetail.quocGia,
+      hinhAnh: positionDetail?.hinhAnh,
     },
 
     onSubmit: async (values) => {
+      let formData = new FormData();
+      if (values.hinhAnh !== null) {
+        formData.append("File", values.hinhAnh, values.hinhAnh.name);
+      }
+
       try {
-        await positionService.fetchCreatePositionApi(values);
+        await positionService.fetchUpdatePositionApi(params.positionId, values);
+        await positionService.uploadImage(params.positionId);
         notification.success({
-          message: "Tạo vị trí thành công!",
+          message: "Cập nhật vị trí thành công!",
           placement: "bottomRight",
         });
         navigate("/admin/position");
@@ -32,6 +57,25 @@ export default function CreatePosition() {
       }
     },
   });
+
+  const handleUploadFile = (event) => {
+    let file = event.target.files[0];
+
+    if (
+      file.type === "image/jpeg" ||
+      file.type === "image/jpg" ||
+      file.type === "image/png" ||
+      file.type === "image/gif"
+    ) {
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (e) => {
+        setImg(e.target.result);
+      };
+
+      formik.setFieldValue("avatar", file);
+    }
+  };
 
   return (
     <Fragment>
@@ -55,6 +99,7 @@ export default function CreatePosition() {
               <Input
                 size="large"
                 name="tenViTri"
+                value={formik.values.tenViTri}
                 onChange={formik.handleChange}
                 placeholder="Tên vị trí"
               />
@@ -65,6 +110,7 @@ export default function CreatePosition() {
               <Input
                 size="large"
                 name="tinhThanh"
+                value={formik.values.tinhThanh}
                 onChange={formik.handleChange}
                 placeholder="Tỉnh thành"
               />
@@ -75,15 +121,22 @@ export default function CreatePosition() {
               <Input
                 size="large"
                 name="quocGia"
+                value={formik.values.quocGia}
                 onChange={formik.handleChange}
-                placeholder="Số điện thoại"
+                placeholder="Quốc gia"
               />
+            </Form.Item>
+          </Col>
+          <Col className="gutter-row" span={12}>
+            <Form.Item label="Hình ảnh">
+              <input type="file" onChange={handleUploadFile} />
+              <img className="mt-2" src={img} width={200} alt="" />
             </Form.Item>
           </Col>
         </Row>
         <div className="d-flex justify-content-end">
           <button type="submit" className="btn btn-primary mr-2">
-            Thêm mới
+            Lưu thay đổi
           </button>
           <button
             type="submit"

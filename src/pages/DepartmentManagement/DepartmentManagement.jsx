@@ -1,5 +1,5 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { Button, Table, notification } from "antd";
+import React, { Fragment, useContext, useEffect, useState } from "react";
+import { Button, Popover, Table, notification } from "antd";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -7,9 +7,11 @@ import { faPen, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { departmentService } from "../../services/departmentServices";
 
 import "../../styles/styling.scss";
+import { loadingContext } from "../../contexts/LoadingContext/LoadingContext";
 
 export default function DepartmentManagement() {
   const [departmentList, setDepartmentList] = useState();
+  const [_, setLoadingContext] = useContext(loadingContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,9 +19,10 @@ export default function DepartmentManagement() {
   }, []);
 
   const fetchDepartmentList = async () => {
+    setLoadingContext({ isLoading: true });
     const result = await departmentService.fetchDepartmentListApi();
-
     setDepartmentList(result.data.content);
+    setLoadingContext({ isLoading: false });
   };
 
   const columns = [
@@ -64,22 +67,26 @@ export default function DepartmentManagement() {
       width: 150,
       render: (text, object) => (
         <div className="btn-action">
-          <NavLink
-            key={1}
-            className="mb-1"
-            to={`/admin/user/edit/${object.id}`}
-          >
-            <button className="btn-icon text-info">
-              <FontAwesomeIcon className="icon-size" icon={faPen} />
-            </button>
-          </NavLink>
+          <Popover placement="bottom" content="Sửa">
+            <NavLink
+              key={1}
+              className="mb-1"
+              to={`/admin/department/edit/${object.id}`}
+            >
+              <button className="btn-icon text-info">
+                <FontAwesomeIcon className="icon-size" icon={faPen} />
+              </button>
+            </NavLink>
+          </Popover>
 
-          <button
-            className="btn-icon text-danger"
-            onClick={() => handleDeleteUser(object)}
-          >
-            <FontAwesomeIcon className="icon-size" icon={faTrash} />
-          </button>
+          <Popover placement="bottom" content="Xóa">
+            <button
+              className="btn-icon text-danger"
+              onClick={() => handleDeleteUser(object)}
+            >
+              <FontAwesomeIcon className="icon-size" icon={faTrash} />
+            </button>
+          </Popover>
         </div>
       ),
     },
@@ -95,7 +102,7 @@ export default function DepartmentManagement() {
 
   const handleDeleteUser = async (object) => {
     const confirm = window.confirm(
-      "Bạn có chắc muốn xóa phòng thuê số " + object.id + "?"
+      "Bạn có chắc muốn xóa phòng thuê số " + object.tenPhong + "?"
     );
 
     if (!confirm) return;
