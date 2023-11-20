@@ -12,7 +12,6 @@
     max-width: 500px;
     padding-left: 24px;
     padding-right: 24px;
-    width: 100%;
     display: block;
     box-sizing: border-box;
     margin-left: auto;
@@ -23,7 +22,6 @@
     max-width: 800px;
     padding-left: 24px;
     padding-right: 24px;
-    width: 100%;
     display: block;
     box-sizing: border-box;
     margin-left: auto;
@@ -39,7 +37,7 @@
     flex-direction: column;
 
     .form-group {
-        width: 275px;
+      width: 100%;
     }
 
     .icon {
@@ -77,7 +75,7 @@
       }
     }
 
-    ::placeholder{
+    ::placeholder {
       color: #9ca3af;
       font-style: italic;
       font-size: 14px;
@@ -92,16 +90,16 @@
       text-align: right;
       margin: 25px 0 0 0;
     }
-    .registerlayout{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+    .registerlayout {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-    .labelRegister{
-        color: rgb(95, 186, 163);
-        text-transform: uppercase;
-        font-weight: 700;
-        font-style: italic;
+    .labelRegister {
+      color: rgb(95, 186, 163);
+      text-transform: uppercase;
+      font-weight: 700;
+      font-style: italic;
     }
   }
 }

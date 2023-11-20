@@ -1,10 +1,5 @@
 .bg {
-  background-image: linear-gradient(
-    to right,
-    rgb(244, 192, 218),
-    rgb(254, 155, 177),
-    rgb(253, 184, 229)
-  );
+  background-image: linear-gradient(to right, #f47c7c, #ef4444, #f47c7c);
 }
 .cursor-pointer {
   cursor: pointer;
@@ -12,7 +7,16 @@
 .cursor-pointer:hover {
   text-decoration: underline;
 }
+
 .info-left,
-.info-left svg {
-  color: rgb(44, 42, 42);
+.info-left {
+  svg {
+    color: rgb(44, 42, 42);
+  }
+}
+
+@media screen and (max-width: 991.98px) {
+  .footer-bottom-info {
+    flex-direction: column;
+  }
 }
