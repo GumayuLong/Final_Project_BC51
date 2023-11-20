@@ -98,11 +98,6 @@ export default function HeaderHome() {
             </div>
           </div>
 
-          {/* <span className="state">Hello {userState.user.name}</span>
-          <button onClick={handleLogout} className="ml-2 btn-custom-1">
-            LOGOUT
-          </button> */}
-
           {renderAdmin()}
         </>
       );
