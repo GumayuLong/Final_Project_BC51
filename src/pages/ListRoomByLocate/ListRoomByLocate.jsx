@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useContext } from "react";
-import { locateService } from "../../services/locate";
 import { loadingContext } from "../../contexts/LoadingContext/LoadingContext";
 import { Card, Col, Row } from "antd";
 import { useNavigate } from "react-router-dom";
 import Meta from "antd/es/card/Meta";
 import "./style.scss";
+import { positionService } from "../../services/positionService";
 
 export default function ListRoomByLocate() {
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ export default function ListRoomByLocate() {
   const [listRoomByLocate, setListRoomByLocate] = useState([]);
   const fetchListRoomByLocate = async () => {
     setLoadingState({ isLoading: true });
-    const result = await locateService.fetchLocateDetailApi();
+    const result = await positionService.fetchPositionListApi();
     setListRoomByLocate(result.data.content);
     setLoadingState({ isLoading: false });
   };
