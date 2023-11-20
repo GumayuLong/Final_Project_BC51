@@ -1,4 +1,4 @@
-import React, { createRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { departmentService } from "../../services/departmentServices";
 import { useParams } from "react-router-dom";
 import { bookRoomService } from "../../services/bookRoomService";
@@ -25,9 +25,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { UserOutlined } from "@ant-design/icons";
 import { positionService } from "../../services/positionService";
-import { DatePicker, InputNumber, notification } from "antd";
+import { notification } from "antd";
 import dayjs from "dayjs";
 import { faCommentDots } from "@fortawesome/free-regular-svg-icons";
+import "./style.scss";
 
 export default function RoomDetail() {
   const params = useParams();
@@ -251,9 +252,9 @@ export default function RoomDetail() {
   return (
     <React.Fragment>
       <section className="container my-4">
-        <div className="room-detail">
+        <div>
           <h3>{detail.tenPhong}</h3>
-          <div className="d-flex justify-content-between align-items-center my-3">
+          <div className="room-detail d-flex justify-content-between align-items-center my-3">
             <div>
               <span className="text-sm">
                 <FontAwesomeIcon icon={faStar} /> 4 -
@@ -265,7 +266,7 @@ export default function RoomDetail() {
               </span>
               <span className="underline text-sm mx-1">{locate.tenViTri}</span>
             </div>
-            <div className="d-flex justify-content-between align-items-center">
+            <div className="room-detail-right d-flex justify-content-between align-items-center">
               <button className="btn-custom-3 px-2 py-1 d-flex justify-content-between align-items-center">
                 <FontAwesomeIcon icon={faShare} />
                 <span className="ml-2">Chia sẻ</span>
@@ -283,7 +284,7 @@ export default function RoomDetail() {
 
       <section className="container">
         <div className="row">
-          <div className="col-8">
+          <div className="col-12 col-sm-12 col-md-6 col-xl-8">
             <div className="d-flex justify-content-between align-items-center my-3 border-b">
               <div>
                 <h3 className="font-semibold text-lg sm:text-2xl text-gray-800">
@@ -541,7 +542,7 @@ export default function RoomDetail() {
             </div>
           </div>
 
-          <div className="col-4">
+          <div className="col-12 col-sm-12 col-md-6 col-xl-4">
             <div style={{ position: "sticky", top: "1rem" }}>
               <div
                 className="bg-white shadow-xl border"
@@ -663,7 +664,7 @@ export default function RoomDetail() {
         </div>
       </section>
 
-      <section className="container">
+      <section className="container my-4">
         <hr />
         <h5 className="font-semibold text-gray-800 text-xl pb-4 flex items-center">
           <FontAwesomeIcon icon={faStar} />
