@@ -14,12 +14,14 @@ import PositionManagement from "../pages/PositionManagement/PositionManagement";
 import CreatePosition from "../pages/PositionManagement/CreatePosition/CreatePosition";
 import CreateDepartment from "../pages/DepartmentManagement/CreateDepartment/CreateDepartment";
 import PersonalInfo from "../pages/Personalinfo/PersonalInfo";
+import ListRoomByLocate from "../pages/ListRoomByLocate/ListRoomByLocate";
 import EditDepartment from "../pages/DepartmentManagement/EditDepartment/EditDepartment";
 import EditPosition from "../pages/PositionManagement/EditPosition/EditPosition";
 import BookedManagement from "../pages/BookedManagement/BookedManagement";
 import BookedDetail from "../pages/BookedManagement/BookedDetail/BookedDetail";
 import AdminGuard from "../guards/AdminGuard";
-
+import AuthGuard from "../guards/AuthGuard";
+import NoAuthGuard from "../guards/NoAuthGuard";
 export default function Router() {
   const routing = useRoutes([
     {
@@ -32,11 +34,19 @@ export default function Router() {
         },
         {
           path: "detail/:id",
-          element: <RoomDetail />,
+          element: (
+            <AuthGuard>
+              <RoomDetail />
+            </AuthGuard>
+            ),
         },
         {
           path: "/login",
-          element: <Login />,
+          element: (
+            <NoAuthGuard>
+              <Login />
+            </NoAuthGuard>
+            ),
         },
         {
           path: "/register",
@@ -45,6 +55,10 @@ export default function Router() {
         {
           path: "/personal-info/:userId",
           element: <PersonalInfo />,
+        },
+        {
+          path: "/listroombylocate",
+          element: <ListRoomByLocate />,
         },
       ],
     },

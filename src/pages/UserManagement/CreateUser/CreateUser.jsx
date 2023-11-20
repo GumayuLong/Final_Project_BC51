@@ -95,16 +95,6 @@ export default function CreateUser() {
         }}
       >
         <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-          {/* <Col className="gutter-row" span={12}>
-            <Form.Item label="Mã người dùng">
-              <Input
-                size="large"
-                name="id"
-                onChange={formik.handleChange}
-                placeholder="Mã người dùng"
-              />
-            </Form.Item>
-          </Col> */}
           <Col className="gutter-row" span={12}>
             <Form.Item label="Họ và tên">
               <Input
