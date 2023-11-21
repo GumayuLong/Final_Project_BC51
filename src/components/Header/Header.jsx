@@ -97,10 +97,6 @@ export default function HeaderHome() {
               </button>
             </div>
           </div>
-<<<<<<< HEAD
-=======
-
->>>>>>> main
           {renderAdmin()}
         </div>
       );
