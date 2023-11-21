@@ -4,7 +4,6 @@ import { notification } from "antd";
 import { userService } from "../../services/userService";
 import { bookRoomService } from "../../services/bookRoomService";
 import { validation } from "../../validations/validation";
-import "./style.scss";
 
 export default function PersonalInfo() {
   const params = useParams();
@@ -95,7 +94,7 @@ export default function PersonalInfo() {
       await userService
         .updateUserInfoApi(userInfo.id, userInfo)
         .then((result) => {
-          setUserInfo(result.data.content);
+          setUserInfo(result.data.content)
           notification.success({
             message: "Cập nhật thông tin thành công",
             placement: "topRight",
@@ -188,8 +187,8 @@ export default function PersonalInfo() {
                       className="form-control"
                       name="gender"
                     >
-                      <option value={false}>Nam</option>
-                      <option value={true}>Nữ</option>
+                      <option value={true}>Nam</option>
+                      <option value={false}>Nữ</option>
                     </select>
                   </div>
                   <div className="form-group">
@@ -273,45 +272,36 @@ export default function PersonalInfo() {
         </div>
       </nav>
       <div className="tab-content mt-3" id="nav-tabContent">
+        {/* update info user */}
         <div
-          className="tab-pane fade show active w-90 py-3 "
+          className="tab-pane fade show active w-90 ml-5 py-5 "
           id="nav-home"
           role="tabpanel"
           aria-labelledby="nav-home-tab"
           tabIndex={0}
         >
           <div className="row">
-            <div className="col-6 col-sm-6 col-md-4 col-xl-3">
-              <div className="p-0 m-0 d-flex flex-column align-items-center">
-                <img
-                  className="img-thumbnail img-fluid"
-                  style={{
-                    borderRadius: "50%",
-                    objectFit: "cover",
-                    objectPosition: "center",
-                    width: 150,
-                    height: 150,
-                  }}
-                  src={avatar}
-                />
-                <input
-                  onChange={handleUploadAvatar}
-                  className="my-3 form-control"
-                  type="file"
-                />
-                <button
-                  type="button"
-                  className="btn btn-info"
-                  onClick={uploadAvatar}
-                  style={{ width: "100%" }}
-                >
-                  Upload Avatar
-                </button>
-              </div>
+            <div className="col-2">
+              <img
+                className="rounded-circle"
+                src={avatar}
+                width="200px"
+                height="200px"
+              />
+              <input
+                onChange={handleUploadAvatar}
+                className="my-3 form-control"
+                type="file"
+              />
+              <button
+                type="button"
+                className="btn btn-info"
+                onClick={uploadAvatar}
+              >
+                Upload avatar
+              </button>
             </div>
-            <div className="col-6 col-sm-6 col-md-8 col-xl-9">
-              {renderUserInfo()}
-            </div>
+            {renderUserInfo()}
             <div className="modal" id="myModal">
               <div className="modal-dialog">
                 <div className="modal-content">
@@ -418,11 +408,11 @@ export default function PersonalInfo() {
                 </div>
               </div>
             </div>
-            <div className="col-12 text-left">
-              <div className="col-12 my-5 p-0">
-                <h4>Lịch sử đặt phòng</h4>
+            <div className="col-5 text-center">
+              <div className="w-90 ml-5 py-5 col-9">
+                <h1>Lịch sử đặt phòng</h1>
                 <table className="table table-dark table-striped">
-                  <thead style={{ textAlign: "center" }}>
+                  <thead>
                     <tr>
                       <th style={{ borderTop: "none" }}>Mã phòng</th>
                       <th>Ngày đến</th>
