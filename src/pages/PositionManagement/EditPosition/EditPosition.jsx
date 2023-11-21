@@ -32,18 +32,12 @@ export default function EditPosition() {
       tenViTri: positionDetail.tenViTri,
       tinhThanh: positionDetail.tinhThanh,
       quocGia: positionDetail.quocGia,
-      hinhAnh: positionDetail?.hinhAnh,
+      hinhAnh: "",
     },
 
     onSubmit: async (values) => {
-      let formData = new FormData();
-      if (values.hinhAnh !== null) {
-        formData.append("File", values.hinhAnh[0], values.hinhAnh.name);
-      }
-
       try {
         await positionService.fetchUpdatePositionApi(params.positionId, values);
-        await positionService.uploadImage(params.positionId);
         notification.success({
           message: "Cập nhật vị trí thành công!",
           placement: "bottomRight",
@@ -57,25 +51,6 @@ export default function EditPosition() {
       }
     },
   });
-
-  const handleUploadFile = (event) => {
-    let file = event.target.files[0];
-
-    if (
-      file.type === "image/jpeg" ||
-      file.type === "image/jpg" ||
-      file.type === "image/png" ||
-      file.type === "image/gif"
-    ) {
-      let reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = (e) => {
-        setImg(e.target.result);
-      };
-
-      formik.setFieldValue("avatar", file);
-    }
-  };
 
   return (
     <Fragment>
@@ -125,12 +100,6 @@ export default function EditPosition() {
                 onChange={formik.handleChange}
                 placeholder="Quốc gia"
               />
-            </Form.Item>
-          </Col>
-          <Col className="gutter-row" span={12}>
-            <Form.Item label="Hình ảnh">
-              <input type="file" onChange={handleUploadFile} />
-              <img className="mt-2" src={img} width={200} alt="" />
             </Form.Item>
           </Col>
         </Row>

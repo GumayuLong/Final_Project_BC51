@@ -61,19 +61,12 @@ export default function EditDepartment() {
       hoBoi: department.hoBoi,
       banUi: department.banUi,
       maViTri: department.maViTri,
-      hinhAnh: department?.hinhAnh,
+      hinhAnh: "",
     },
 
     onSubmit: async (values) => {
-      console.log({ values });
-      // let formData = new FormData();
-      // if (values.hinhAnh !== null) {
-      //   formData.append("File", values.hinhAnh, values.hinhAnh.name);
-      // }
-
       try {
         await departmentService.fetchUpdateDepartmentApi(params.id, values);
-        // await departmentService.uploadImageApi(params.id);
         notification.success({
           message: "Cập nhật phòng thuê thành công!",
           placement: "bottomRight",
@@ -113,25 +106,6 @@ export default function EditDepartment() {
     return (value) => {
       formik.setFieldValue(name, value);
     };
-  };
-
-  const handleUploadFile = (event) => {
-    let file = event.target.files[0];
-
-    if (
-      file.type === "image/jpeg" ||
-      file.type === "image/jpg" ||
-      file.type === "image/png" ||
-      file.type === "image/gif"
-    ) {
-      let reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = (e) => {
-        setImg(e.target.result);
-      };
-
-      formik.setFieldValue("img", file);
-    }
   };
 
   return (
@@ -329,12 +303,6 @@ export default function EditDepartment() {
                 onChange={handleChangeValue("banUi")}
                 checked={formik.values.banUi}
               />
-            </Form.Item>
-          </Col>
-          <Col className="gutter-row" span={12}>
-            <Form.Item label="Hình ảnh">
-              <input type="file" onChange={handleUploadFile} />
-              <img className="mt-2" src={img} width={200} alt="" />
             </Form.Item>
           </Col>
         </Row>

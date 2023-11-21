@@ -191,10 +191,10 @@ export default function EditUser() {
         <Col className="gutter-row" span={12}>
           <Form.Item label="Loại người dùng">
             <Input
+              disabled
               name="role"
               size="large"
               value={formik.values.role}
-              placeholder="Chọn loại người dùng"
             />
           </Form.Item>
         </Col>
