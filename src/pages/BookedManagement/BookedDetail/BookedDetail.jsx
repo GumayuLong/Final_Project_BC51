@@ -17,30 +17,37 @@ export default function BookedDetail() {
 
   useEffect(() => {
     fetchBookedDetail();
-    fetchDepartmentDetail();
-    fetchUserDetail();
   }, []);
 
   const fetchBookedDetail = async () => {
     setLoadingContext({ isLoading: true });
     const result = await bookRoomService.fetchBookedDetailApi(params.id);
+    console.log(result.data.content);
     setDetail(result.data.content);
     setLoadingContext({ isLoading: false });
-
-    console.log(detail.maNguoiDung);
   };
 
+  useEffect(() => {
+    if (detail.maPhong) {
+      fetchDepartmentDetail(detail.maPhong);
+    }
+  }, [detail.maPhong]);
+
   //Lấy tên phòng theo mã phòng
-  const fetchDepartmentDetail = async () => {
-    const result = await departmentService.fetchDepartmentDetailApi(
-      detail.maPhong
-    );
+  const fetchDepartmentDetail = async (maPhong) => {
+    const result = await departmentService.fetchDepartmentDetailApi(maPhong);
     setRoom(result.data.content);
   };
 
+  useEffect(() => {
+    if (detail.maNguoiDung) {
+      fetchUserDetail(detail.maNguoiDung);
+    }
+  }, [detail.maNguoiDung]);
+
   //Lấy tên người dùng theo mã người dùng
-  const fetchUserDetail = async () => {
-    const result = await userService.fetchUserDetailApi(detail.maNguoiDung);
+  const fetchUserDetail = async (maNguoiDung) => {
+    const result = await userService.fetchUserDetailApi(maNguoiDung);
     setUser(result.data.content);
   };
 

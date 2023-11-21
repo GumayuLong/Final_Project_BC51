@@ -5,6 +5,7 @@ import { userService } from "../../services/userService";
 import { bookRoomService } from "../../services/bookRoomService";
 import { validation } from "../../validations/validation";
 import "./style.scss";
+import dayjs from "dayjs";
 
 export default function PersonalInfo() {
   const params = useParams();
@@ -143,8 +144,8 @@ export default function PersonalInfo() {
       return (
         <tr key={element.id}>
           <td>{element.maPhong}</td>
-          <td>{element.ngayDen}</td>
-          <td>{element.ngayDi}</td>
+          <td>{dayjs(element.ngayDen).format("DD/MM/YYYY")}</td>
+          <td>{dayjs(element.ngayDi).format("DD/MM/YYYY")}</td>
           <td>{element.soLuongKhach}</td>
         </tr>
       );
@@ -250,7 +251,7 @@ export default function PersonalInfo() {
   };
 
   return (
-    <div className="p-5" style={{ minHeight: "95vh" }}>
+    <div className="container p-5" style={{ minHeight: "95vh" }}>
       <h4>Personal infomation</h4>
       <div className="tab-content mt-3" id="nav-tabContent">
         <div
@@ -261,7 +262,7 @@ export default function PersonalInfo() {
           tabIndex={0}
         >
           <div className="row">
-            <div className="col-6 col-sm-6 col-md-4 col-xl-3">
+            <div className="col-12 col-sm-6 col-md-4 col-xl-3 mb-5">
               <div className="p-0 m-0 d-flex flex-column align-items-center">
                 <img
                   className="img-thumbnail img-fluid"
@@ -289,7 +290,7 @@ export default function PersonalInfo() {
                 </button>
               </div>
             </div>
-            <div className="col-6 col-sm-6 col-md-8 col-xl-9">
+            <div className="col-12 col-sm-6 col-md-8 col-xl-9">
               {renderUserInfo()}
             </div>
             <div className="modal" id="myModal">
@@ -401,13 +402,18 @@ export default function PersonalInfo() {
             <div className="col-12 text-left">
               <div className="col-12 my-5 p-0">
                 <h4>Lịch sử đặt phòng</h4>
-                <table className="table table-dark table-striped">
-                  <thead style={{ textAlign: "center" }}>
+                <table
+                  className="table table-bordered table-striped"
+                  style={{
+                    textAlign: "center",
+                  }}
+                >
+                  <thead>
                     <tr>
-                      <th style={{ borderTop: "none" }}>Mã phòng</th>
-                      <th>Ngày đến</th>
-                      <th>Ngày đi</th>
-                      <th>Số khách</th>
+                      <th style={{ verticalAlign: "middle" }}>Mã phòng</th>
+                      <th style={{ verticalAlign: "middle" }}>Ngày đến</th>
+                      <th style={{ verticalAlign: "middle" }}>Ngày đi</th>
+                      <th style={{ verticalAlign: "middle" }}>Số khách</th>
                     </tr>
                   </thead>
                   <tbody>{renderBookingInfo()}</tbody>
