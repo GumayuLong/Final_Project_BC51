@@ -154,124 +154,104 @@ export default function PersonalInfo() {
   const renderUserInfo = () => {
     let id = new Date();
     return (
-      <div className="col-5" key={id}>
-        <div className="form">
-          <div className="w-90 ml-5 py-5 col-9">
-            <h1 className="title">Thông tin cá nhân</h1>
-            <form>
-              <div className="registerlayout">
-                <div style={{ marginRight: "10px" }}>
-                  <div className="form-group">
-                    <div className="d-flex justify-content-between">
-                      <label className="labelRegister" htmlFor="">
-                        Họ và tên
-                      </label>
-                    </div>
-                    <input
-                      value={userInfo.name}
-                      disabled={true}
-                      name="name"
-                      type="text"
-                      className="form-control"
-                      id={userInfo.name}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <div className="d-flex justify-content-between">
-                      <label className="labelRegister" htmlFor="">
-                        Giới tính
-                      </label>
-                    </div>
-                    <select
-                      disabled={true}
-                      value={userInfo.gender}
-                      className="form-control"
-                      name="gender"
-                    >
-                      <option value={false}>Nam</option>
-                      <option value={true}>Nữ</option>
-                    </select>
-                  </div>
-                  <div className="form-group">
-                    <div className="d-flex justify-content-between">
-                      <label className="labelRegister" htmlFor="">
-                        Ngày sinh
-                      </label>
-                    </div>
-                    <input
-                      value={userInfo.birthday}
-                      disabled={true}
-                      id="inputBirthday"
-                      type="text"
-                      className="form-control"
-                      name="confirmPassword"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <div className="d-flex justify-content-between">
-                      <label className="labelRegister" htmlFor="">
-                        Địa chỉ email
-                      </label>
-                    </div>
-                    <input
-                      value={userInfo.email}
-                      disabled={true}
-                      name="email"
-                      type="text"
-                      className="form-control"
-                      id="inputEmail"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <div className="d-flex justify-content-between">
-                      <label className="labelRegister" htmlFor="">
-                        Số điện thoại
-                      </label>
-                    </div>
-                    <input
-                      value={userInfo.phone}
-                      disabled={true}
-                      name="phone"
-                      type="text"
-                      className="form-control"
-                      id="inputPhone"
-                    />
-                  </div>
-                  <button
-                    type="button"
-                    className="btn btn-warning"
-                    data-toggle="modal"
-                    data-target="#myModal"
-                  >
-                    Chỉnh sửa thông tin
-                  </button>
+      <div className="form" key={id}>
+        <form>
+          <div className="registerlayout">
+            <div style={{ marginRight: "10px" }}>
+              <div className="form-group">
+                <div className="d-flex justify-content-between">
+                  <label className="labelRegister" htmlFor="">
+                    Họ và tên
+                  </label>
                 </div>
+                <input
+                  value={userInfo.name}
+                  disabled={true}
+                  name="name"
+                  type="text"
+                  className="form-control"
+                  id={userInfo.name}
+                />
               </div>
-            </form>
+              <div className="form-group">
+                <div className="d-flex justify-content-between">
+                  <label className="labelRegister" htmlFor="">
+                    Giới tính
+                  </label>
+                </div>
+                <select
+                  disabled={true}
+                  value={userInfo.gender}
+                  className="form-control"
+                  name="gender"
+                >
+                  <option value={false}>Nam</option>
+                  <option value={true}>Nữ</option>
+                </select>
+              </div>
+              <div className="form-group">
+                <div className="d-flex justify-content-between">
+                  <label className="labelRegister" htmlFor="">
+                    Ngày sinh
+                  </label>
+                </div>
+                <input
+                  value={userInfo.birthday}
+                  disabled={true}
+                  id="inputBirthday"
+                  type="text"
+                  className="form-control"
+                  name="confirmPassword"
+                />
+              </div>
+              <div className="form-group">
+                <div className="d-flex justify-content-between">
+                  <label className="labelRegister" htmlFor="">
+                    Địa chỉ email
+                  </label>
+                </div>
+                <input
+                  value={userInfo.email}
+                  disabled={true}
+                  name="email"
+                  type="text"
+                  className="form-control"
+                  id="inputEmail"
+                />
+              </div>
+              <div className="form-group">
+                <div className="d-flex justify-content-between">
+                  <label className="labelRegister" htmlFor="">
+                    Số điện thoại
+                  </label>
+                </div>
+                <input
+                  value={userInfo.phone}
+                  disabled={true}
+                  name="phone"
+                  type="text"
+                  className="form-control"
+                  id="inputPhone"
+                />
+              </div>
+              <button
+                type="button"
+                className="btn btn-warning"
+                data-toggle="modal"
+                data-target="#myModal"
+              >
+                Chỉnh sửa thông tin
+              </button>
+            </div>
           </div>
-        </div>
+        </form>
       </div>
     );
   };
 
   return (
     <div className="p-5" style={{ minHeight: "95vh" }}>
-      <nav>
-        <div className="nav nav-tabs" id="nav-tab" role="tablist">
-          <button
-            className="nav-link active"
-            id="nav-home-tab"
-            data-bs-toggle="tab"
-            data-bs-target="#nav-home"
-            type="button"
-            role="tab"
-            aria-controls="nav-home"
-            aria-selected="true"
-          >
-            Personal infomation
-          </button>
-        </div>
-      </nav>
+      <h4>Personal infomation</h4>
       <div className="tab-content mt-3" id="nav-tabContent">
         <div
           className="tab-pane fade show active w-90 py-3 "
