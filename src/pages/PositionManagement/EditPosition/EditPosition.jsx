@@ -38,7 +38,7 @@ export default function EditPosition() {
     onSubmit: async (values) => {
       let formData = new FormData();
       if (values.hinhAnh !== null) {
-        formData.append("File", values.hinhAnh, values.hinhAnh.name);
+        formData.append("File", values.hinhAnh[0], values.hinhAnh.name);
       }
 
       try {

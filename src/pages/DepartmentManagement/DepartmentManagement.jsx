@@ -59,7 +59,7 @@ export default function DepartmentManagement() {
             : object.moTa}
         </Fragment>
       ),
-      width: 550,
+      width: "30%",
     },
     {
       title: "Thao tác",
