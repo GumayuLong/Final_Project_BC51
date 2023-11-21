@@ -10,24 +10,13 @@ export default function Home() {
   const renderRoomList = () => {
     return roomList.map((element) => {
       return (
-        <div
-          key={element.id}
-          className="col-12 col-sm-12 col-md-6 col-xl-4 mt-5"
-        >
+        <div key={element.id} className="col-3 mt-5">
           <Card
             onClick={() => {
               navigate(`/detail/${element.id}`);
             }}
             hoverable
-            cover={
-              <img
-                alt="example"
-                src={element.hinhAnh}
-                width={250}
-                height={150}
-                style={{ objectFit: "cover", objectPosition: "bottom" }}
-              />
-            }
+            cover={<img alt="example" src={element.hinhAnh} />}
           >
             <Meta
               title={element.tenPhong}
@@ -41,8 +30,10 @@ export default function Home() {
     });
   };
   return (
-    <div className="py-5 container">
-      <div className="row mx-auto">{renderRoomList()}</div>
-    </div>
+    <>
+      <div className="py-5 bg-movieList">
+        <div className="row mx-auto">{renderRoomList()}</div>
+      </div>
+    </>
   );
 }
