@@ -55,6 +55,7 @@ export default function AdminLayout() {
     <Layout
       style={{
         minHeight: "100vh",
+        overflow: "hidden",
       }}
     >
       <Sider
@@ -83,7 +84,7 @@ export default function AdminLayout() {
           </Menu.Item>
         </Menu>
       </Sider>
-      <Layout>
+      <Layout style={{ height: "100vh" }}>
         <Header
           style={{
             padding: 0,
@@ -92,11 +93,7 @@ export default function AdminLayout() {
         >
           {renderContent()}
         </Header>
-        <Content
-          style={{
-            margin: "0 16px",
-          }}
-        >
+        <Content style={{ margin: "0px 16px", overflowY: "scroll" }}>
           <div
             style={{
               padding: 24,
