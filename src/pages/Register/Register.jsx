@@ -5,13 +5,11 @@ import { notification } from "antd";
 import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { userService } from "../../services/userService";
-import { setUserInfoAction } from "../../store/actions/userAction";
 import { validation } from "../../validations/validation";
 import "../Login/login.scss";
 
 export default function Register() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const fullNameInputRef = createRef();
   const passwordInputRef = createRef();

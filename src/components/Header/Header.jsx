@@ -27,8 +27,6 @@ export default function HeaderHome() {
   const [locateDetail, setLocateDetail] = useState([]);
   const [openKeys, setOpenKeys] = useState(["sub1"]);
   const rootSubmenuKeys = ["sub1"];
-  const userString = localStorage.getItem("USER_INFO");
-  const user = JSON.parse(userString);
 
   const fetchLocateDetailApi = async () => {
     const result = await positionService.fetchPositionListApi();
@@ -41,7 +39,7 @@ export default function HeaderHome() {
 
   const renderAdmin = () => {
     if (userState) {
-      if (userState.role === "ADMIN") {
+      if (userState.user.role === "ADMIN") {
         return (
           <button
             className="btn-icon ml-2 admin"
@@ -98,7 +96,7 @@ export default function HeaderHome() {
               <button
                 className="dropdown-item btn-custom-1"
                 onClick={() => {
-                  navigate(`/personal-info/${user.user.id}`);
+                  navigate(`/personal-info/${userState.user.id}`);
                 }}
               >
                 <UserOutlined className="pr-2" />
