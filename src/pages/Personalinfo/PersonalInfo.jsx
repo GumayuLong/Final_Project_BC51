@@ -186,8 +186,8 @@ export default function PersonalInfo() {
                   className="form-control"
                   name="gender"
                 >
-                  <option value={false}>Nam</option>
-                  <option value={true}>Nữ</option>
+                  <option value={true}>Nam</option>
+                  <option value={false}>Nữ</option>
                 </select>
               </div>
               <div className="form-group">
