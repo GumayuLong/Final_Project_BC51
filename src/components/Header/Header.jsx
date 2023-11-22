@@ -84,7 +84,7 @@ export default function HeaderHome() {
     } else if (userState) {
       return (
         <div className="d-flex">
-          <div className="dropdown" style={{ marginRight: "80px" }}>
+          <div className="dropdown" style={{ marginRight: "10px" }}>
             <button
               type="button"
               className="btn-custom-1 dropdown-toggle"
