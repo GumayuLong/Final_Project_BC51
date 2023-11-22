@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./style.scss";
 import { Space, Select, Menu, DatePicker, InputNumber, Layout } from "antd";
-import { SearchOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  SearchOutlined,
+  UserOutlined,
+  LogoutOutlined,
+  LoginOutlined,
+} from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserInfoAction } from "../../store/actions/userAction";
 import { useNavigate } from "react-router-dom";
@@ -39,7 +44,7 @@ export default function HeaderHome() {
       if (userState.user.role === "ADMIN") {
         return (
           <button
-            className="btn-icon ml-2"
+            className="btn-icon ml-2 admin"
             onClick={() => navigate("/admin/user")}
           >
             <FontAwesomeIcon icon={faArrowRightFromBracket} />
@@ -54,14 +59,22 @@ export default function HeaderHome() {
       return (
         <>
           <button
-            className="btn-custom-1 mr-2"
+            className="btn-custom-1 mr-2 in-1"
             onClick={() => navigate("/login")}
           >
             SIGN IN
           </button>
 
           <button
-            className="btn-custom-2"
+            className="btn-custom-1 in-2"
+            onClick={() => navigate("/login")}
+            style={{ display: "none" }}
+          >
+            <LoginOutlined />
+          </button>
+
+          <button
+            className="btn-custom-2 in-1"
             onClick={() => navigate("/register")}
           >
             REGISTER
@@ -71,29 +84,32 @@ export default function HeaderHome() {
     } else if (userState) {
       return (
         <div className="d-flex">
-          <div className="dropdown" style={{marginRight: "80px"}}>
+          <div className="dropdown" style={{ marginRight: "80px" }}>
             <button
               type="button"
               className="btn-custom-1 dropdown-toggle"
               data-toggle="dropdown"
+              data-offset="0, 10"
               style={{ marginRight: "10px" }}
             >
               <UserOutlined />
             </button>
-            <div className="dropdown-menu">
+            <div className="dropdown-menu dropdown-menu-right">
               <button
                 className="dropdown-item btn-custom-1"
                 onClick={() => {
                   navigate(`/personal-info/${user.user.id}`);
                 }}
               >
-                TRANG CÁ NHÂN
+                <UserOutlined className="pr-2" />
+                Trang cá nhân
               </button>
               <button
                 onClick={handleLogout}
                 className="dropdown-item btn-custom-1"
               >
-                ĐĂNG XUẤT
+                <LogoutOutlined className="pr-2" />
+                Đăng xuất
               </button>
             </div>
           </div>
@@ -135,7 +151,7 @@ export default function HeaderHome() {
   const renderContentCenter = () => {
     const items1 = [
       getItem(
-        "Chọn Địa Điểm  |  Chọn Thời Gian  |  Chọn Số Lượng Khách",
+        "Địa Điểm | Thời Gian | Số Lượng Khách",
         "sub1",
         <SearchOutlined style={{ backgroundColor: "#ef4444" }} />,
         [
@@ -204,7 +220,7 @@ export default function HeaderHome() {
   return (
     <Layout className="layout">
       <Header style={{ height: "auto" }} className="my-3">
-        <div className="d-flex align-items-center justify-content-around mx-auto">
+        <div className="d-flex align-items-center justify-content-between mx-auto">
           <div className="demo-logo">
             <a className="navbar-brand" href="/" style={{ color: "#ef4444" }}>
               <FontAwesomeIcon
@@ -224,7 +240,7 @@ export default function HeaderHome() {
           </div>
 
           <div
-            className="collapse d-flex justify-content-center navbar-collapse container content-center"
+            className="collapse d-flex justify-content-center navbar-collapse content-center"
             id="collapsibleNavId"
             style={{
               flexBasis: 0,
@@ -233,7 +249,7 @@ export default function HeaderHome() {
             {renderContentCenter()}
           </div>
 
-          <div className="header-rear">
+          <div className="header-rear d-flex justify-content-center">
             <Space>{renderContent()}</Space>
           </div>
         </div>
