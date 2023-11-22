@@ -70,8 +70,8 @@ export default function HeaderHome() {
       );
     } else if (userState) {
       return (
-        <div className="d-flex ">
-          <div className="dropdown">
+        <div className="d-flex">
+          <div className="dropdown" style={{marginRight: "80px"}}>
             <button
               type="button"
               className="btn-custom-1 dropdown-toggle"
@@ -204,7 +204,7 @@ export default function HeaderHome() {
   return (
     <Layout className="layout">
       <Header style={{ height: "auto" }} className="my-3">
-        <div className="d-flex align-items-center justify-content-between mx-auto">
+        <div className="d-flex align-items-center justify-content-around mx-auto">
           <div className="demo-logo">
             <a className="navbar-brand" href="/" style={{ color: "#ef4444" }}>
               <FontAwesomeIcon
