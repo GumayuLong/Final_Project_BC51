@@ -200,7 +200,7 @@ export default function PersonalInfo() {
                   value={userInfo.birthday}
                   disabled={true}
                   id="inputBirthday"
-                  type="text"
+                  type="date"
                   className="form-control"
                   name="confirmPassword"
                 />
