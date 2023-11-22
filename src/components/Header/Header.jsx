@@ -41,7 +41,7 @@ export default function HeaderHome() {
 
   const renderAdmin = () => {
     if (userState) {
-      if (userState.user.role === "ADMIN") {
+      if (userState.role === "ADMIN") {
         return (
           <button
             className="btn-icon ml-2 admin"

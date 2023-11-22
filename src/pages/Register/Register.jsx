@@ -140,7 +140,6 @@ export default function Register() {
       await userService
         .registerApi(state)
         .then((result) => {
-          dispatch(setUserInfoAction(result.data.content));
           notification.success({
             message: "Đăng ký thành công",
             placement: "topLeft",
@@ -149,7 +148,6 @@ export default function Register() {
         })
         .catch((error) => {
           setErrMessage(error.response.data.content);
-          // console.log(error.response.data.content);
           genderInputRef.current.innerHTML = errMessage;
         });
     }
