@@ -56,11 +56,11 @@ export default function EditUser() {
   const options = [
     {
       label: "Nam",
-      value: false,
+      value: true,
     },
     {
       label: "Nữ",
-      value: true,
+      value: false,
     },
   ];
 

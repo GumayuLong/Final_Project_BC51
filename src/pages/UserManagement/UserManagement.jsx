@@ -65,7 +65,7 @@ export default function UserManagement() {
     {
       title: "Giới tính",
       dataIndex: "gender",
-      render: (text, object) => <>{object.gender ? "Nữ" : "Nam"}</>,
+      render: (text, object) => <>{object.gender ? "Nam" : "Nữ"}</>,
     },
     {
       title: "Ngày sinh",

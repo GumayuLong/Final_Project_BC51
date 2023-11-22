@@ -81,14 +81,41 @@ Button:hover {
   flex-basis: 0;
 }
 
-@media screen and (max-width: 767.98px) {
+@media screen and (max-width: 958.98px) {
+  .collapse {
+    ul {
+      width: 380px !important;
+    }
+  }
+
   .layout {
     .demo-logo {
-      display: none;
+      span {
+        display: none;
+      }
     }
 
     .header-rear {
-      display: none;
+      .dropdown {
+        margin-right: 0 !important;
+      }
+      .admin {
+        display: none;
+      }
     }
+  }
+
+  .in-1 {
+    display: none !important;
+  }
+
+  .in-2 {
+    display: block !important;
+  }
+}
+
+@media screen and (max-width: 767.98px) {
+  .ant-layout-header {
+    padding: 0 20px;
   }
 }
