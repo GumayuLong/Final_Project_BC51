@@ -37,6 +37,7 @@ export default function EditUser() {
       role: userDetail.role,
     },
     onSubmit: async (values) => {
+      console.log({ values });
       try {
         await userService.fetchUpdateUserApi(params.userId, values);
         notification.success({
@@ -66,6 +67,7 @@ export default function EditUser() {
 
   const onChangeRadio = ({ target: { value } }) => {
     setGender(value);
+    formik.setFieldValue("gender", value);
   };
 
   const handleChangeDatePicker = (value) => {

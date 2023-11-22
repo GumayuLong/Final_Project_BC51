@@ -21,10 +21,10 @@ export default function EditDepartment() {
     position: [],
   });
   const [department, setDepartment] = useState({});
-  const [img, setImg] = useState("");
   const [_, setLoadingContext] = useContext(loadingContext);
   const navigate = useNavigate();
   const params = useParams();
+  console.log(params);
 
   useEffect(() => {
     fetchDepartmentDetail();
@@ -66,7 +66,10 @@ export default function EditDepartment() {
 
     onSubmit: async (values) => {
       try {
-        await departmentService.fetchUpdateDepartmentApi(params.id, values);
+        await departmentService.fetchUpdateDepartmentApi(
+          params.departmentId,
+          values
+        );
         notification.success({
           message: "Cập nhật phòng thuê thành công!",
           placement: "bottomRight",

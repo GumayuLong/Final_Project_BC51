@@ -102,7 +102,7 @@ export default function DepartmentManagement() {
 
   const handleDeleteUser = async (object) => {
     const confirm = window.confirm(
-      "Bạn có chắc muốn xóa phòng thuê số " + object.tenPhong + "?"
+      "Bạn có chắc muốn xóa phòng thuê " + object.tenPhong + "?"
     );
 
     if (!confirm) return;

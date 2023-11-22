@@ -117,12 +117,12 @@ export default function PositionManagement() {
 
   const handleDeletePosition = async (object) => {
     const confirm = window.confirm(
-      "Bạn có chắc muốn xóa vị trí số " + object.id + "?"
+      "Bạn có chắc muốn xóa vị trí " + object.tenViTri + "?"
     );
 
     if (!confirm) return;
     try {
-      await positionService.fetchDeletePositionApi(object.tenViTri);
+      await positionService.fetchDeletePositionApi(object.id);
       notification.success({
         message: "Xóa vị trí thành công",
         placement: "bottomRight",
